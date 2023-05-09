@@ -13,18 +13,18 @@
 
 /* wle:auto-imports:start */
 import {MouseLookComponent} from '@wonderlandengine/components';
+import {ParticlesSpawnerComponent} from './playground/particles_spawner_component.js';
 import {ConsoleVRToolComponent} from './pp/index.js';
+import {EasyTransformComponent} from './pp/index.js';
 import {EasyTuneToolComponent} from './pp/index.js';
-import {GamepadMeshAnimatorComponent} from './pp/index.js';
-import {GrabberHandComponent} from './pp/index.js';
 import {PPGatewayComponent} from './pp/index.js';
 import {PlayerLocomotionComponent} from './pp/index.js';
+import {SetActiveComponent} from './pp/index.js';
 import {SetHandLocalTransformComponent} from './pp/index.js';
 import {SetHeadLocalTransformComponent} from './pp/index.js';
 import {SpatialAudioListenerComponent} from './pp/index.js';
 import {SwitchHandObjectComponent} from './pp/index.js';
 import {ToolCursorComponent} from './pp/index.js';
-import {TrackedHandDrawAllJointsComponent} from './pp/index.js';
 import {VirtualGamepadComponent} from './pp/index.js';
 import {FadeViewInOutComponent} from './sir_please/components/fade_view_in_out_component.js';
 import {SirPleaseGatewayComponent} from './sir_please/components/sir_please_gateway_component.js';
@@ -84,18 +84,18 @@ if (document.readyState === 'loading') {
 
 /* wle:auto-register:start */
 engine.registerComponent(MouseLookComponent);
+engine.registerComponent(ParticlesSpawnerComponent);
 engine.registerComponent(ConsoleVRToolComponent);
+engine.registerComponent(EasyTransformComponent);
 engine.registerComponent(EasyTuneToolComponent);
-engine.registerComponent(GamepadMeshAnimatorComponent);
-engine.registerComponent(GrabberHandComponent);
 engine.registerComponent(PPGatewayComponent);
 engine.registerComponent(PlayerLocomotionComponent);
+engine.registerComponent(SetActiveComponent);
 engine.registerComponent(SetHandLocalTransformComponent);
 engine.registerComponent(SetHeadLocalTransformComponent);
 engine.registerComponent(SpatialAudioListenerComponent);
 engine.registerComponent(SwitchHandObjectComponent);
 engine.registerComponent(ToolCursorComponent);
-engine.registerComponent(TrackedHandDrawAllJointsComponent);
 engine.registerComponent(VirtualGamepadComponent);
 engine.registerComponent(FadeViewInOutComponent);
 engine.registerComponent(SirPleaseGatewayComponent);

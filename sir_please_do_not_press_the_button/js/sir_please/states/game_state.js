@@ -1,4 +1,5 @@
-import { FSM } from "../../pp";
+import { FSM, TimerState } from "../../pp";
+import { GameGlobals } from "../game_globals";
 import { EarthExplodesState } from "./earth_explodes_state";
 import { SirRoomState } from "./sir_room_state";
 
@@ -9,12 +10,14 @@ export class GameState {
 
         this._myFSM.addState("init");
         this._myFSM.addState("idle");
+        this._myFSM.addState("dark", new TimerState(2, "end"));
         this._myFSM.addState("sir_room", new SirRoomState());
         this._myFSM.addState("earth_explode", new EarthExplodesState(false));
         this._myFSM.addState("earth_explode_anyway", new EarthExplodesState(true));
 
         this._myFSM.addTransition("init", "idle", "start");
-        this._myFSM.addTransition("idle", "sir_room", "start");
+        this._myFSM.addTransition("idle", "dark", "start");
+        this._myFSM.addTransition("dark", "sir_room", "end");
         this._myFSM.addTransition("sir_room", "earth_explode", "lose");
         this._myFSM.addTransition("sir_room", "earth_explode_anyway", "win");
         this._myFSM.addTransition("earth_explode", "idle", "end", this._gameOver.bind(this));
@@ -31,6 +34,10 @@ export class GameState {
         this._myParentFSM = fsm;
 
         this._myFSM.perform("start");
+
+        if (GameGlobals.mySkipIntro) {
+            this._myFSM.perform("end");
+        }
     }
 
     end() {
@@ -42,6 +49,6 @@ export class GameState {
     }
 
     _gameOver() {
-        this._myParentFSM.perform("end");
+        this._myParentFSM.performDelayed("end");
     }
 }

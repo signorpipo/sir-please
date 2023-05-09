@@ -11,7 +11,8 @@ export class ParticlesSpawnerComponent extends Component {
         _myMaxAmount: Property.int(30),
         _myScaleMultiplier: Property.float(1),
         _myHorizontalSpeedMultiplier: Property.float(1),
-        _myVerticalSpeedMultiplier: Property.float(1)
+        _myVerticalSpeedMultiplier: Property.float(1),
+        _myGravity: Property.float(9.81)
     };
 
     start() {
@@ -43,13 +44,14 @@ export class ParticlesSpawnerComponent extends Component {
         let amount = Math.pp_randomInt(this._myMinAmount, this._myMaxAmount);
 
         for (let i = 0; i < amount; i++) {
-            let particle = this._myObjectPoolsManager.getObject(Math.pp_randomInt(0, this._myParticles.length - 1));
+            let particle = this._myObjectPoolsManager.get(Math.pp_randomInt(0, this._myParticles.length - 1));
             let particleComponent = particle.pp_getComponent(ParticleComponent);
 
             particleComponent.onDone(this.onParticleDone.bind(this, particle));
             particleComponent.setScaleMultiplier(this._myScaleMultiplier);
             particleComponent.setHorizontalSpeedMultiplier(this._myHorizontalSpeedMultiplier);
             particleComponent.setVerticalSpeedMultiplier(this._myVerticalSpeedMultiplier);
+            particleComponent.setGravity(this._myGravity);
 
             particle.pp_setPosition(position.vec3_add(particleComponent._myHorizontalSpeed.vec3_normalize().vec3_scale(Math.pp_random(0, this._myRadius))));
 
@@ -58,6 +60,6 @@ export class ParticlesSpawnerComponent extends Component {
     }
 
     onParticleDone(particle) {
-        this._myObjectPoolsManager.releaseObject(particle);
+        this._myObjectPoolsManager.release(particle);
     }
 }
