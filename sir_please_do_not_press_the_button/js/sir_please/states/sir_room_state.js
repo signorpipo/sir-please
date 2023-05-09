@@ -26,12 +26,16 @@ export class SirRoomState {
         if (this._myBackgroundMusicAudioPlayer != null) {
             this._myBackgroundMusicAudioPlayer.play();
         }
+
+        GameGlobals.myButtonHand.startButtonHand();
     }
 
     end(fsm) {
         if (this._myBackgroundMusicAudioPlayer != null) {
             this._myBackgroundMusicAudioPlayer.stop();
         }
+
+        GameGlobals.myButtonHand.stopButtonHand();
     }
 
     update(dt, fsm) {

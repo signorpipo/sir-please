@@ -39,10 +39,12 @@ export class GameState {
         }
 
         GameGlobals.myExplodeButton.registerClickEventListener(this, this._explodeButtonPressed.bind(this));
+        GameGlobals.myButtonHand.registerHandStopEventListener(this, this._handStop.bind(this));
     }
 
     end() {
         GameGlobals.myExplodeButton.unregisterClickEventListener(this);
+        GameGlobals.myButtonHand.unregisterHandStopEventListener(this);
     }
 
     update(dt, fsm) {
@@ -55,5 +57,9 @@ export class GameState {
 
     _explodeButtonPressed() {
         this._myFSM.perform("lose");
+    }
+
+    _handStop() {
+        this._myFSM.perform("win");
     }
 }

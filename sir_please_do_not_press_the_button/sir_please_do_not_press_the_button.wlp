@@ -722,8 +722,8 @@
                 {
                     "type": "physx",
                     "physx": {
-                        "trigger": true,
-                        "allowSimulation": false,
+                        "trigger": false,
+                        "allowSimulation": true,
                         "groups": 4,
                         "block": 4,
                         "gravity": false,
@@ -738,6 +738,12 @@
                         "kinematic": true
                     },
                     "active": true
+                },
+                {
+                    "type": "button-hand",
+                    "button-hand": {
+                        "_mySpeed": 0.0099999
+                    }
                 }
             ]
         },
