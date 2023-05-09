@@ -1,6 +1,7 @@
 import { ParticlesSpawnerComponent } from "../playground/particles_spawner_component";
 import { FSM, Globals, PlayerLocomotionComponent } from "../pp";
 import { AudioLoader } from "./audio_loader";
+import { ExplodeButtonComponent } from "./components/explode_button_component";
 import { GameGlobals } from "./game_globals";
 import { GameState } from "./states/game_state";
 
@@ -41,5 +42,7 @@ export class SirPlease {
         GameGlobals.myPlayerTransformManager = playerLocomotionComponent._myPlayerLocomotion._myPlayerTransformManager;
 
         GameGlobals.myExplodeParticlesSpawner = GameGlobals.myScene.pp_getObjectByName("Explode Particles Spawner").pp_getComponent(ParticlesSpawnerComponent);
+
+        GameGlobals.myExplodeButton = GameGlobals.myScene.pp_getComponent(ExplodeButtonComponent);
     }
 }

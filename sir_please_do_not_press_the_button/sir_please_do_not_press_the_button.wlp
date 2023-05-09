@@ -1060,6 +1060,28 @@
                         "mesh": "p1",
                         "material": "149"
                     }
+                },
+                {
+                    "type": "physx",
+                    "physx": {
+                        "block": 4,
+                        "groups": 4,
+                        "kinematic": true,
+                        "gravity": false,
+                        "shape": "box",
+                        "box": {
+                            "extents": [
+                                0.075,
+                                0.0199999,
+                                0.075
+                            ]
+                        },
+                        "trigger": true,
+                        "allowSimulation": false
+                    }
+                },
+                {
+                    "type": "explode-button"
                 }
             ],
             "scaling": [
@@ -1222,10 +1244,10 @@
                 0.0
             ],
             "rotation": [
-                0.8660254,
+                0.8968727,
                 0.0,
                 0.0,
-                0.4999999
+                0.4422886
             ],
             "scaling": [
                 0.0299999,
@@ -1359,8 +1381,8 @@
                 {
                     "type": "physx",
                     "physx": {
-                        "trigger": true,
-                        "allowSimulation": false,
+                        "trigger": false,
+                        "allowSimulation": true,
                         "groups": 4,
                         "block": 4,
                         "gravity": false,
@@ -1393,10 +1415,10 @@
                 0.0
             ],
             "rotation": [
-                0.8660254,
+                0.8968727,
                 0.0,
                 0.0,
-                0.4999999
+                0.4422886
             ],
             "scaling": [
                 0.0299999,
@@ -1530,8 +1552,8 @@
                 {
                     "type": "physx",
                     "physx": {
-                        "trigger": true,
-                        "allowSimulation": false,
+                        "trigger": false,
+                        "allowSimulation": true,
                         "groups": 4,
                         "block": 4,
                         "gravity": false,
@@ -2237,7 +2259,8 @@
                     "hand-tracking": false
                 }
             },
-            "viewObject": "21"
+            "viewObject": "21",
+            "visualizePhysX": false
         },
         "scripting": {
             "sourcePaths": [
