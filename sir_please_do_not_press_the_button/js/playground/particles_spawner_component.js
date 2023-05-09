@@ -6,7 +6,12 @@ export class ParticlesSpawnerComponent extends Component {
     static TypeName = "particles-spawner";
     static Properties = {
         _myParticlesContainer: Property.object(),
-        _myRadius: Property.float(0.25)
+        _myRadius: Property.float(0.25),
+        _myMinAmount: Property.int(15),
+        _myMaxAmount: Property.int(30),
+        _myScaleMultiplier: Property.float(1),
+        _myHorizontalSpeedMultiplier: Property.float(1),
+        _myVerticalSpeedMultiplier: Property.float(1)
     };
 
     start() {
@@ -35,19 +40,24 @@ export class ParticlesSpawnerComponent extends Component {
     }
 
     spawn(position) {
-        let amount = Math.pp_randomInt(15, 30);
+        let amount = Math.pp_randomInt(this._myMinAmount, this._myMaxAmount);
 
         for (let i = 0; i < amount; i++) {
-            let particle = this._myObjectPoolsManager.get(Math.pp_randomInt(0, this._myParticles.length - 1));
-            particle.pp_getComponent(ParticleComponent).onDone(this.onParticleDone.bind(this, particle));
+            let particle = this._myObjectPoolsManager.getObject(Math.pp_randomInt(0, this._myParticles.length - 1));
+            let particleComponent = particle.pp_getComponent(ParticleComponent);
 
-            particle.pp_setPosition(position.vec3_add(particle.pp_getComponent(ParticleComponent)._myHorizontalSpeed.vec3_normalize().vec3_scale(Math.pp_random(0, this._myRadius))));
+            particleComponent.onDone(this.onParticleDone.bind(this, particle));
+            particleComponent.setScaleMultiplier(this._myScaleMultiplier);
+            particleComponent.setHorizontalSpeedMultiplier(this._myHorizontalSpeedMultiplier);
+            particleComponent.setVerticalSpeedMultiplier(this._myVerticalSpeedMultiplier);
+
+            particle.pp_setPosition(position.vec3_add(particleComponent._myHorizontalSpeed.vec3_normalize().vec3_scale(Math.pp_random(0, this._myRadius))));
 
             particle.pp_setActive(true);
         }
     }
 
     onParticleDone(particle) {
-        this._myObjectPoolsManager.release(particle);
+        this._myObjectPoolsManager.releaseObject(particle);
     }
 }

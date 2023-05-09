@@ -156,7 +156,23 @@
         },
         "28": {
             "name": "Lights",
-            "parent": "18"
+            "parent": "231",
+            "translation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
         },
         "29": {
             "name": "Light 1",
@@ -711,7 +727,7 @@
         },
         "151": {
             "name": "Floor",
-            "parent": "18",
+            "parent": "231",
             "components": [
                 {
                     "type": "mesh",
@@ -840,6 +856,101 @@
                 0.9999923,
                 0.9999998,
                 0.9999997
+            ]
+        },
+        "231": {
+            "name": "Sir Room",
+            "parent": "235",
+            "translation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        "232": {
+            "name": "Earth View",
+            "parent": "235",
+            "translation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        "233": {
+            "name": "Player Spawn",
+            "parent": "231"
+        },
+        "234": {
+            "name": "Player Spawn",
+            "parent": "232",
+            "translation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        "235": {
+            "name": "Sir Please",
+            "parent": "18",
+            "components": [
+                {
+                    "type": "sir-please-gateway",
+                    "sir-please-gateway": {
+                        "_mySirRoom": "231",
+                        "_myEarthView": "232",
+                        "_myStartDelayFrames": 10
+                    }
+                }
+            ]
+        },
+        "236": {
+            "name": "Fader",
+            "parent": "235"
+        },
+        "237": {
+            "name": "Black Fader",
+            "parent": "236",
+            "components": [
+                {
+                    "type": "fade-view-in-out",
+                    "fade-view-in-out": {
+                        "_myTimeToFadeIn": 1.5,
+                        "_myTimeToFadeOut": 1.5
+                    }
+                }
             ]
         }
     },
@@ -1398,7 +1509,8 @@
             "sourcePaths": [
                 "js",
                 "js/pp/index.js",
-                "js/playground"
+                "js/playground",
+                "js/sir_please/components"
             ],
             "bundlingType": "esbuild",
             "libraryPaths": [
@@ -1426,11 +1538,6 @@
                 "5": "Group 5",
                 "6": "Group 6",
                 "7": "Group 7"
-            }
-        },
-        "plugins": {
-            "CustomPlugin.mjs": {
-                "enable": true
             }
         }
     },

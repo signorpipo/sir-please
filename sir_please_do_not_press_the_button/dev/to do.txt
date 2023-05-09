@@ -1,0 +1,12 @@
+To Do:
+
+  - create simple scene with the gentle man, the button and the hand
+  - the button is a physx collision and u have a trigger on bot your hand and the gentle man hand
+	- if it overlaps the earth explode
+  - add a basic game flow so that u have a start (with fade) and end screen (explosion) and a win state (earth view for longer but then u hear the click and explodes)
+	- it restarts after that
+  - add close detection when facing the gentle man and show a cube for now just as a placeholder
+  - add the hand going down over time with a multiplier
+	- the hand is always going no matter what, u can just make it go slower or faster by picking the right/wrong answer
+  - hide the webxr hands when on the earth view + activate fly
+  

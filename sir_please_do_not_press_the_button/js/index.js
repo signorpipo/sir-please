@@ -26,6 +26,8 @@ import {SwitchHandObjectComponent} from './pp/index.js';
 import {ToolCursorComponent} from './pp/index.js';
 import {TrackedHandDrawAllJointsComponent} from './pp/index.js';
 import {VirtualGamepadComponent} from './pp/index.js';
+import {FadeViewInOutComponent} from './sir_please/components/fade_view_in_out_component.js';
+import {SirPleaseGatewayComponent} from './sir_please/components/sir_please_gateway_component.js';
 /* wle:auto-imports:end */
 
 import { loadRuntime } from '@wonderlandengine/api';
@@ -95,6 +97,8 @@ engine.registerComponent(SwitchHandObjectComponent);
 engine.registerComponent(ToolCursorComponent);
 engine.registerComponent(TrackedHandDrawAllJointsComponent);
 engine.registerComponent(VirtualGamepadComponent);
+engine.registerComponent(FadeViewInOutComponent);
+engine.registerComponent(SirPleaseGatewayComponent);
 /* wle:auto-register:end */
 
 engine.scene.load(`${Constants.ProjectName}.bin`);
