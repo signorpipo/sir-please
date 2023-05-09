@@ -9,7 +9,7 @@ export class EarthExplodesState {
         this._myEarth = GameGlobals.myEarthView.pp_getObjectByName("Earth");
 
         this._myFSM = new FSM();
-        this._myFSM.setLogEnabled(true, "  Earth Explodes");
+        //this._myFSM.setLogEnabled(true, "  Earth Explodes" + (explodesAnyway ? " Anyway" : ""));
 
         this._myFSM.addState("init");
         this._myFSM.addState("idle");
