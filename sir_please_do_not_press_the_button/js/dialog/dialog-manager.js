@@ -1,4 +1,4 @@
-import {Component, Property} from '@wonderlandengine/api';
+import { Component, Property } from '@wonderlandengine/api';
 
 /**
  * dialog-manager
@@ -20,19 +20,19 @@ export class DialogManager extends Component {
     }
 
     play(dialogController) {
-        if(this.playingDialog) return;
+        if (this.playingDialog) return;
 
         this.playingDialog = dialogController;
         dialogController.play();
     }
 
     end(dialog) {
-        if(this.playingDialog != dialog) return;
+        if (this.playingDialog != dialog) return;
         this.playingDialog = null;
     }
 
     advance(choiceIndex) {
-        if(!this.playingDialog) return;
+        if (!this.playingDialog) return;
         this.playingDialog.advance(choiceIndex);
     }
 }

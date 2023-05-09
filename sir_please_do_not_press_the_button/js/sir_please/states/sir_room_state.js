@@ -10,7 +10,7 @@ export class SirRoomState {
         this._myBackgroundMusicAudioPlayer = Globals.getAudioManager().createAudioPlayer("background_music");
 
         this._myFSM = new FSM();
-        this._myFSM.setLogEnabled(true, "  Sir Room");
+        //this._myFSM.setLogEnabled(true, "  Sir Room");
 
         this._myFSM.addState("init");
         this._myFSM.addState("idle");

@@ -1,5 +1,5 @@
-import { Component, Emitter, PhysXComponent, Property } from "@wonderlandengine/api";
-import { PhysicsCollisionCollector, vec3_create } from "../../pp";
+import { Component, Emitter, Property } from "@wonderlandengine/api";
+import { vec3_create } from "../../pp";
 
 export class ButtonHandComponent extends Component {
     static TypeName = "button-hand";

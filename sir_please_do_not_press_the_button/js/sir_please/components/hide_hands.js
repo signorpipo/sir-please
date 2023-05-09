@@ -1,5 +1,4 @@
-import { Component, Emitter, PhysXComponent, Property } from "@wonderlandengine/api";
-import { PhysicsCollisionCollector } from "../../pp";
+import { Component, Property } from "@wonderlandengine/api";
 
 export class HideHandsComponent extends Component {
     static TypeName = "hide-hands";
