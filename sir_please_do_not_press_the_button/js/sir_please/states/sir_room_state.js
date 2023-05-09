@@ -22,6 +22,7 @@ export class SirRoomState {
         GameGlobals.myPlayerTransformManager.teleportAndReset(playerStartPosition, rotationQuat);
 
         GameGlobals.myBlackFader.fadeIn();
+        GameGlobals.myHideHands.show();
 
         if (this._myBackgroundMusicAudioPlayer != null) {
             this._myBackgroundMusicAudioPlayer.play();

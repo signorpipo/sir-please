@@ -450,6 +450,13 @@
                         "_mySkipIntro": true
                     },
                     "active": true
+                },
+                {
+                    "type": "hide-hands",
+                    "hide-hands": {
+                        "_myLeftHand": "252",
+                        "_myRightHand": "254"
+                    }
                 }
             ]
         },

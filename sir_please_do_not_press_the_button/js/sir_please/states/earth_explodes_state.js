@@ -38,6 +38,7 @@ export class EarthExplodesState {
     start(fsm) {
         this._myParentFSM = fsm;
 
+        GameGlobals.myHideHands.hide();
         GameGlobals.myBlackFader.fadeIn(true);
         GameGlobals.myPlayerLocomotion.setIdle(true);
 

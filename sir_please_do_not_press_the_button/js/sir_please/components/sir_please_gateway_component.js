@@ -4,6 +4,7 @@ import { GameGlobals } from "../game_globals";
 import { initSirPlease } from "../init_sir_please";
 import { SirPlease } from "../sir_please";
 import { FadeViewInOutComponent } from "./fade_view_in_out_component";
+import { HideHandsComponent } from "./hide_hands";
 
 let _alreadyRegisteredEngines = [];
 
@@ -36,6 +37,7 @@ export class SirPleaseGatewayComponent extends Component {
 
         GameGlobals.myDebugEnabled = this._myDebugEnabled && Globals.isDebugEnabled();
         GameGlobals.mySkipIntro = this._mySkipIntro && GameGlobals.myDebugEnabled;
+        GameGlobals.myHideHands = GameGlobals.myScene.pp_getComponent(HideHandsComponent);
 
         if (GameGlobals.myDebugEnabled) {
             window.GameGlobals = GameGlobals;
@@ -52,6 +54,7 @@ export class SirPleaseGatewayComponent extends Component {
         if (this._myFirstUpdate) {
             this._myFirstUpdate = false;
             GameGlobals.myBlackFader.fadeOut(true);
+            GameGlobals.myHideHands.hide();
         }
 
         if (this._myStartCounter > 0) {
