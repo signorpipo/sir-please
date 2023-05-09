@@ -13,24 +13,10 @@
 
 /* wle:auto-imports:start */
 import {MouseLookComponent} from '@wonderlandengine/components';
-import {FadeViewComponent} from './playground/fade_view_component.js';
-import {FunComponent} from './playground/fun_component.js';
-import {GrabbableSpawnerComponent} from './playground/grabbable_spawner_component.js';
-import {LoadAudioComponent} from './playground/load_audio_component.js';
-import {ParticlesSpawnerComponent} from './playground/particles_spawner_component.js';
-import {PlayMusicComponent} from './playground/play_music_component.js';
-import {PlaygroundGatewayComponent} from './playground/playground_gateway_component.js';
-import {ScaleOnSpawnComponent} from './playground/scale_on_spawn_component.js';
-import {SFXOnCollisionComponent} from './playground/sfx_on_collision_component.js';
-import {SFXOnGrabThrowComponent} from './playground/sfx_on_grab_throw_component.js';
-import {TargetHitCheckComponent} from './playground/target_hit_check_component.js';
-import {WaveMovementComponent} from './playground/wave_movement_component.js';
 import {ConsoleVRToolComponent} from './pp/index.js';
 import {EasyTuneToolComponent} from './pp/index.js';
 import {GamepadMeshAnimatorComponent} from './pp/index.js';
-import {GrabbableComponent} from './pp/index.js';
 import {GrabberHandComponent} from './pp/index.js';
-import {MuteEverythingComponent} from './pp/index.js';
 import {PPGatewayComponent} from './pp/index.js';
 import {PlayerLocomotionComponent} from './pp/index.js';
 import {SetHandLocalTransformComponent} from './pp/index.js';
@@ -96,24 +82,10 @@ if (document.readyState === 'loading') {
 
 /* wle:auto-register:start */
 engine.registerComponent(MouseLookComponent);
-engine.registerComponent(FadeViewComponent);
-engine.registerComponent(FunComponent);
-engine.registerComponent(GrabbableSpawnerComponent);
-engine.registerComponent(LoadAudioComponent);
-engine.registerComponent(ParticlesSpawnerComponent);
-engine.registerComponent(PlayMusicComponent);
-engine.registerComponent(PlaygroundGatewayComponent);
-engine.registerComponent(ScaleOnSpawnComponent);
-engine.registerComponent(SFXOnCollisionComponent);
-engine.registerComponent(SFXOnGrabThrowComponent);
-engine.registerComponent(TargetHitCheckComponent);
-engine.registerComponent(WaveMovementComponent);
 engine.registerComponent(ConsoleVRToolComponent);
 engine.registerComponent(EasyTuneToolComponent);
 engine.registerComponent(GamepadMeshAnimatorComponent);
-engine.registerComponent(GrabbableComponent);
 engine.registerComponent(GrabberHandComponent);
-engine.registerComponent(MuteEverythingComponent);
 engine.registerComponent(PPGatewayComponent);
 engine.registerComponent(PlayerLocomotionComponent);
 engine.registerComponent(SetHandLocalTransformComponent);
