@@ -1,0 +1,12 @@
+{
+    "name": "sir_please_do_not_press_the_button",
+    "version": "0.2.1",
+    "author": "Robin & Pipo",
+    "description": "Why do you want to press it anyway?",
+    "dependencies": {
+        "@wonderlandengine/api": "^1.0.0",
+        "@wonderlandengine/components": "^1.0.3",
+        "gl-matrix": "^3.4.3",
+        "howler": "^2.2.3"
+    }
+}
