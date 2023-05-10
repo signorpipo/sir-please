@@ -89,6 +89,14 @@ export class DialogManager extends Component {
     }
 
     /**
+     * Wether the dialog is waiting for a timer or manual advance
+     */
+    isWaiting() {
+        if(!this.playingDialog) return false;
+        return this.playingDialog.isWaiting();
+    }
+
+    /**
      * Wether a dialog is currently playing
      */
     isPlaying() {

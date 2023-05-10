@@ -57,6 +57,11 @@ export class DialogController extends Component {
 
     isWaitingForResponse() {
         if(!this.currentStateJSON) return false;
+        return this.waitingForResponse;
+    }
+
+    isWaiting() {
+        if(!this.currentStateJSON) return false;
         var desiredText = this.currentStateJSON["text"];
         return this.textReadPos >= desiredText.length;
     }
@@ -69,6 +74,7 @@ export class DialogController extends Component {
         this.currentStateJSON = null;
         this.textReadPos = 0;
         this.timer = 0.0;
+        this.waitingForResponse = false;
 
         this.text.getComponent('text').text = this.currentText;
     }
@@ -222,6 +228,7 @@ export class DialogController extends Component {
             this.responseTexts[i].active = false;
             this.responseTexts[i].text = "";
         }
+        this.waitingForResponse = false;
     }
 
     setupResponses() {
@@ -233,6 +240,7 @@ export class DialogController extends Component {
             this.responseTexts[i].active = true;
             this.responseTexts[i].text = response;
         }
+        this.waitingForResponse = true;
     }
 
     handleEvent() {
