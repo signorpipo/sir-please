@@ -34,16 +34,16 @@ export class DialogController extends Component {
     }
 
     play() {
-        if(this.currentStateJSON) return;
+        if (this.currentStateJSON) return;
         this.reset();
-        this.playingDialog = this.dialogManager.getComponent('dialog-manager').getDialog(this.dialog);
+        this.playingDialog = this.dialogManager.getComponent(DialogManager).getDialog(this.dialog);
         this.currentState = "starting";
     }
 
     update(dt) {
-        if(this.currentState == "") return;
+        if (this.currentState == "") return;
 
-        if(this.currentState == "starting") {
+        if (this.currentState == "starting") {
             this.reset();
             this.currentStateJSON = this.playingDialog["entry"];
             this.currentState = "entry";
@@ -51,7 +51,7 @@ export class DialogController extends Component {
         }
 
         var desiredText = this.currentStateJSON["text"];
-        if(this.textReadPos < desiredText.length) {
+        if (this.textReadPos < desiredText.length) {
             const char = desiredText[this.textReadPos];
             // TODO: Handle events
 
@@ -82,12 +82,12 @@ export class DialogController extends Component {
     }
 
     advance(choiceIndex) {
-        if(!this.currentStateJSON) return;
+        if (!this.currentStateJSON) return;
 
         var responses = this.currentStateJSON["responses"];
 
         var jump = responses ? null : this.currentStateJSON["jump"];
-        if(!jump && responses && choiceIndex != -1) {
+        if (!jump && responses && choiceIndex != -1) {
             var response = responses[choiceIndex];
             if (!response) {
                 console.log("Cannot advance with invalid response!");
@@ -97,19 +97,19 @@ export class DialogController extends Component {
         }
 
         // Cannot advance without a response
-        if(!jump && responses) {
+        if (!jump && responses) {
             console.log("Cannot advance current dialog without response!");
             return;
         }
 
-        if(!jump && jump != "") {
+        if (!jump && jump != "") {
             var keys = Object.keys(this.playingDialog);
             var index = keys.indexOf(this.currentState);
             this.reset();
 
-            if(index + 1 >= keys.length) {
+            if (index + 1 >= keys.length) {
                 // Done!
-                this.dialogManager.getComponent('dialog-manager').end(this);
+                this.dialogManager.getComponent(DialogManager).end(this);
                 return;
             }
             this.currentState = keys[index + 1];
@@ -126,7 +126,7 @@ export class DialogController extends Component {
 
     setupResponses() {
         var responses = this.currentStateJSON["responses"];
-        if(!responses) return;
+        if (!responses) return;
         for (var i = 0; i < responses.length; ++i) {
             var response = responses[i]["text"];
             this.responseTexts[i].text = response;
@@ -135,7 +135,7 @@ export class DialogController extends Component {
 
     handleEvent() {
         const event = this.currentStateJSON["event"];
-        if(!event) return;
-        this.dialogManager.getComponent('dialog-manager').dispatchEvent(event);
+        if (!event) return;
+        this.dialogManager.getComponent(DialogManager).dispatchEvent(event);
     }
 }

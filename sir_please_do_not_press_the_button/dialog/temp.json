@@ -1,0 +1,40 @@
+{
+  "entry":{
+    "autoAdvanceAfter":3,
+    "text":"Hello World!"
+  },
+  "talk1":{
+    "text":"What is your response?",
+    "responses":[
+      {
+        "text":"Hello World!",
+        "jump":"talk1_helloworld"
+      },
+      {
+        "text":"Hello Wonderland!",
+        "jump":"talk1_wonderland"
+      }
+    ]
+  },
+  "talk1_helloworld":{
+    "autoAdvanceAfter":3,
+    "jump":"talk1",
+    "text":"Well ofcourse but__ don't you want to say something else?"
+  },
+  "talk1_wonderland":{
+    "jump":"talk2",
+    "text":"You know it!"
+  },
+  "talk2":{
+    "text":"Nice weather isn't it?\nIt has been very sunny here!",
+    "responses":[
+      {
+        "text":"It's been raining here for 5 days in a row",
+        "jump":"talk2_rain"
+      }
+    ]
+  },
+  "talk2rain":{
+    "text":"Ah that's too bad..."
+  }
+}

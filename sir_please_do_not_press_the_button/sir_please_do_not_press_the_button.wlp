@@ -458,6 +458,9 @@
                         "_myLeftHand": "252",
                         "_myRightHand": "254"
                     }
+                },
+                {
+                    "type": "dialog-manager"
                 }
             ]
         },
@@ -1698,6 +1701,103 @@
                 0.1,
                 0.1
             ]
+        },
+        "263": {
+            "name": "Dialog",
+            "parent": "244",
+            "components": [
+                {
+                    "type": "dialog-controller",
+                    "dialog-controller": {
+                        "dialogManager": "235",
+                        "text": "264",
+                        "responseOneText": "265",
+                        "responseTwoText": "266",
+                        "dialog": "temp"
+                    }
+                }
+            ],
+            "translation": [
+                0.0,
+                1.25,
+                0.6499999
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        "264": {
+            "name": "Speech",
+            "parent": "263",
+            "components": [
+                {
+                    "type": "text"
+                }
+            ]
+        },
+        "265": {
+            "name": "Option 1",
+            "parent": "263",
+            "components": [
+                {
+                    "type": "text",
+                    "text": {
+                        "text": "Yes"
+                    }
+                }
+            ],
+            "translation": [
+                -0.2,
+                -0.2,
+                0.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "scaling": [
+                0.5,
+                0.5,
+                0.5
+            ]
+        },
+        "266": {
+            "name": "Option 2",
+            "parent": "263",
+            "components": [
+                {
+                    "type": "text",
+                    "text": {
+                        "text": "No"
+                    }
+                }
+            ],
+            "translation": [
+                0.2,
+                -0.2,
+                0.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "scaling": [
+                0.5,
+                0.5,
+                0.5
+            ]
         }
     },
     "meshes": {
@@ -2281,7 +2381,8 @@
                 "js",
                 "js/pp/index.js",
                 "js/playground",
-                "js/sir_please/components"
+                "js/sir_please/components",
+                "js/dialog"
             ],
             "bundlingType": "esbuild",
             "libraryPaths": [
