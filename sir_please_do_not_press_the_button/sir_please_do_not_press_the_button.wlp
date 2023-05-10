@@ -449,7 +449,7 @@
                         "_myStartDelayFrames": 10,
                         "_myDebugEnabled": true,
                         "_mySkipIntro": true,
-                        "_myClearConsoleOnStart": false
+                        "_myClearConsoleOnStart": true
                     },
                     "active": true
                 },
@@ -1106,6 +1106,17 @@
                 0.075,
                 0.0199999,
                 0.075
+            ],
+            "translation": [
+                0.0,
+                0.0,
+                -0.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
             ]
         },
         "251": {
@@ -1776,11 +1787,19 @@
                 1.0,
                 1.0,
                 1.0
+            ],
+            "components": [
+                {
+                    "type": "sir-dialog-button",
+                    "sir-dialog-button": {
+                        "_myButton": "294"
+                    }
+                }
             ]
         },
         "272": {
-            "name": "Button",
-            "parent": "270",
+            "name": "Button Visual",
+            "parent": "294",
             "translation": [
                 0.0,
                 0.0,
@@ -1788,7 +1807,7 @@
             ],
             "rotation": [
                 0.0,
-                -0.0,
+                0.0,
                 0.0,
                 1.0
             ],
@@ -2238,11 +2257,19 @@
                 1.0,
                 1.0,
                 1.0
+            ],
+            "components": [
+                {
+                    "type": "sir-dialog-button",
+                    "sir-dialog-button": {
+                        "_myButton": "295"
+                    }
+                }
             ]
         },
         "280": {
-            "name": "Button",
-            "parent": "279",
+            "name": "Button Visual",
+            "parent": "295",
             "translation": [
                 0.0,
                 0.0,
@@ -2250,7 +2277,7 @@
             ],
             "rotation": [
                 0.0,
-                -0.0,
+                0.0,
                 0.0,
                 1.0
             ],
@@ -2704,7 +2731,7 @@
         },
         "284": {
             "name": "Option 1 Text",
-            "parent": "270",
+            "parent": "294",
             "components": [
                 {
                     "type": "text",
@@ -2716,24 +2743,24 @@
             ],
             "rotation": [
                 -0.7071068,
-                -0.0,
-                -0.0,
+                0.0,
+                0.0,
                 0.7071067
             ],
             "translation": [
-                -1.4901161193847656e-8,
+                -0.0,
                 0.0199999,
                 0.0
             ],
             "scaling": [
-                0.2,
-                0.2,
-                0.2
+                0.1999999,
+                0.1999999,
+                0.1999999
             ]
         },
         "286": {
             "name": "Option 2 Text",
-            "parent": "279",
+            "parent": "295",
             "components": [
                 {
                     "type": "text",
@@ -2745,19 +2772,19 @@
             ],
             "rotation": [
                 -0.7071068,
-                -0.0,
-                -0.0,
+                0.0,
+                0.0,
                 0.7071067
             ],
             "translation": [
                 0.0,
                 0.0199999,
-                -1.2014061212539673e-7
+                -5.960464477539065e-8
             ],
             "scaling": [
-                0.2,
-                0.2,
-                0.2
+                0.1999999,
+                0.1999999,
+                0.1999999
             ]
         },
         "287": {
@@ -3200,7 +3227,8 @@
                         "_mySpeech": "267",
                         "_myOption1": "270",
                         "_myOption2": "279",
-                        "_myTriggerPosition": "289"
+                        "_myTriggerPosition": "289",
+                        "_myMinDistance": 1.5
                     }
                 },
                 {
@@ -3218,6 +3246,14 @@
         "293": {
             "name": "Dialog",
             "parent": "292"
+        },
+        "294": {
+            "name": "Button",
+            "parent": "270"
+        },
+        "295": {
+            "name": "Button",
+            "parent": "279"
         }
     },
     "meshes": {
