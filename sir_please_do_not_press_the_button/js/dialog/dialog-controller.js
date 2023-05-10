@@ -1,5 +1,5 @@
-import {Component, Property} from '@wonderlandengine/api';
-import {DialogManager} from './dialog-manager'
+import { Component, Property } from '@wonderlandengine/api';
+import { DialogManager } from './dialog-manager'
 
 /**
  * dialog-controller
@@ -59,20 +59,20 @@ export class DialogController extends Component {
             const delay = char == '_' ? this.blankDelay : this.charDelay;
 
             this.timer += dt;
-            if(this.timer < delay) return;
+            if (this.timer < delay) return;
             this.timer -= delay;
 
-            if(!ignore) this.currentText += char;
+            if (!ignore) this.currentText += char;
             ++this.textReadPos;
 
-            if(this.textReadPos >= desiredText.length) {
+            if (this.textReadPos >= desiredText.length) {
                 this.setupResponses();
             }
         } else {
             var autoAdvanceTime = this.currentStateJSON["autoAdvanceAfter"];
-            if(autoAdvanceTime) {
+            if (autoAdvanceTime) {
                 this.timer += dt;
-                if(this.timer < autoAdvanceTime) return;
+                if (this.timer < autoAdvanceTime) return;
                 this.timer -= autoAdvanceTime;
                 this.advance(-1);
             }
@@ -89,7 +89,7 @@ export class DialogController extends Component {
         var jump = responses ? null : this.currentStateJSON["jump"];
         if(!jump && responses && choiceIndex != -1) {
             var response = responses[choiceIndex];
-            if(!response) {
+            if (!response) {
                 console.log("Cannot advance with invalid response!");
                 return;
             }
@@ -127,7 +127,7 @@ export class DialogController extends Component {
     setupResponses() {
         var responses = this.currentStateJSON["responses"];
         if(!responses) return;
-        for(var i = 0; i < responses.length; ++i) {
+        for (var i = 0; i < responses.length; ++i) {
             var response = responses[i]["text"];
             this.responseTexts[i].text = response;
         }

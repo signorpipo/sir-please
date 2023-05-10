@@ -1,4 +1,4 @@
-import {Component, Property} from '@wonderlandengine/api';
+import { Component, Property } from '@wonderlandengine/api';
 
 /**
  * dialog-manager

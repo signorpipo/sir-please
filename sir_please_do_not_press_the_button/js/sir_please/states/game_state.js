@@ -27,7 +27,6 @@ export class GameState {
         this._myFSM.perform("start");
 
         this._myParentFSM = null;
-
     }
 
     start(fsm) {
@@ -38,10 +37,14 @@ export class GameState {
         if (GameGlobals.mySkipIntro) {
             this._myFSM.perform("end");
         }
+
+        GameGlobals.myExplodeButton.registerClickEventListener(this, this._explodeButtonPressed.bind(this));
+        GameGlobals.myButtonHand.registerHandStopEventListener(this, this._handStop.bind(this));
     }
 
     end() {
-
+        GameGlobals.myExplodeButton.unregisterClickEventListener(this);
+        GameGlobals.myButtonHand.unregisterHandStopEventListener(this);
     }
 
     update(dt, fsm) {
@@ -50,5 +53,13 @@ export class GameState {
 
     _gameOver() {
         this._myParentFSM.performDelayed("end");
+    }
+
+    _explodeButtonPressed() {
+        this._myFSM.perform("lose");
+    }
+
+    _handStop() {
+        this._myFSM.perform("win");
     }
 }

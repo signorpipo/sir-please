@@ -14,6 +14,10 @@ export let GameGlobals = {
 
     myBlackFader: null,
 
+    myExplodeButton: null,
+    myButtonHand: null,
+    myHideHands: null,
+
     myExplodeParticlesSpawner: null,
 
     myDebugEnabled: false,

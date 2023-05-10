@@ -26,7 +26,10 @@ import {SpatialAudioListenerComponent} from './pp/index.js';
 import {SwitchHandObjectComponent} from './pp/index.js';
 import {ToolCursorComponent} from './pp/index.js';
 import {VirtualGamepadComponent} from './pp/index.js';
+import {ButtonHandComponent} from './sir_please/components/button_hand_component.js';
+import {ExplodeButtonComponent} from './sir_please/components/explode_button_component.js';
 import {FadeViewInOutComponent} from './sir_please/components/fade_view_in_out_component.js';
+import {HideHandsComponent} from './sir_please/components/hide_hands.js';
 import {SirPleaseGatewayComponent} from './sir_please/components/sir_please_gateway_component.js';
 /* wle:auto-imports:end */
 
@@ -97,7 +100,10 @@ engine.registerComponent(SpatialAudioListenerComponent);
 engine.registerComponent(SwitchHandObjectComponent);
 engine.registerComponent(ToolCursorComponent);
 engine.registerComponent(VirtualGamepadComponent);
+engine.registerComponent(ButtonHandComponent);
+engine.registerComponent(ExplodeButtonComponent);
 engine.registerComponent(FadeViewInOutComponent);
+engine.registerComponent(HideHandsComponent);
 engine.registerComponent(SirPleaseGatewayComponent);
 /* wle:auto-register:end */
 
