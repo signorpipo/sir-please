@@ -6,7 +6,8 @@ import { DialogController } from "../../dialog/dialog-controller";
 export class SirDialogButtonComponent extends Component {
     static TypeName = "sir-dialog-button";
     static Properties = {
-        _myButton: Property.object()
+        _myButton: Property.object(),
+        _myButtonVisual: Property.object()
     };
 
     start() {
@@ -52,6 +53,8 @@ export class SirDialogButtonComponent extends Component {
         this._myPreventClick = true;
         this._myIgnoreCollisionTimer = new Timer(0.1, false);
 
+        this._myClickAudioPlayer = Globals.getAudioManager().createAudioPlayer("click");
+
         this._stop();
     }
 
@@ -64,8 +67,21 @@ export class SirDialogButtonComponent extends Component {
             if (this._myIgnoreCollisionTimer.isDone()) {
                 if (this._myCollisionsCollector.getCollisionsStart().length > 0) {
                     this._myClickEmitter.notify();
+
+                    GameGlobals.myButtonParticlesSpawner.spawn(this.object.pp_getPosition());
+
+                    this._myButtonVisual.pp_setPositionLocal(vec3_create(0, -0.01, 0));
+
+                    if (this._myClickAudioPlayer != null) {
+                        this._myClickAudioPlayer.setPosition(this.object.pp_getPosition());
+                        this._myClickAudioPlayer.play();
+                    }
                 }
             }
+        }
+
+        if (this._myCollisionsCollector.getCollisions().length == 0) {
+            this._myButtonVisual.pp_resetPositionLocal();
         }
     }
 

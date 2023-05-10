@@ -1792,7 +1792,8 @@
                 {
                     "type": "sir-dialog-button",
                     "sir-dialog-button": {
-                        "_myButton": "294"
+                        "_myButton": "294",
+                        "_myButtonVisual": "272"
                     }
                 }
             ]
@@ -2262,7 +2263,8 @@
                 {
                     "type": "sir-dialog-button",
                     "sir-dialog-button": {
-                        "_myButton": "295"
+                        "_myButton": "295",
+                        "_myButtonVisual": "280"
                     }
                 }
             ]
@@ -3254,6 +3256,94 @@
         "295": {
             "name": "Button",
             "parent": "279"
+        },
+        "296": {
+            "name": "Button Particles",
+            "parent": "255"
+        },
+        "297": {
+            "name": "Particle 1",
+            "parent": "296"
+        },
+        "298": {
+            "name": "Mesh",
+            "parent": "297",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "p1",
+                        "material": "148"
+                    }
+                }
+            ],
+            "scaling": [
+                0.1,
+                0.1,
+                0.1
+            ]
+        },
+        "299": {
+            "name": "Particle 2",
+            "parent": "296",
+            "translation": [
+                0.5,
+                0.0,
+                0.0
+            ]
+        },
+        "300": {
+            "name": "Mesh",
+            "parent": "299",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "p1",
+                        "material": "149"
+                    }
+                }
+            ],
+            "scaling": [
+                0.1,
+                0.1,
+                0.1
+            ]
+        },
+        "303": {
+            "name": "Button Particles Spawner",
+            "parent": "257",
+            "translation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "scaling": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "components": [
+                {
+                    "type": "particles-spawner",
+                    "particles-spawner": {
+                        "_myParticlesContainer": "299",
+                        "_myVerticalSpeedMultiplier": 1.0,
+                        "_myRadius": 0.1,
+                        "_myHorizontalSpeedMultiplier": 0.3499999,
+                        "_myScaleMultiplier": 0.0099999,
+                        "_myGravity": 9.8100004,
+                        "_myMinAmount": 10,
+                        "_myMaxAmount": 15
+                    }
+                }
+            ]
         }
     },
     "meshes": {

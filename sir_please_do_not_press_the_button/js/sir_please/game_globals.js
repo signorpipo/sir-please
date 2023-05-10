@@ -20,6 +20,7 @@ export let GameGlobals = {
     mySirDialog: null,
 
     myExplodeParticlesSpawner: null,
+    myButtonParticlesSpawner: null,
 
     myDebugEnabled: false,
     mySkipIntro: false
