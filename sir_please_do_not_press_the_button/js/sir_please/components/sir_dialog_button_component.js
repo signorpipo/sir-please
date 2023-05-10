@@ -72,6 +72,10 @@ export class SirDialogButtonComponent extends Component {
 
                     this._myButtonVisual.pp_setPositionLocal(vec3_create(0, -0.01, 0));
 
+                    if (this._myClickAudioPlayer == null) {
+                        this._myClickAudioPlayer = Globals.getAudioManager().createAudioPlayer("click");
+                    }
+
                     if (this._myClickAudioPlayer != null) {
                         this._myClickAudioPlayer.setPosition(this.object.pp_getPosition());
                         this._myClickAudioPlayer.play();
@@ -139,9 +143,12 @@ export class SirDialogButtonComponent extends Component {
 
     _start(fsm) {
         this._myButton.pp_setActive(false);
+        this._myButtonVisual.pp_resetPositionLocal();
     }
 
     _popIn(fsm) {
+        this._myButtonVisual.pp_resetPositionLocal();
+
         this._myIgnoreCollisionTimer.start();
 
         this._mySpawnTimer.start();

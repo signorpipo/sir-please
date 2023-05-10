@@ -282,7 +282,7 @@
                     "pp-console-vr-tool": {
                         "_myHandedness": "Left"
                     },
-                    "active": false
+                    "active": true
                 },
                 {
                     "type": "pp-easy-tune-tool",

@@ -10,4 +10,5 @@ To Do:
 	- the hand is always going no matter what, u can just make it go slower or faster by picking the right/wrong answer
   - hide the webxr hands when on the earth view + activate fly
   - tilt the character on y if no webxr when eart explode
+  - add pulse when pressing buttons
   
