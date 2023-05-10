@@ -414,7 +414,7 @@
             "translation": [
                 0.0,
                 0.0,
-                -6.0
+                -2.0
             ]
         },
         "234": {
@@ -448,7 +448,8 @@
                         "_myEarthView": "232",
                         "_myStartDelayFrames": 10,
                         "_myDebugEnabled": true,
-                        "_mySkipIntro": true
+                        "_mySkipIntro": true,
+                        "_myClearConsoleOnStart": true
                     },
                     "active": true
                 },
@@ -1682,46 +1683,24 @@
                 0.1
             ]
         },
-        "263": {
-            "name": "Dialog",
-            "parent": "244",
-            "components": [
-                {
-                    "type": "dialog-controller",
-                    "dialog-controller": {
-                        "dialogManager": "235",
-                        "text": "269",
-                        "responseOneText": "284",
-                        "responseTwoText": "286",
-                        "dialog": "temp"
-                    }
-                }
+        "267": {
+            "name": "Speech",
+            "parent": "293",
+            "rotation": [
+                0.258819,
+                -0.0,
+                0.0,
+                0.9659258
             ],
             "translation": [
                 0.0,
-                1.0,
-                0.6499999
-            ],
-            "rotation": [
                 0.0,
-                0.0,
-                0.0,
-                1.0
+                -0.0999999
             ],
             "scaling": [
+                1.0000003,
                 1.0,
-                1.0,
-                1.0
-            ]
-        },
-        "267": {
-            "name": "Speech",
-            "parent": "263",
-            "rotation": [
-                0.258819,
-                0.0,
-                0.0,
-                0.9659258
+                1.0000002
             ]
         },
         "268": {
@@ -1757,7 +1736,8 @@
                     "text": {
                         "text": "This\nIs\nTest Speech which is actually quite \nvisually pleasent\n",
                         "alignment": "left",
-                        "justification": "top"
+                        "justification": "top",
+                        "material": "291"
                     }
                 }
             ],
@@ -2704,11 +2684,11 @@
         },
         "283": {
             "name": "Options",
-            "parent": "263",
+            "parent": "293",
             "translation": [
                 0.0,
-                -0.075,
-                0.1749999
+                -0.0749999,
+                0.0749998
             ],
             "rotation": [
                 0.0,
@@ -2729,7 +2709,8 @@
                 {
                     "type": "text",
                     "text": {
-                        "text": "Yes"
+                        "text": "Yes",
+                        "material": "290"
                     }
                 }
             ],
@@ -2757,7 +2738,8 @@
                 {
                     "type": "text",
                     "text": {
-                        "text": "No\n"
+                        "text": "No\n",
+                        "material": "290"
                     }
                 }
             ],
@@ -3047,6 +3029,195 @@
                     "active": true
                 }
             ]
+        },
+        "289": {
+            "name": "Trigger Position",
+            "parent": "292",
+            "translation": [
+                3.080058164073307e-8,
+                0.0,
+                -0.35
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        "292": {
+            "name": "Sir Dialog",
+            "parent": "244",
+            "translation": [
+                -0.0,
+                1.0,
+                0.7499999
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "scaling": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "components": [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                {
+                    "type": "sir-dialog",
+                    "sir-dialog": {
+                        "_myDialog": "293",
+                        "_myDialogTriggerPosition": "289",
+                        "_mySpeech": "267",
+                        "_myOption1": "270",
+                        "_myOption2": "279",
+                        "_myTriggerPosition": "289"
+                    }
+                },
+                {
+                    "type": "dialog-controller",
+                    "dialog-controller": {
+                        "dialogManager": "235",
+                        "text": "269",
+                        "responseOneText": "284",
+                        "responseTwoText": "286",
+                        "dialog": "temp"
+                    }
+                }
+            ]
+        },
+        "293": {
+            "name": "Dialog",
+            "parent": "292"
         }
     },
     "meshes": {
@@ -3493,6 +3664,32 @@
                 ]
             },
             "pipeline": "239"
+        },
+        "290": {
+            "name": "Cyan Text",
+            "pipeline": "82",
+            "Text": {
+                "font": "147",
+                "color": [
+                    0.345098,
+                    1.0,
+                    0.8823529,
+                    1.0
+                ]
+            }
+        },
+        "291": {
+            "name": "Gold Text",
+            "pipeline": "82",
+            "Text": {
+                "font": "147",
+                "color": [
+                    1.0,
+                    0.5882353,
+                    0.1843137,
+                    1.0
+                ]
+            }
         }
     },
     "shaders": {

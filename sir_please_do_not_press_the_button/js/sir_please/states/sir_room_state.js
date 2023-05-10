@@ -42,6 +42,7 @@ export class SirRoomState {
         }
 
         GameGlobals.myButtonHand.stopButtonHand();
+        GameGlobals.mySirDialog.stopSirDialog();
 
         this._myFSM.perform("skip");
     }
@@ -67,6 +68,7 @@ export class SirRoomState {
         }
 
         GameGlobals.myButtonHand.startButtonHand();
+        GameGlobals.mySirDialog.startSirDialog();
     }
 
     _win() {
