@@ -20,14 +20,14 @@ export class DialogController extends Component {
     };
 
     init() {
-        this.reset();
-
         this.responseTexts = new Array();
         this.responseTexts.push(this.responseOneText.getComponent('text'));
         this.responseTexts.push(this.responseTwoText.getComponent('text'));
 
         this.onHideResponses = new Emitter();
         this.onSetupResponses = new Emitter();
+
+        this.reset();
     }
 
     play() {

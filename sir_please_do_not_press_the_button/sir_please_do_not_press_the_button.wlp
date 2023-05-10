@@ -449,7 +449,7 @@
                         "_myStartDelayFrames": 10,
                         "_myDebugEnabled": true,
                         "_mySkipIntro": true,
-                        "_myClearConsoleOnStart": true
+                        "_myClearConsoleOnStart": false
                     },
                     "active": true
                 },
