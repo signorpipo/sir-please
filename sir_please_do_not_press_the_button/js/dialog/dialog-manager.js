@@ -13,6 +13,8 @@ export class DialogManager extends Component {
                 console.log(json)
                 this.dialogs = json;
             });
+
+        this.events = new Map();
     }
 
     getDialog(name) {
@@ -34,5 +36,21 @@ export class DialogManager extends Component {
     advance(choiceIndex) {
         if(!this.playingDialog) return;
         this.playingDialog.advance(choiceIndex);
+    }
+
+    addEventListener(name, callback) {
+        if(!this.events.has(name)) {
+            this.events.set(name, new Array());
+        }
+        this.events.get(name).push(callback);
+    }
+
+    dispatchEvent(name) {
+        if(!this.events.has(name)) return;
+        const callbacks = this.events.get(name);
+        for(var i = 0; i < callbacks.length; ++i) {
+            const callback = callbacks[i];
+            callback();
+        }
     }
 }

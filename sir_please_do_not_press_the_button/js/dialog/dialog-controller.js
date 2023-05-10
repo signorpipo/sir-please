@@ -47,6 +47,7 @@ export class DialogController extends Component {
             this.reset();
             this.currentStateJSON = this.playingDialog["entry"];
             this.currentState = "entry";
+            this.handleEvent();
         }
 
         var desiredText = this.currentStateJSON["text"];
@@ -113,12 +114,14 @@ export class DialogController extends Component {
             }
             this.currentState = keys[index + 1];
             this.currentStateJSON = this.playingDialog[this.currentState];
+            this.handleEvent();
             return;
         }
 
         this.reset();
         this.currentStateJSON = this.playingDialog[jump];
         this.currentState = jump;
+        this.handleEvent();
     }
 
     setupResponses() {
@@ -128,5 +131,11 @@ export class DialogController extends Component {
             var response = responses[i]["text"];
             this.responseTexts[i].text = response;
         }
+    }
+
+    handleEvent() {
+        const event = this.currentStateJSON["event"];
+        if(!event) return;
+        this.dialogManager.getComponent('dialog-manager').dispatchEvent(event);
     }
 }
