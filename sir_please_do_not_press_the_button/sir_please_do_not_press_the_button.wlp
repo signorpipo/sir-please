@@ -1419,6 +1419,9 @@
                         "kinematic": true
                     },
                     "active": true
+                },
+                {
+                    "type": "set-handedness"
                 }
             ]
         },
@@ -1577,6 +1580,12 @@
                         "kinematic": true
                     },
                     "active": true
+                },
+                {
+                    "type": "set-handedness",
+                    "set-handedness": {
+                        "_myHandedness": "Right"
+                    }
                 }
             ]
         },
@@ -2084,9 +2093,6 @@
                         "trigger": true,
                         "allowSimulation": false
                     }
-                },
-                {
-                    "type": "explode-button"
                 }
             ],
             "scaling": [
@@ -2555,9 +2561,6 @@
                         "trigger": true,
                         "allowSimulation": false
                     }
-                },
-                {
-                    "type": "explode-button"
                 }
             ],
             "scaling": [

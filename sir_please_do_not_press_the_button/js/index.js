@@ -32,6 +32,7 @@ import {ButtonHandComponent} from './sir_please/components/button_hand_component
 import {ExplodeButtonComponent} from './sir_please/components/explode_button_component.js';
 import {FadeViewInOutComponent} from './sir_please/components/fade_view_in_out_component.js';
 import {HideHandsComponent} from './sir_please/components/hide_hands.js';
+import {SetHandednessComponent} from './sir_please/components/set_handedness_component.js';
 import {SirDialogButtonComponent} from './sir_please/components/sir_dialog_button_component.js';
 import {SirDialogComponent} from './sir_please/components/sir_dialog_component.js';
 import {SirPleaseGatewayComponent} from './sir_please/components/sir_please_gateway_component.js';
@@ -110,6 +111,7 @@ engine.registerComponent(ButtonHandComponent);
 engine.registerComponent(ExplodeButtonComponent);
 engine.registerComponent(FadeViewInOutComponent);
 engine.registerComponent(HideHandsComponent);
+engine.registerComponent(SetHandednessComponent);
 engine.registerComponent(SirDialogButtonComponent);
 engine.registerComponent(SirDialogComponent);
 engine.registerComponent(SirPleaseGatewayComponent);

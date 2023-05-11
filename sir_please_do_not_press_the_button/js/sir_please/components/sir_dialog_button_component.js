@@ -2,6 +2,7 @@ import { Component, Emitter, PhysXComponent, Property } from "@wonderlandengine/
 import { EasingFunction, FSM, GamepadButtonID, Globals, PhysicsCollisionCollector, Timer, getPlayerObjects, vec3_create } from "../../pp";
 import { GameGlobals } from "../game_globals";
 import { DialogController } from "../../dialog/dialog-controller";
+import { SetHandednessComponent } from "./set_handedness_component";
 
 export class SirDialogButtonComponent extends Component {
     static TypeName = "sir-dialog-button";
@@ -66,6 +67,12 @@ export class SirDialogButtonComponent extends Component {
             this._myIgnoreCollisionTimer.update(dt);
             if (this._myIgnoreCollisionTimer.isDone()) {
                 if (this._myCollisionsCollector.getCollisionsStart().length > 0) {
+                    let physx = this._myCollisionsCollector.getCollisionsStart()[0];
+                    let handedness = physx.pp_getComponent(SetHandednessComponent);
+                    if (handedness != null) {
+                        Globals.getGamepad(handedness.getHandedness()).pulse(0.2, 0.2);
+                    }
+
                     this._myClickEmitter.notify();
 
                     GameGlobals.myButtonParticlesSpawner.spawn(this.object.pp_getPosition());

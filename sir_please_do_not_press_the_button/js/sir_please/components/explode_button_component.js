@@ -1,5 +1,6 @@
 import { Component, Emitter, PhysXComponent } from "@wonderlandengine/api";
-import { PhysicsCollisionCollector } from "../../pp";
+import { Globals, PhysicsCollisionCollector } from "../../pp";
+import { SetHandednessComponent } from "./set_handedness_component";
 
 export class ExplodeButtonComponent extends Component {
     static TypeName = "explode-button";
@@ -17,6 +18,12 @@ export class ExplodeButtonComponent extends Component {
 
         if (this._myCollisionsCollector.getCollisionsStart().length > 0) {
             this._myClickEmitter.notify();
+
+            let physx = this._myCollisionsCollector.getCollisionsStart()[0];
+            let handedness = physx.pp_getComponent(SetHandednessComponent);
+            if (handedness != null) {
+                Globals.getGamepad(handedness.getHandedness()).pulse(0.2, 0.2);
+            }
         }
     }
 
