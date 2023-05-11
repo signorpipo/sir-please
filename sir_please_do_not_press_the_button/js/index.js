@@ -12,6 +12,8 @@
  */
 
 /* wle:auto-imports:start */
+import {Cursor} from '@wonderlandengine/components';
+import {CursorTarget} from '@wonderlandengine/components';
 import {MouseLookComponent} from '@wonderlandengine/components';
 import {DialogController} from './dialog/dialog-controller.js';
 import {DialogManager} from './dialog/dialog-manager.js';
@@ -92,6 +94,8 @@ if (document.readyState === 'loading') {
 }
 
 /* wle:auto-register:start */
+engine.registerComponent(Cursor);
+engine.registerComponent(CursorTarget);
 engine.registerComponent(MouseLookComponent);
 engine.registerComponent(DialogController);
 engine.registerComponent(DialogManager);

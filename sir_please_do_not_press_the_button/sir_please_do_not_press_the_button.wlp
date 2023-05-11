@@ -90,6 +90,14 @@
                 },
                 {
                     "type": "mouse-look"
+                },
+                {
+                    "type": "cursor",
+                    "cursor": {
+                        "handedness": "none",
+                        "rayCastMode": "physx",
+                        "collisionGroup": 2
+                    }
                 }
             ]
         },
@@ -1113,6 +1121,9 @@
                 },
                 {
                     "type": "explode-button"
+                },
+                {
+                    "type": "cursor-target"
                 }
             ],
             "scaling": [
@@ -2106,6 +2117,9 @@
                         "trigger": true,
                         "allowSimulation": false
                     }
+                },
+                {
+                    "type": "cursor-target"
                 }
             ],
             "scaling": [
@@ -2574,6 +2588,9 @@
                         "trigger": true,
                         "allowSimulation": false
                     }
+                },
+                {
+                    "type": "cursor-target"
                 }
             ],
             "scaling": [
@@ -3246,7 +3263,8 @@
                         "_myOption1": "270",
                         "_myOption2": "279",
                         "_myTriggerPosition": "289",
-                        "_myMinDistance": 1.5
+                        "_myMinDistance": 1.5,
+                        "_myMaxAngle": 60.0
                     }
                 },
                 {

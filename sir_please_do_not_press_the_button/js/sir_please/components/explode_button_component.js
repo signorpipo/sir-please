@@ -1,6 +1,7 @@
 import { Component, Emitter, PhysXComponent } from "@wonderlandengine/api";
 import { Globals, PhysicsCollisionCollector } from "../../pp";
 import { SetHandednessComponent } from "./set_handedness_component";
+import { CursorTarget } from "@wonderlandengine/components";
 
 export class ExplodeButtonComponent extends Component {
     static TypeName = "explode-button";
@@ -11,6 +12,9 @@ export class ExplodeButtonComponent extends Component {
 
         this._myPhysX = this.object.pp_getComponent(PhysXComponent);
         this._myCollisionsCollector = new PhysicsCollisionCollector(this._myPhysX, true);
+
+        this._myCursorTarget = this.object.pp_getComponent(CursorTarget);
+        this._myCursorTarget.onUpWithDown.add(this.clickButton.bind(this));
     }
 
     update(dt) {

@@ -3,6 +3,7 @@ import { EasingFunction, FSM, GamepadButtonID, Globals, PhysicsCollisionCollecto
 import { GameGlobals } from "../game_globals";
 import { DialogController } from "../../dialog/dialog-controller";
 import { SetHandednessComponent } from "./set_handedness_component";
+import { CursorTarget } from "@wonderlandengine/components";
 
 export class SirDialogButtonComponent extends Component {
     static TypeName = "sir-dialog-button";
@@ -50,6 +51,9 @@ export class SirDialogButtonComponent extends Component {
 
         this._myPhysX = this.object.pp_getComponent(PhysXComponent);
         this._myCollisionsCollector = new PhysicsCollisionCollector(this._myPhysX, true);
+
+        this._myCursorTarget = this.object.pp_getComponent(CursorTarget);
+        this._myCursorTarget.onUpWithDown.add(this.clickButton.bind(this));
 
         this._myPreventClick = true;
         this._myIgnoreCollisionTimer = new Timer(0.1, false);
