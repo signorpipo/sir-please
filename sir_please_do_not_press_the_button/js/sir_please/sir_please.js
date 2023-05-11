@@ -3,6 +3,7 @@ import { FSM, Globals, PlayerLocomotionComponent } from "../pp";
 import { AudioLoader } from "./audio_loader";
 import { ButtonHandComponent } from "./components/button_hand_component";
 import { ExplodeButtonComponent } from "./components/explode_button_component";
+import { SirDialogButtonComponent } from "./components/sir_dialog_button_component";
 import { SirDialogComponent } from "./components/sir_dialog_component";
 import { GameGlobals } from "./game_globals";
 import { GameState } from "./states/game_state";
@@ -49,5 +50,7 @@ export class SirPlease {
         GameGlobals.myExplodeButton = GameGlobals.myScene.pp_getComponent(ExplodeButtonComponent);
         GameGlobals.myButtonHand = GameGlobals.myScene.pp_getComponent(ButtonHandComponent);
         GameGlobals.mySirDialog = GameGlobals.myScene.pp_getComponent(SirDialogComponent);
+        GameGlobals.mySirDialogOption1Button = GameGlobals.mySirDialog.object.pp_getObjectByName("Option 1").pp_getComponent(SirDialogButtonComponent);
+        GameGlobals.mySirDialogOption2Button = GameGlobals.mySirDialog.object.pp_getObjectByName("Option 2").pp_getComponent(SirDialogButtonComponent);
     }
 }

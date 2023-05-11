@@ -73,20 +73,7 @@ export class SirDialogButtonComponent extends Component {
                         Globals.getGamepad(handedness.getHandedness()).pulse(0.2, 0.2);
                     }
 
-                    this._myClickEmitter.notify();
-
-                    GameGlobals.myButtonParticlesSpawner.spawn(this.object.pp_getPosition());
-
-                    this._myButtonVisual.pp_setPositionLocal(vec3_create(0, -0.01, 0));
-
-                    if (this._myClickAudioPlayer == null) {
-                        this._myClickAudioPlayer = Globals.getAudioManager().createAudioPlayer("click");
-                    }
-
-                    if (this._myClickAudioPlayer != null) {
-                        this._myClickAudioPlayer.setPosition(this.object.pp_getPosition());
-                        this._myClickAudioPlayer.play();
-                    }
+                    this.clickButton();
                 }
             }
         }
@@ -184,5 +171,24 @@ export class SirDialogButtonComponent extends Component {
 
     unregisterClickEventListener(id) {
         this._myClickEmitter.remove(id);
+    }
+
+    clickButton() {
+        if (!this._myPreventClick && (this._myFSM.isInState("pop_in") || this._myFSM.isInState("visible"))) {
+            this._myClickEmitter.notify();
+
+            GameGlobals.myButtonParticlesSpawner.spawn(this.object.pp_getPosition());
+
+            this._myButtonVisual.pp_setPositionLocal(vec3_create(0, -0.01, 0));
+
+            if (this._myClickAudioPlayer == null) {
+                this._myClickAudioPlayer = Globals.getAudioManager().createAudioPlayer("click");
+            }
+
+            if (this._myClickAudioPlayer != null) {
+                this._myClickAudioPlayer.setPosition(this.object.pp_getPosition());
+                this._myClickAudioPlayer.play();
+            }
+        }
     }
 }

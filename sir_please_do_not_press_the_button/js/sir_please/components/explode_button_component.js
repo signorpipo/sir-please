@@ -17,13 +17,13 @@ export class ExplodeButtonComponent extends Component {
         this._myCollisionsCollector.update(dt);
 
         if (this._myCollisionsCollector.getCollisionsStart().length > 0) {
-            this._myClickEmitter.notify();
-
             let physx = this._myCollisionsCollector.getCollisionsStart()[0];
             let handedness = physx.pp_getComponent(SetHandednessComponent);
             if (handedness != null) {
                 Globals.getGamepad(handedness.getHandedness()).pulse(0.2, 0.2);
             }
+
+            this.clickButton();
         }
     }
 
@@ -33,5 +33,9 @@ export class ExplodeButtonComponent extends Component {
 
     unregisterClickEventListener(id) {
         this._myClickEmitter.remove(id);
+    }
+
+    clickButton() {
+        this._myClickEmitter.notify();
     }
 }

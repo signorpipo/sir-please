@@ -1,7 +1,6 @@
 To Do:
 
-  - tilt the character on y if no webxr when earth explode
-  - add pulse when pressing buttons
+  - tilt the character on y if no webxr when earth explodex
   - the explode button hand gpoing down could be using physx not kinematic, no gravity , with a down linea velocity always set at frame time
 	- this way u can block it with your hand or push it up again
 	- at some point, if u block it for too long, he will say he has another secret explode button anyway
@@ -22,4 +21,5 @@ Done:
   - add the hand going down over time with a multiplier
 	- the hand is always going no matter what, u can just make it go slower or faster by picking the right/wrong answer
   - hide the webxr hands when on the earth view + activate fly
+  - add pulse when pressing buttons
   
