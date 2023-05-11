@@ -16,7 +16,10 @@ export class SirDialogComponent extends Component {
         _myMinDistance: Property.float(0.75),
         _myMaxAngle: Property.float(90),
 
-        _myHandSpeedMultiplierOnShow: Property.float(0.5)
+        _myHandSpeedMultiplierOnShow: Property.float(0.5),
+
+        _myOptionSpeedMultiplierGood: Property.float(0.8),
+        _myOptionSpeedMultiplierBad: Property.float(1.2)
     };
 
     start() {
@@ -53,11 +56,16 @@ export class SirDialogComponent extends Component {
         this._myTargetScale = vec3_create(1);
 
         this._myDialogController = this.object.pp_getComponent(DialogController);
+        this._myDialogController.onSetupResponses.add(this._setResponseVisibility.bind(this, true));
+        this._myDialogController.onHideResponses.add(this._setResponseVisibility.bind(this, false));
 
         this._myOption1Button = this._myOption1.pp_getComponent(SirDialogButtonComponent);
         this._myOption2Button = this._myOption2.pp_getComponent(SirDialogButtonComponent);
 
         this._mySpawnButtonDelayTimer = new Timer(0.4, false);
+
+        this._myWin = false;
+        this._myResponseVisible = false;
     }
 
     update(dt) {
@@ -67,6 +75,8 @@ export class SirDialogComponent extends Component {
     }
 
     startSirDialog() {
+        this._myResponseVisible = false;
+        this._myWin = false;
         this._myStarted = true;
         this._myFSM.perform("start");
     }
@@ -108,7 +118,7 @@ export class SirDialogComponent extends Component {
             fsm.perform("hide");
         }
 
-        if (this._myDialogController.isWaitingForResponse()) {
+        if (this._myResponseVisible) {
             this._myOption1Button.setPreventClick(false);
             this._myOption2Button.setPreventClick(false);
 
@@ -165,6 +175,8 @@ export class SirDialogComponent extends Component {
     }
 
     _start(fsm) {
+        // restart the talk
+
         GameGlobals.myButtonHand.setSpeedMultiplier(1);
 
         this._mySpeech.pp_setActive(false);
@@ -184,7 +196,7 @@ export class SirDialogComponent extends Component {
         this._myOption1Button.startButton();
         this._myOption2Button.startButton();
 
-        if (this._myDialogController.isWaitingForResponse()) {
+        if (this._myResponseVisible) {
             this._myOption1Button.show();
             this._myOption2Button.show();
         }
@@ -219,6 +231,8 @@ export class SirDialogComponent extends Component {
         this._myOption1Button.stopButton();
         this._myOption2Button.stopButton();
         this._mySpawnButtonDelayTimer.reset();
+        
+        this._myResponseVisible = false;
     }
 
     _isDialogVisible() {
@@ -254,5 +268,31 @@ export class SirDialogComponent extends Component {
 
     _onButton2Click() {
         this._myDialogController.advance(1);
+    }
+
+    _responseSelected(responseGoodLevel) {
+        if (responseGoodLevel > 0) {
+            for (let i = 0; i < responseGoodLevel; i++) {
+                GameGlobals.myButtonHand.multiplySpeed(this._myOptionSpeedMultiplierGood);
+            }
+        } else {
+            for (let i = 0; i < -responseGoodLevel; i++) {
+                GameGlobals.myButtonHand.multiplySpeed(this._myOptionSpeedMultiplierBad);
+            }
+        }
+
+        // if hand speed is 0 then change dialog to something like "ok you convinced me"
+        // for now just insta win
+        if (GameGlobals.myButtonHand.getSpeed() == 0) {
+            this._myWin = true;
+        }
+    }
+
+    isWin() {
+        return this._myWin;
+    }
+
+    _setResponseVisibility(visible){
+        this._myResponseVisible = visible;
     }
 }

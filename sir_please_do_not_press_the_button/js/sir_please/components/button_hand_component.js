@@ -13,6 +13,7 @@ export class ButtonHandComponent extends Component {
 
         this._myInitialTransform = this.object.pp_getTransformQuat();
 
+        this._myCurrentSpeed = this._mySpeed;
         this._mySpeedMultiplier = 1;
 
         this._myHandStopEmitter = new Emitter();
@@ -22,12 +23,16 @@ export class ButtonHandComponent extends Component {
 
     update(dt) {
         if (this._myStarted) {
-            this.object.pp_translateObject(this._myTranslateVector.vec3_set(this._mySpeed * this._mySpeedMultiplier * dt, 0, 0));
+            this.object.pp_translateObject(this._myTranslateVector.vec3_set(this._myCurrentSpeed * this._mySpeedMultiplier * dt, 0, 0));
         }
     }
 
     setSpeed(speed) {
-        this._mySpeed = speed;
+        this._myCurrentSpeed = speed;
+    }
+
+    getSpeed() {
+        return this._myCurrentSpeed;
     }
 
     setSpeedMultiplier(speedMultiplier) {
@@ -35,15 +40,18 @@ export class ButtonHandComponent extends Component {
     }
 
     multiplySpeed(multiplier) {
-        this._mySpeed *= multiplier;
+        this._myCurrentSpeed *= multiplier;
 
-        if (this._mySpeed < this._myMinSpeedToStop) {
-            this._mySpeed = 0;
+        if (this._myCurrentSpeed < this._myMinSpeedToStop) {
+            this._myCurrentSpeed = 0;
         }
     }
 
     startButtonHand() {
         this._myStarted = true;
+
+        this._myCurrentSpeed = this._mySpeed;
+        this._mySpeedMultiplier = 1;
 
         this.object.pp_setTransformQuat(this._myInitialTransform);
     }

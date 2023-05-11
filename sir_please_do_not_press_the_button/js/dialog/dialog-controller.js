@@ -235,8 +235,8 @@ export class DialogController extends Component {
     hideResponses() {
         this.onHideResponses.notify();
         for(var i = 0; i < this.responseTexts.length; ++i) {
-            this.responseTexts[i].active = false;
-            this.responseTexts[i].text = "";
+            //this.responseTexts[i].active = false;
+            //this.responseTexts[i].text = "";
         }
     }
 
@@ -246,7 +246,7 @@ export class DialogController extends Component {
         if(!responses) return;
         for(var i = 0; i < responses.length; ++i) {
             var response = responses[i]["text"];
-            this.responseTexts[i].active = true;
+            //this.responseTexts[i].active = true;
             this.responseTexts[i].text = response;
         }
     }
