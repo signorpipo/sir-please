@@ -4,7 +4,7 @@
     "text":"Hello World!"
   },
   "talk1":{
-    "text":"What is your response?",
+    "text":"What is your [s:alert] response?",
     "responses":[
       {
         "text":"Hello World!",

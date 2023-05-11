@@ -16,18 +16,23 @@ export class DialogController extends Component {
         charDelay: Property.float(0.025),
         blankDelay: Property.float(0.5),
         audioSource: Property.object(),
+        audioSourceCompnent: Property.string(),
         dialogPrefix: Property.string('> '),
     };
 
     init() {
+        this.reset();
+
         this.responseTexts = new Array();
         this.responseTexts.push(this.responseOneText.getComponent('text'));
         this.responseTexts.push(this.responseTwoText.getComponent('text'));
 
         this.onHideResponses = new Emitter();
         this.onSetupResponses = new Emitter();
+    }
 
-        this.reset();
+    start() {
+        this.hideResponses();
     }
 
     play() {
@@ -57,24 +62,17 @@ export class DialogController extends Component {
 
     isWaitingForResponse() {
         if(!this.currentStateJSON) return false;
-        return this.waitingForResponse;
-    }
-
-    isWaiting() {
-        if(!this.currentStateJSON) return false;
         var desiredText = this.currentStateJSON["text"];
         return this.textReadPos >= desiredText.length;
     }
 
     reset() {
-        this.hideResponses();
         this.paused = false;
         this.currentText = this.dialogPrefix;
         this.currentState = "";
         this.currentStateJSON = null;
         this.textReadPos = 0;
         this.timer = 0.0;
-        this.waitingForResponse = false;
 
         this.text.getComponent('text').text = this.currentText;
     }
@@ -126,7 +124,7 @@ export class DialogController extends Component {
                 switch(type) {
                     case 's': {
                         // Sound
-                        this.dialogManager.getComponent(DialogManager).triggerSound(name, this.audioSource);
+                        this.dialogManager.getComponent(DialogManager).triggerSound(name, this.audioSource.getComponent(this.audioSourceCompnent));
                         break;
                     }
 
@@ -225,10 +223,9 @@ export class DialogController extends Component {
     hideResponses() {
         this.onHideResponses.notify();
         for(var i = 0; i < this.responseTexts.length; ++i) {
-            //this.responseTexts[i].active = false;
-            //this.responseTexts[i].text = "";
+            this.responseTexts[i].active = false;
+            this.responseTexts[i].text = "";
         }
-        this.waitingForResponse = false;
     }
 
     setupResponses() {
@@ -237,10 +234,9 @@ export class DialogController extends Component {
         if(!responses) return;
         for(var i = 0; i < responses.length; ++i) {
             var response = responses[i]["text"];
-            //this.responseTexts[i].active = true;
+            this.responseTexts[i].active = true;
             this.responseTexts[i].text = response;
         }
-        this.waitingForResponse = true;
     }
 
     handleEvent() {
