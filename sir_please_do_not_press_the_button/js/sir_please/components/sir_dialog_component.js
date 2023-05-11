@@ -233,6 +233,8 @@ export class SirDialogComponent extends Component {
         this._mySpawnButtonDelayTimer.reset();
         
         this._myResponseVisible = false;
+        
+        this._myDialogController.stop();
     }
 
     _isDialogVisible() {
