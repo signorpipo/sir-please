@@ -2816,7 +2816,7 @@
             "translation": [
                 0.0,
                 0.0199999,
-                -5.960464477539064e-8
+                -5.960464477539065e-8
             ],
             "scaling": [
                 0.1999998,
@@ -3278,7 +3278,8 @@
                         "responseTwoText": "286",
                         "dialog": "temp",
                         "audioSource": "292",
-                        "audioSourceCompnent": "dialog-sound"
+                        "audioSourceCompnent": "dialog-sound",
+                        "charSoundOne": "blip"
                     }
                 },
                 {

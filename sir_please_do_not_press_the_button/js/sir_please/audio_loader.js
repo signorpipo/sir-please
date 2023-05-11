@@ -43,5 +43,13 @@ export class AudioLoader {
             audioSetup.myReferenceDistance = 1000;
             manager.addAudioSetup("alert", audioSetup);
         }
+
+        {
+            let audioSetup = new AudioSetup("assets/audio/sfx/blip.wav");
+            audioSetup.myRate = 1;
+            audioSetup.myVolume = 1;
+            audioSetup.myReferenceDistance = 1000;
+            manager.addAudioSetup("blip", audioSetup);
+        }
     }
 }

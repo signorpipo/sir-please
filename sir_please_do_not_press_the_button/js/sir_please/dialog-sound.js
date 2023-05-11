@@ -21,6 +21,7 @@ export class DialogSound extends Component {
 
     start() {
         this.dialogManager.getComponent(DialogManager).addSound("alert", "alert");
+        this.dialogManager.getComponent(DialogManager).addSound("blip", "blip");
     }
 
     onSound(path) {
