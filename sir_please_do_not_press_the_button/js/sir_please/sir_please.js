@@ -1,3 +1,4 @@
+import { DialogController } from "../dialog/dialog-controller";
 import { DialogManager } from "../dialog/dialog-manager";
 import { ParticlesSpawnerComponent } from "../playground/particles_spawner_component";
 import { FSM, Globals, PlayerLocomotionComponent } from "../pp";
@@ -53,7 +54,8 @@ export class SirPlease {
         GameGlobals.mySirDialog = GameGlobals.myScene.pp_getComponent(SirDialogComponent);
         GameGlobals.mySirDialogOption1Button = GameGlobals.mySirDialog.object.pp_getObjectByName("Option 1").pp_getComponent(SirDialogButtonComponent);
         GameGlobals.mySirDialogOption2Button = GameGlobals.mySirDialog.object.pp_getObjectByName("Option 2").pp_getComponent(SirDialogButtonComponent);
-        
+
         GameGlobals.myDialogManager = GameGlobals.myScene.pp_getComponent(DialogManager);
+        GameGlobals.myDialogController = GameGlobals.myScene.pp_getComponent(DialogController);
     }
 }

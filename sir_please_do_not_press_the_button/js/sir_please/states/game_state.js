@@ -1,6 +1,7 @@
 import { FSM, TimerState } from "../../pp";
 import { GameGlobals } from "../game_globals";
 import { EarthExplodesState } from "./earth_explodes_state";
+import { LoopState } from "./loop_state";
 import { SirRoomState } from "./sir_room_state";
 
 export class GameState {
@@ -27,6 +28,8 @@ export class GameState {
         this._myFSM.perform("start");
 
         this._myParentFSM = null;
+
+        this._myLoopState = new LoopState();
     }
 
     start(fsm) {
