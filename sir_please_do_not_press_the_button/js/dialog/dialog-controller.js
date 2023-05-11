@@ -241,9 +241,9 @@ export class DialogController extends Component {
     }
 
     setupResponses() {
-        this.onSetupResponses.notify();
         var responses = this.currentStateJSON["responses"];
         if(!responses) return;
+        this.onSetupResponses.notify();
         for(var i = 0; i < responses.length; ++i) {
             var response = responses[i]["text"];
             //this.responseTexts[i].active = true;
