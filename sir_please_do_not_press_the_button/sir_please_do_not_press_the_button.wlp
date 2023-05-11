@@ -3280,7 +3280,7 @@
                         "text": "269",
                         "responseOneText": "284",
                         "responseTwoText": "286",
-                        "dialog": "sir_dialog",
+                        "dialog": "sir_loop_one",
                         "audioSource": "292",
                         "audioSourceCompnent": "dialog-sound",
                         "charSoundOne": "blip",

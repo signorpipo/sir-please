@@ -21,6 +21,7 @@ export class DialogController extends Component {
         charSoundOne: Property.string(''),
         charSoundTwo: Property.string(''),
         charSoundThree: Property.string(''),
+        charSoundSkips: Property.int(3),
     };
 
     init() {
@@ -82,6 +83,7 @@ export class DialogController extends Component {
         this.currentStateJSON = null;
         this.textReadPos = 0;
         this.timer = 0.0;
+        this.charSoundCounter = 1;
 
         this.text.getComponent('text').text = this.currentText;
     }
@@ -157,13 +159,16 @@ export class DialogController extends Component {
             const delay = char == '_' ? this.blankDelay : this.charDelay;
 
             this.timer += dt;
+            this.charSoundTimer += dt;
             if(this.timer < delay) {
-                this.characterPrinted(char);
                 return;
             }
             this.timer -= delay;
 
-            if(!ignore) this.currentText += char;
+            if(!ignore) {
+                this.currentText += char;
+                this.characterPrinted(char);
+            }
             ++this.textReadPos;
 
             if(this.textReadPos >= desiredText.length) {
@@ -261,6 +266,9 @@ export class DialogController extends Component {
         this.onCharacterPrinted.notify(char);
         if(this.charSounds.length == 0) return;
         const randomSound = Math.floor(Math.random() * this.charSounds.length);
+        --this.charSoundCounter;
+        if(this.charSoundCounter > 0) return;
         this.dialogManager.getComponent(DialogManager).triggerSound(this.charSounds[randomSound], this.audioSource.getComponent(this.audioSourceCompnent));
+        this.charSoundCounter = this.charSoundSkips;
     }
 }
