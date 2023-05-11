@@ -15,7 +15,7 @@ export class SirRoomState {
         this._myFSM.addState("init");
         this._myFSM.addState("idle");
         this._myFSM.addState("game", this._gameUpdate.bind(this));
-        this._myFSM.addState("win_wait", new TimerState(0, "end"));
+        this._myFSM.addState("win_wait", new TimerState(1, "end"));
 
         this._myFSM.addTransition("init", "idle", "start");
         this._myFSM.addTransition("idle", "game", "start", this._startGame.bind(this));
@@ -84,7 +84,7 @@ export class SirRoomState {
         }
 
         if (GameGlobals.mySirDialog.isWin()) {
-            this._win();
+            this._myFSM.perform("win");
         }
     }
 }

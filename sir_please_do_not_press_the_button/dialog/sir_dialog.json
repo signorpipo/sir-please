@@ -1,0 +1,48 @@
+{
+  "entry":{
+    "autoAdvanceAfter":1,
+    "text":"What do you want from me!"
+  },
+  "asd1":{
+    "text":"Tell me!",
+    "responses":[
+      {
+        "text":"Yes",
+        "jump":"asd2"
+      },
+      {
+        "text":"No",
+        "jump":"asd3"
+      }
+    ]
+  },
+  "asd2":{
+    "autoAdvanceAfter":1,
+    "jump":"asd4",
+    "event":"bad",
+    "text":"You suck"
+  },
+  "asd3":{
+    "event":"very_good",
+    "text":"You bad"
+  },
+  "asd4":{
+    "text":"I give u another chance",
+    "responses":[
+      {
+        "text":"You are stupid",
+        "jump":"asd5"
+      },
+      {
+        "text":"You are the best",
+        "jump":"asd6"
+      }
+    ]
+  },
+  "asd5":{
+    "text":"Ok I am done_[e:insta_bad]"
+  },
+  "asd6":{
+    "text":"Ok u are right[e:insta_good]"
+  }
+}

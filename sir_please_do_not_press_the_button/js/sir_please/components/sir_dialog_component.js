@@ -66,6 +66,8 @@ export class SirDialogComponent extends Component {
 
         this._myWin = false;
         this._myResponseVisible = false;
+
+        this._myFirstStart = true;
     }
 
     update(dt) {
@@ -75,6 +77,19 @@ export class SirDialogComponent extends Component {
     }
 
     startSirDialog() {
+        if (this._myFirstStart) {
+            this._myFirstStart = false;
+
+            GameGlobals.myDialogManager.addEventListener("bad", this._responseSelected.bind(this, -1));
+            GameGlobals.myDialogManager.addEventListener("very_bad", this._responseSelected.bind(this, -2));
+            GameGlobals.myDialogManager.addEventListener("uber_bad", this._responseSelected.bind(this, -5));
+            GameGlobals.myDialogManager.addEventListener("insta_bad", this._responseSelected.bind(this, -100000));
+
+            GameGlobals.myDialogManager.addEventListener("good", this._responseSelected.bind(this, 1));
+            GameGlobals.myDialogManager.addEventListener("very_good", this._responseSelected.bind(this, 2));
+            GameGlobals.myDialogManager.addEventListener("uber_good", this._responseSelected.bind(this, 5));
+            GameGlobals.myDialogManager.addEventListener("insta_good", this._responseSelected.bind(this, 100000));
+        }
         this._myResponseVisible = false;
         this._myWin = false;
         this._myStarted = true;
@@ -167,7 +182,7 @@ export class SirDialogComponent extends Component {
             this._myDialog.pp_setScale(this._myTargetScale.vec3_scale(Math.max(EasingFunction.easeOut(1 - this._myUnspawnTimer.getPercentage()), Math.PP_EPSILON * 100)));
 
             if (this._myUnspawnTimer.isDone()) {
-                this._stop();
+                this._internalStop();
 
                 fsm.perform("end");
             }
@@ -175,8 +190,6 @@ export class SirDialogComponent extends Component {
     }
 
     _start(fsm) {
-        // restart the talk
-
         GameGlobals.myButtonHand.setSpeedMultiplier(1);
 
         this._mySpeech.pp_setActive(false);
@@ -218,6 +231,12 @@ export class SirDialogComponent extends Component {
     }
 
     _stop(fsm) {
+        this._internalStop();
+
+        this._myDialogController.stop();
+    }
+
+    _internalStop() {
         GameGlobals.myButtonHand.setSpeedMultiplier(1);
 
         this._mySpawnTimer.reset();
@@ -231,10 +250,8 @@ export class SirDialogComponent extends Component {
         this._myOption1Button.stopButton();
         this._myOption2Button.stopButton();
         this._mySpawnButtonDelayTimer.reset();
-        
+
         this._myResponseVisible = false;
-        
-        this._myDialogController.stop();
     }
 
     _isDialogVisible() {
@@ -278,8 +295,12 @@ export class SirDialogComponent extends Component {
                 GameGlobals.myButtonHand.multiplySpeed(this._myOptionSpeedMultiplierGood);
             }
         } else {
-            for (let i = 0; i < -responseGoodLevel; i++) {
-                GameGlobals.myButtonHand.multiplySpeed(this._myOptionSpeedMultiplierBad);
+            if (responseGoodLevel < -1000) {
+                GameGlobals.myExplodeButton.clickButton();
+            } else {
+                for (let i = 0; i < -responseGoodLevel; i++) {
+                    GameGlobals.myButtonHand.multiplySpeed(this._myOptionSpeedMultiplierBad);
+                }
             }
         }
 
@@ -294,7 +315,7 @@ export class SirDialogComponent extends Component {
         return this._myWin;
     }
 
-    _setResponseVisibility(visible){
+    _setResponseVisibility(visible) {
         this._myResponseVisible = visible;
     }
 }

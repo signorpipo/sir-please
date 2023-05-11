@@ -3268,7 +3268,9 @@
                         "_myTriggerPosition": "289",
                         "_myMinDistance": 1.5,
                         "_myMaxAngle": 60.0,
-                        "_myHandSpeedMultiplierOnShow": 0.5
+                        "_myHandSpeedMultiplierOnShow": 0.5,
+                        "_myOptionSpeedMultiplierBad": 3.0,
+                        "_myOptionSpeedMultiplierGood": 0.5
                     }
                 },
                 {
@@ -3278,10 +3280,11 @@
                         "text": "269",
                         "responseOneText": "284",
                         "responseTwoText": "286",
-                        "dialog": "temp",
+                        "dialog": "sir_dialog",
                         "audioSource": "292",
                         "audioSourceCompnent": "dialog-sound",
-                        "charSoundOne": "blip"
+                        "charSoundOne": "blip",
+                        "dialogPrefix": "> "
                     }
                 },
                 {

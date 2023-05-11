@@ -17,6 +17,7 @@ export let GameGlobals = {
     myExplodeButton: null,
     myButtonHand: null,
     myHideHands: null,
+    myDialogManager: null,
     mySirDialog: null,
     mySirDialogOption1Button: null,
     mySirDialogOption2Button: null,
