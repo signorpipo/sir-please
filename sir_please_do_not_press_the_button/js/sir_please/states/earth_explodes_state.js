@@ -45,6 +45,7 @@ export class EarthExplodesState {
         let playerStartPosition = this._myPlayerSpawn.pp_getPosition();
         let rotationQuat = this._myPlayerSpawn.pp_getRotationQuat();
         GameGlobals.myPlayerTransformManager.teleportAndReset(playerStartPosition.vec3_sub(vec3_create(0, GameGlobals.myPlayerTransformManager.getHeight(), 0)), rotationQuat);
+        Globals.getPlayerObjects().myCameraNonXR.pp_setUp(GameGlobals.myUp);
 
         if (this._myExplodesAnyway) {
             this._myFSM.perform("start_explode_anyway");

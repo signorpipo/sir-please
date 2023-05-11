@@ -59,6 +59,7 @@ export class SirRoomState {
         let playerStartPosition = this._myPlayerSpawn.pp_getPosition();
         let rotationQuat = this._myPlayerSpawn.pp_getRotationQuat();
         GameGlobals.myPlayerTransformManager.teleportAndReset(playerStartPosition, rotationQuat);
+        Globals.getPlayerObjects().myCameraNonXR.pp_setUp(GameGlobals.myUp);
 
         GameGlobals.myBlackFader.fadeIn();
         GameGlobals.myHideHands.show();
