@@ -14,7 +14,9 @@ export class SirDialogComponent extends Component {
         _myTriggerPosition: Property.object(),
 
         _myMinDistance: Property.float(0.75),
-        _myMaxAngle: Property.float(90)
+        _myMaxAngle: Property.float(90),
+
+        _myHandSpeedMultiplierOnShow: Property.float(0.5)
     };
 
     start() {
@@ -163,6 +165,8 @@ export class SirDialogComponent extends Component {
     }
 
     _start(fsm) {
+        GameGlobals.myButtonHand.setSpeedMultiplier(1);
+
         this._mySpeech.pp_setActive(false);
 
         this._myOption1Button.startButton();
@@ -186,9 +190,13 @@ export class SirDialogComponent extends Component {
         }
 
         this._mySpawnButtonDelayTimer.reset();
+
+        GameGlobals.myButtonHand.setSpeedMultiplier(this._myHandSpeedMultiplierOnShow);
     }
 
     _popOut(fsm) {
+        GameGlobals.myButtonHand.setSpeedMultiplier(1);
+
         this._myOption1Button.unregisterClickEventListener(this);
         this._myOption2Button.unregisterClickEventListener(this);
 
@@ -198,6 +206,8 @@ export class SirDialogComponent extends Component {
     }
 
     _stop(fsm) {
+        GameGlobals.myButtonHand.setSpeedMultiplier(1);
+
         this._mySpawnTimer.reset();
         this._myUnspawnTimer.reset();
 
@@ -235,7 +245,7 @@ export class SirDialogComponent extends Component {
     }
 
     _popOutDone() {
-        this._myDialogController.pause()
+        this._myDialogController.pause();
     }
 
     _onButton1Click() {

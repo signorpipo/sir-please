@@ -39,7 +39,6 @@ import {SetHandednessComponent} from './sir_please/components/set_handedness_com
 import {SirDialogButtonComponent} from './sir_please/components/sir_dialog_button_component.js';
 import {SirDialogComponent} from './sir_please/components/sir_dialog_component.js';
 import {SirPleaseGatewayComponent} from './sir_please/components/sir_please_gateway_component.js';
-import {DialogSound} from './sir_please/dialog-sound.js';
 /* wle:auto-imports:end */
 
 import { loadRuntime } from '@wonderlandengine/api';
@@ -122,7 +121,6 @@ engine.registerComponent(SetHandednessComponent);
 engine.registerComponent(SirDialogButtonComponent);
 engine.registerComponent(SirDialogComponent);
 engine.registerComponent(SirPleaseGatewayComponent);
-engine.registerComponent(DialogSound);
 /* wle:auto-register:end */
 
 engine.scene.load(`${Constants.ProjectName}.bin`);

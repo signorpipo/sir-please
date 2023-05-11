@@ -775,7 +775,8 @@
                 {
                     "type": "button-hand",
                     "button-hand": {
-                        "_mySpeed": 0.0099999
+                        "_mySpeed": 0.0099999,
+                        "_myMinSpeedToStop": 0.001
                     }
                 }
             ]
@@ -3266,7 +3267,8 @@
                         "_myOption2": "279",
                         "_myTriggerPosition": "289",
                         "_myMinDistance": 1.5,
-                        "_myMaxAngle": 60.0
+                        "_myMaxAngle": 60.0,
+                        "_myHandSpeedMultiplierOnShow": 0.5
                     }
                 },
                 {
