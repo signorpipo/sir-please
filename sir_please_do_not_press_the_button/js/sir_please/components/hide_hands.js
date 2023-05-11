@@ -9,34 +9,26 @@ export class HideHandsComponent extends Component {
     };
 
     start() {
-        this._myShowOnEnterVR = false;
-        this._mySessionStartedOnce = false;
+        this._myShowHands = false;
+    }
 
-        XRUtils.registerSessionStartEventListener(this, this._onXRSessionStart.bind(this));
+    update(dt) {
+        if (XRUtils.isSessionActive()) {
+            if (this._myShowHands) {
+                this._myLeftHand.pp_setActive(true);
+                this._myRightHand.pp_setActive(true);
+            }
+        } else {
+            this._myLeftHand.pp_setActive(false);
+            this._myRightHand.pp_setActive(false);
+        }
     }
 
     hide() {
-        this._myLeftHand.pp_setActive(false);
-        this._myRightHand.pp_setActive(false);
-
-        this._myShowOnEnterVR = false;
+        this._myShowHands = false;
     }
 
     show() {
-        if (this._mySessionStartedOnce) {
-            this._myLeftHand.pp_setActive(true);
-            this._myRightHand.pp_setActive(true);
-        } else {
-            this._myShowOnEnterVR = true;
-        }
-    }
-
-    _onXRSessionStart() {
-        this._mySessionStartedOnce = true;
-
-        if (this._myShowOnEnterVR) {
-            this._myShowOnEnterVR = false;
-            this.show();
-        }
+        this._myShowHands = true;
     }
 }
