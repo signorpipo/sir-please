@@ -18,6 +18,9 @@ export class DialogController extends Component {
         audioSource: Property.object(),
         audioSourceCompnent: Property.string(),
         dialogPrefix: Property.string('> '),
+        charSoundOne: Property.string(''),
+        charSoundTwo: Property.string(''),
+        charSoundThree: Property.string(''),
     };
 
     init() {
@@ -27,8 +30,14 @@ export class DialogController extends Component {
         this.responseTexts.push(this.responseOneText.getComponent('text'));
         this.responseTexts.push(this.responseTwoText.getComponent('text'));
 
+        this.charSounds = new Array();
+        if(this.charSoundOne != '') this.charSounds.push(this.charSoundOne);
+        if(this.charSoundTwo != '') this.charSounds.push(this.charSoundTwo);
+        if(this.charSoundThree != '') this.charSounds.push(this.charSoundThree);
+
         this.onHideResponses = new Emitter();
         this.onSetupResponses = new Emitter();
+        this.onCharacterPrinted = new Emitter();
     }
 
     start() {
@@ -148,7 +157,10 @@ export class DialogController extends Component {
             const delay = char == '_' ? this.blankDelay : this.charDelay;
 
             this.timer += dt;
-            if(this.timer < delay) return;
+            if(this.timer < delay) {
+                this.characterPrinted(char);
+                return;
+            }
             this.timer -= delay;
 
             if(!ignore) this.currentText += char;
@@ -243,5 +255,12 @@ export class DialogController extends Component {
         const event = this.currentStateJSON["event"];
         if(!event) return;
         this.dialogManager.getComponent(DialogManager).dispatchEvent(event);
+    }
+
+    characterPrinted(char) {
+        this.onCharacterPrinted.notify(char);
+        if(this.charSounds.length == 0) return;
+        const randomSound = Math.floor(Math.random() * this.charSounds.length);
+        this.dialogManager.getComponent(DialogManager).triggerSound(this.charSounds[randomSound], this.audioSource.getComponent(this.audioSourceCompnent));
     }
 }
