@@ -1,6 +1,6 @@
-import {Component, Property} from '@wonderlandengine/api';
-import { DialogManager } from '../dialog/dialog-manager';
-import { Globals } from "../pp";
+import { Component, Property } from '@wonderlandengine/api';
+import { DialogManager } from '../../dialog/dialog-manager';
+import { Globals } from "../../pp";
 
 /**
  * dialog-sound
