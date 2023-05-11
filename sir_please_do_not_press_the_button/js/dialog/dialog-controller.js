@@ -226,7 +226,7 @@ export class DialogController extends Component {
         this.onHideResponses.notify();
         for(var i = 0; i < this.responseTexts.length; ++i) {
             //this.responseTexts[i].active = false;
-            this.responseTexts[i].text = "";
+            //this.responseTexts[i].text = "";
         }
         this.waitingForResponse = false;
     }
