@@ -53,10 +53,12 @@ export class SirDialogButtonComponent extends Component {
         this._myCollisionsCollector = new PhysicsCollisionCollector(this._myPhysX, true);
 
         this._myCursorTarget = this.object.pp_getComponent(CursorTarget);
-        this._myCursorTarget.onUpWithDown.add(this.clickButton.bind(this));
+        this._myCursorTarget.onUpWithDown.add(this.clickButton.bind(this, true));
 
         this._myPreventClick = true;
         this._myIgnoreCollisionTimer = new Timer(0.1, false);
+        this._myVisualUnpressTimer = new Timer(0.1);
+        this._myVisualUnpressTimer.end();
 
         this._myClickAudioPlayer = Globals.getAudioManager().createAudioPlayer("click");
 
@@ -66,6 +68,7 @@ export class SirDialogButtonComponent extends Component {
     update(dt) {
         this._myFSM.update(dt);
         this._myCollisionsCollector.update(dt);
+        this._myVisualUnpressTimer.update(dt);
 
         if (!this._myPreventClick && (this._myFSM.isInState("pop_in") || this._myFSM.isInState("visible"))) {
             this._myIgnoreCollisionTimer.update(dt);
@@ -82,7 +85,7 @@ export class SirDialogButtonComponent extends Component {
             }
         }
 
-        if (this._myCollisionsCollector.getCollisions().length == 0) {
+        if (this._myCollisionsCollector.getCollisions().length == 0 && this._myVisualUnpressTimer.isDone()) {
             this._myButtonVisual.pp_resetPositionLocal();
         }
     }
@@ -177,13 +180,17 @@ export class SirDialogButtonComponent extends Component {
         this._myClickEmitter.remove(id);
     }
 
-    clickButton() {
+    clickButton(cursorClick = false) {
         if (!this._myPreventClick && (this._myFSM.isInState("pop_in") || this._myFSM.isInState("visible"))) {
             this._myClickEmitter.notify();
 
             GameGlobals.myButtonParticlesSpawner.spawn(this.object.pp_getPosition());
 
             this._myButtonVisual.pp_setPositionLocal(vec3_create(0, -0.01, 0));
+
+            if (cursorClick) {
+                this._myVisualUnpressTimer.start();
+            }
 
             if (this._myClickAudioPlayer == null) {
                 this._myClickAudioPlayer = Globals.getAudioManager().createAudioPlayer("click");
