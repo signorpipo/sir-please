@@ -1,11 +1,16 @@
 To Do:
 
+  - multiply the speed if the dialog is visible
+  - increase/decrease speed based on respone
+
+	
+Hard To Do:
+
   - the explode button hand gpoing down could be using physx not kinematic, no gravity , with a down linea velocity always set at frame time
 	- this way u can block it with your hand or push it up again
 	- at some point, if u block it for too long, he will say he has another secret explode button anyway
 	- lock the hand on the y axis and maybe out an invisible block think to avoid being able to push it up infinetely (even though that may not be needed since u are not infinetely tall
 	- he could also increase the multiplier speed because u are making him pissed cause of this
-  - add a way to click the button with the mouse outside VR
   
   
 Done:

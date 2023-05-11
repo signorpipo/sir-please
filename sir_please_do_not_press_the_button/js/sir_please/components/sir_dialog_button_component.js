@@ -9,7 +9,8 @@ export class SirDialogButtonComponent extends Component {
     static TypeName = "sir-dialog-button";
     static Properties = {
         _myButton: Property.object(),
-        _myButtonVisual: Property.object()
+        _myButtonVisual: Property.object(),
+        _myText: Property.object()
     };
 
     start() {
@@ -87,6 +88,7 @@ export class SirDialogButtonComponent extends Component {
 
         if (this._myCollisionsCollector.getCollisions().length == 0 && this._myVisualUnpressTimer.isDone()) {
             this._myButtonVisual.pp_resetPositionLocal();
+            this._myText.pp_resetPositionLocal();
         }
     }
 
@@ -145,10 +147,12 @@ export class SirDialogButtonComponent extends Component {
     _start(fsm) {
         this._myButton.pp_setActive(false);
         this._myButtonVisual.pp_resetPositionLocal();
+        this._myText.pp_resetPositionLocal();
     }
 
     _popIn(fsm) {
         this._myButtonVisual.pp_resetPositionLocal();
+        this._myText.pp_resetPositionLocal();
 
         this._myIgnoreCollisionTimer.start();
 
@@ -187,6 +191,7 @@ export class SirDialogButtonComponent extends Component {
             GameGlobals.myButtonParticlesSpawner.spawn(this.object.pp_getPosition());
 
             this._myButtonVisual.pp_setPositionLocal(vec3_create(0, -0.01, 0));
+            this._myText.pp_setPositionLocal(vec3_create(0, -0.01, 0));
 
             if (cursorClick) {
                 this._myVisualUnpressTimer.start();

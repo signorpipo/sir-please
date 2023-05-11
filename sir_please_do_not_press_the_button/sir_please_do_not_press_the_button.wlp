@@ -1826,7 +1826,8 @@
                     "type": "sir-dialog-button",
                     "sir-dialog-button": {
                         "_myButton": "294",
-                        "_myButtonVisual": "272"
+                        "_myButtonVisual": "273",
+                        "_myText": "305"
                     }
                 }
             ]
@@ -2297,7 +2298,8 @@
                     "type": "sir-dialog-button",
                     "sir-dialog-button": {
                         "_myButton": "295",
-                        "_myButtonVisual": "280"
+                        "_myButtonVisual": "281",
+                        "_myText": "304"
                     }
                 }
             ]
@@ -2766,7 +2768,7 @@
         },
         "284": {
             "name": "Option 1 Text",
-            "parent": "294",
+            "parent": "305",
             "components": [
                 {
                     "type": "text",
@@ -2783,19 +2785,19 @@
                 0.7071067
             ],
             "translation": [
-                -0.0,
+                0.0,
                 0.0199999,
                 0.0
             ],
             "scaling": [
-                0.1999999,
-                0.1999999,
-                0.1999999
+                0.1999998,
+                0.1999998,
+                0.1999998
             ]
         },
         "286": {
             "name": "Option 2 Text",
-            "parent": "295",
+            "parent": "304",
             "components": [
                 {
                     "type": "text",
@@ -2814,12 +2816,12 @@
             "translation": [
                 0.0,
                 0.0199999,
-                -5.960464477539065e-8
+                -5.960464477539063e-8
             ],
             "scaling": [
-                0.1999999,
-                0.1999999,
-                0.1999999
+                0.1999998,
+                0.1999998,
+                0.1999998
             ]
         },
         "287": {
@@ -3378,6 +3380,14 @@
                     }
                 }
             ]
+        },
+        "304": {
+            "name": "Text Pivot",
+            "parent": "295"
+        },
+        "305": {
+            "name": "Text Pivot",
+            "parent": "294"
         }
     },
     "meshes": {
