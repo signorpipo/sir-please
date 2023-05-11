@@ -1,7 +1,6 @@
 To Do:
 
-  - multiply the speed if the dialog is visible
-  - increase/decrease speed based on respone
+  - check if events are triggered more when the dialog is resumed
 
 	
 Hard To Do:
@@ -25,5 +24,8 @@ Done:
 	- the hand is always going no matter what, u can just make it go slower or faster by picking the right/wrong answer
   - hide the webxr hands when on the earth view + activate fly
   - add pulse when pressing buttons
-  - add that if the pose is invalid the hands should disappear
+  - add that if the pose is invalid the hands should 
+
+  - multiply the speed if the dialog is visible
+  - increase/decrease speed based on respone
   

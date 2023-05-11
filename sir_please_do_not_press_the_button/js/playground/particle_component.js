@@ -24,8 +24,8 @@ export class ParticleComponent extends Component {
         this._myLifeTimer = new Timer(Math.pp_random(0.35, 0.7), false);
         this._myUnspawnTimer = new Timer(Math.pp_random(0.1, 0.2), false);
 
-        this._myHorizontalSpeed = vec3_create(0, 0, 1).vec3_rotateAxis(Math.pp_random(-180, 180), vec3_create(0, 1, 0));
-        this._myHorizontalSpeed.vec3_scale(Math.pp_random(0.5, 1) * this._myHorizontalSpeedMultiplier, this._myHorizontalSpeed);
+        this._myHorizontalSpeedDirection = vec3_create(0, 0, 1).vec3_rotateAxis(Math.pp_random(-180, 180), vec3_create(0, 1, 0));
+        this._myHorizontalSpeed = this._myHorizontalSpeedDirection.vec3_scale(Math.pp_random(0.5, 1) * this._myHorizontalSpeedMultiplier);
 
         let verticalSign = 1;
         let minVerticalValue = 0.5;

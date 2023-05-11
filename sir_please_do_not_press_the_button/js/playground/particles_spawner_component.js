@@ -53,7 +53,7 @@ export class ParticlesSpawnerComponent extends Component {
             particleComponent.setVerticalSpeedMultiplier(this._myVerticalSpeedMultiplier);
             particleComponent.setGravity(this._myGravity);
 
-            particle.pp_setPosition(position.vec3_add(particleComponent._myHorizontalSpeed.vec3_normalize().vec3_scale(Math.pp_random(0, this._myRadius))));
+            particle.pp_setPosition(position.vec3_add(particleComponent._myHorizontalSpeedDirection.vec3_normalize().vec3_scale(Math.pp_random(0, this._myRadius))));
 
             particle.pp_setActive(true);
         }

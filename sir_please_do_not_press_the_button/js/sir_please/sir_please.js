@@ -48,6 +48,7 @@ export class SirPlease {
 
         GameGlobals.myExplodeParticlesSpawner = GameGlobals.myScene.pp_getObjectByName("Explode Particles Spawner").pp_getComponent(ParticlesSpawnerComponent);
         GameGlobals.myButtonParticlesSpawner = GameGlobals.myScene.pp_getObjectByName("Button Particles Spawner").pp_getComponent(ParticlesSpawnerComponent);
+        GameGlobals.myHandParticlesSpawner = GameGlobals.myScene.pp_getObjectByName("Hand Particles Spawner").pp_getComponent(ParticlesSpawnerComponent);
 
         GameGlobals.myExplodeButton = GameGlobals.myScene.pp_getComponent(ExplodeButtonComponent);
         GameGlobals.myButtonHand = GameGlobals.myScene.pp_getComponent(ButtonHandComponent);

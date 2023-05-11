@@ -24,6 +24,7 @@ export let GameGlobals = {
 
     myExplodeParticlesSpawner: null,
     myButtonParticlesSpawner: null,
+    myHandParticlesSpawner: null,
 
     myDebugEnabled: false,
     mySkipIntro: false
