@@ -82,12 +82,12 @@ export class SirDialogComponent extends Component {
 
             GameGlobals.myDialogManager.addEventListener("bad", this._responseSelected.bind(this, -1));
             GameGlobals.myDialogManager.addEventListener("very_bad", this._responseSelected.bind(this, -2));
-            GameGlobals.myDialogManager.addEventListener("uber_bad", this._responseSelected.bind(this, -5));
+            GameGlobals.myDialogManager.addEventListener("uber_bad", this._responseSelected.bind(this, -4));
             GameGlobals.myDialogManager.addEventListener("insta_bad", this._responseSelected.bind(this, -100000));
 
             GameGlobals.myDialogManager.addEventListener("good", this._responseSelected.bind(this, 1));
             GameGlobals.myDialogManager.addEventListener("very_good", this._responseSelected.bind(this, 2));
-            GameGlobals.myDialogManager.addEventListener("uber_good", this._responseSelected.bind(this, 5));
+            GameGlobals.myDialogManager.addEventListener("uber_good", this._responseSelected.bind(this, 4));
             GameGlobals.myDialogManager.addEventListener("insta_good", this._responseSelected.bind(this, 100000));
         }
         this._myResponseVisible = false;

@@ -32,6 +32,7 @@ export class ButtonHandComponent extends Component {
             if (this._mySpawnParticlesTimer.isDone()) {
                 let normalizedSpeed = (this._myCurrentSpeed * this._mySpeedMultiplier / this._mySpeed);
                 GameGlobals.myHandParticlesSpawner._myScaleMultiplier = 0.010 * Math.pp_mapToRange(normalizedSpeed, 0.5, 1.5, 0.75, 1.25);
+                GameGlobals.myHandParticlesSpawner._myVerticalSpeedMultiplier = 1 * Math.pp_mapToRange(normalizedSpeed, 0.5, 1.5, 0.5, 1);
                 GameGlobals.myHandParticlesSpawner.spawn(this.object.pp_getPosition());
 
                 this._mySpawnParticlesTimer.start((1 / (normalizedSpeed)) / 40);

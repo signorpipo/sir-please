@@ -3,7 +3,7 @@
     "text":"Who are you?\nAnd how did you get here?\nYou are here to stop me aren't you?\n",
     "responses":[
       {
-        "text":"Stop you from what?",
+        "text":"Stop you\nfrom what?",
         "jump":"sir_hand"
       },
       {
@@ -14,10 +14,10 @@
   },
   "sir_hand":{
     "autoAdvanceAfter":1,
-    "text":"Do you see my hand slowly moving down?___\nI am going to press this button!\n"
+    "text":"Do you see my hand slowly \nmoving down?___\nI am going to press this button!\n"
   },
   "sir_hand_two":{
-    "text":"You cannot stop me!\n",
+    "text":"You cannot stop me![e:bad]\n",
     "responses":[
       {
         "text":"What does it do?",
@@ -30,10 +30,10 @@
     ]
   },
   "sir_what_button_do":{
-    "text":"I don't know what it does.___\nBut I want to press it!\n",
+    "text":"I don't know what it does.___\nBut I want to press it![e:bad]\n",
     "responses":[
       {
-        "text":"Maybe you should not",
+        "text":"Maybe you\nshould not",
         "jump":"sir_maybe_dont"
       },
       {
@@ -44,15 +44,15 @@
   },
   "sir_maybe_dont":{
     "autoAdvanceAfter":3,
-    "text":"Hmmmmm\n"
+    "text":"H[e:very_good]mmmmm\n"
   },
   "sir_maybe_dont_1":{
     "autoAdvanceAfter":3,
-    "text":"Maybe you are right.___\nI still want to press it though.___\n"
+    "text":"Maybe you are right.___[e:good]\nI still want to press it though.___\n"
   },
   "sir_maybe_dont_2":{
     "event":"good",
-    "text":"But I'll move my hand slower each time you make a good point.___\nHow does that sound?\n",
+    "text":"But I'll move my hand slower \neach time you make a good point.___\nHow does that sound?\n",
     "responses":[
       {
         "text":"Sounds good",
@@ -80,14 +80,14 @@
   "sir_name":{
     "autoAdvanceAfter":1,
     "jump":"ded",
-    "text":"I don't trust you to tell you my name!___\nScrew this, you are stupid!___\nI am pressing the button!\n"
+    "text":"I don't trust you to tell \nyou my name!___\nScrew this, you are stupid!___\nI am pressing the button!\n"
   },
   "sir_ded":{
     "autoAdvanceAfter":1,
     "text":"Ok!\n"
   },
   "ded":{
-    "event":"insta_bad",
+    "event":"uber_bad",
     "text":"Bye"
   }
 }
