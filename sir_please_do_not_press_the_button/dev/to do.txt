@@ -1,6 +1,34 @@
 To Do:
+  
+  - new:
+	- add sounds, take some from mr NOT?
+	- if switch to hand tracking, teleport in front of dialog so u can play with hands
+	- add virtual gamepad
+	- support AR by just showing the sir and the button, and u just appear in front like the hand tracking, and also disable locomotion
 
-  - check if events are triggered more when the dialog is resumed
+  - dialog:
+	- when u win the sir could say that he feels the urge to credit Robin and Pipo
+		- after that he say that he will push the button anyway and ask you to pretend it will be the first time (restart)
+	
+  - changes:
+	- find a better font
+    - add win event to dialog (remove win if zero speed)
+	- good and bad event change speed from an array of preselected ones, no more multiplier
+
+  - adjustements:
+	- make font color more readable
+	- remove shadows from particles
+	- make a prettier hand (also use it for player and make it a bit smaller)
+	- try to pause music instead of restart after explosion
+	- 
+
+  - bugs: 
+	- events are triggered again when the dialog is resumed
+	- for the star dome bug, check the angle between the vertical and the horizontal, close to 90 is top or bottom
+	
+  extra:
+	- for a trailer, u can have a quick playthrough where u select the bad option and it ends super quick, and then it types the title after the explosion
+	- one of the stars is a wondermelon
 
 	
 Hard To Do:
