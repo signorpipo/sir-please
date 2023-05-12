@@ -53,6 +53,7 @@ export class EarthExplodesState {
             this._myFSM.perform("start_explode");
         }
 
+        GameGlobals.myEarthView.pp_setActive(true);
         this._myEarth.pp_setActive(true);
     }
 

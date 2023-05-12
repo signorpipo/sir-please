@@ -33,6 +33,8 @@ export class SirRoomState {
     start(fsm) {
         this._myParentFSM = fsm;
 
+        GameGlobals.myEarthView.pp_setActive(false);
+
         this._myFSM.perform("start");
     }
 
