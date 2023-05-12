@@ -1,0 +1,160 @@
+{
+  "entry":{
+    "text":"Who are you?\n",
+    "responses":[
+      {
+        "text":"DON'T PRESS IT!",
+        "jump":"dont_press"
+      },
+      {
+        "text":"PRESS IT!",
+        "jump":"sir_ded"
+      }
+    ]
+  },
+  "dont_press":{
+    "autoAdvanceAfter":1,
+    "text":"I knew it!___ You are here to stop me!___\n"
+  },
+  "dont_press_1":{
+    "text":"But you cannot! I will press this button!\n",
+    "responses":[
+      {
+        "text":"It will blow up the planet!",
+        "jump":"planet_talk"
+      },
+      {
+        "text":"You have no idea what you are doing!",
+        "jump":"no_idea"
+      }
+    ]
+  },
+  "planet_talk":{
+    "event":"bad",
+    "text":"What?___ You made that up!___\nI am not stupid!\n",
+    "responses":[
+      {
+        "text":"Are you sure?",
+        "jump":"you_sure"
+      },
+      {
+        "text":"But what if I am right?",
+        "jump":"right"
+      }
+    ]
+  },
+  "no_idea":{
+    "text":"Dude___ it's just a button.___\nIt's not like the planet will explode.\n",
+    "responses":[
+      {
+        "text":"BUT IT WILL",
+        "jump":"planet_talk"
+      },
+      {
+        "text":"Ok you got me",
+        "jump":"dont_press"
+      }
+    ]
+  },
+  "you_sure":{
+    "autoAdvanceAfter":1,
+    "jump":"sir_ded",
+    "text":"Are you questioning me?___\nScrew this, I do not trust you!___\nI am pressing the button!\n"
+  },
+  "right":{
+    "event":"good",
+    "autoAdvanceAfter":1,
+    "jump":"right_2",
+    "text":"Allright smartass...___\n"
+  },
+  "right_2":{
+    "event":"good",
+    "text":"Let's say I give you the benefit of the doubt.___\nHow do you even know that?\n",
+    "responses":[
+      {
+        "text":"Because I work here!",
+        "jump":"work_here"
+      },
+      {
+        "text":"Because it already happened!",
+        "jump":"already_happened"
+      }
+    ]
+  },
+  "work_here":{
+    "event":"bad",
+    "autoAdvanceAfter":1,
+    "jump":"right_2",
+    "text":"Hah!___ Nice try!___\nBut until you and I got here,___\nthis place was abandoned.___\nTry again.\n"
+  },
+  "already_happened":{
+    "event":"good",
+    "text":"Already happened?___\nWhat do you mean by that?\n\n",
+    "responses":[
+      {
+        "text":"Idk",
+        "jump":"idk"
+      },
+      {
+        "text":"I am from the future!",
+        "jump":"future"
+      }
+    ]
+  },
+  "idk":{
+    "event":"very_bad",
+    "autoAdvanceAfter":1,
+    "jump":"right_2",
+    "text":"Hah!__ I knew you were lying!___\nTry again!\n"
+  },
+  "future":{
+    "event":"very_bad",
+    "text":"Pfffffffff____\nYou expect me to beleive that?\n\n",
+    "responses":[
+      {
+        "text":"Yes",
+        "jump":"future_yes"
+      },
+      {
+        "text":"No",
+        "jump":"future_no"
+      }
+    ]
+  },
+  "future_no":{
+    "event":"very_bad",
+    "text":"Hah!__ I knew you were lying!___\nTry again!\n"
+  },
+  "future_yes":{
+    "event":"very_good",
+    "text":"Well then you better prove it!\n",
+    "responses":[
+      {
+        "text":"I can't",
+        "jump":"cant_prove"
+      },
+      {
+        "text":"I can't yet",
+        "jump":"cant_prove"
+      }
+    ]
+  },
+  "cant_prove":{
+    "autoAdvanceAfter":1,
+    "event":"loop_two_end",
+    "text":"What do you mean you can't?___\nWell, if you are really from the future___\nThen you can go back in time\nagain and gather proof.\n"
+  },
+  "cant_prove_explain":{
+    "autoAdvanceAfter":1,
+    "jump":"ded",
+    "text":"So, if this button really does what you say.___\nThen you can try convincing me next time!\n"
+  },
+  "sir_ded":{
+    "autoAdvanceAfter":1,
+    "text":"Ok!\n"
+  },
+  "ded":{
+    "event":"very_uber_bad",
+    "text":"Bye"
+  }
+}
