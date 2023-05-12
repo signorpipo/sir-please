@@ -3,7 +3,7 @@
     "text":"Who are you?\nAnd how did you get here?\nYou are here to stop me aren't you?\n",
     "responses":[
       {
-        "text":"Stop you from what?",
+        "text":"Stop you\nfrom what?",
         "jump":"sir_hand"
       },
       {
@@ -20,7 +20,7 @@
     "text":"You cannot stop me![e:bad]\n",
     "responses":[
       {
-        "text":"What does it do?",
+        "text":"What does\nit do?",
         "jump":"sir_what_button_do"
       },
       {
@@ -33,7 +33,7 @@
     "text":"I don't know what it does.___\nBut I want to press it![e:bad]\n",
     "responses":[
       {
-        "text":"Maybe you should not",
+        "text":"Maybe you\nshould not",
         "jump":"sir_maybe_dont"
       },
       {

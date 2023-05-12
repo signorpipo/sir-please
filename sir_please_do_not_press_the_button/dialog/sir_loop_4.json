@@ -6,7 +6,7 @@
     "text":"Who are you?\n\n\n",
     "responses":[
       {
-        "text":"DON'T PRESS IT!",
+        "text":"DON'T\nPRESS IT!",
         "jump":"dont_press"
       },
       {
@@ -36,7 +36,7 @@
         "jump":"bad_memory"
       },
       {
-        "text":"You're right I'm not",
+        "text":"You're right\nI'm not",
         "jump":"not_jeff"
       }
     ]
@@ -46,7 +46,7 @@
     "text":"I knew you we're lying!\nBut how do you even\nknow that name?\n\n",
     "responses":[
       {
-        "text":"We are in a time loop!",
+        "text":"We are in\na time loop!",
         "jump":"time_loop"
       },
       {
@@ -72,11 +72,11 @@
     "text":"Where should I know you from?\n\n\n",
     "responses":[
       {
-        "text":"We are in a time loop!",
+        "text":"We are in\na time loop!",
         "jump":"time_loop"
       },
       {
-        "text":"We met at a party",
+        "text":"We met at\na party",
         "jump":"party"
       }
     ]
@@ -132,7 +132,7 @@
     "text":"But which party did we meet at?\n\n",
     "responses":[
       {
-        "text":"The one with the thing",
+        "text":"The one in\nthe mountains",
         "jump":"thing"
       },
       {
@@ -149,7 +149,7 @@
   },
   "thing":{
     "autoAdvanceAfter":1,
-    "text":"You will have to be a\nbit more specific.\nI went to a lot of parties.\n"
+    "text":"You will have to be a\nbit more specific.\nI went to a lot of parties\nin the mountains.\n"
   },
   "thing_1":{
     "text":"Like that one where I...\n\n",
@@ -219,7 +219,7 @@
         "jump":"I_am_bully"
       },
       {
-        "text":"The world is at stake!",
+        "text":"The world\nis at stake!",
         "jump":"world_at_stake"
       }
     ]
@@ -234,11 +234,11 @@
     "text":"How so?\n\n",
     "responses":[
       {
-        "text":"The planet will explode!",
+        "text":"The planet\nwill explode!",
         "jump":"planet_talk"
       },
       {
-        "text":"You don't know what you're doing!",
+        "text":"You don't know\nwhat you're doing!",
         "jump":"no_idea"
       }
     ]
@@ -251,11 +251,11 @@
     "text":"But you cannot! I will press this button!\n",
     "responses":[
       {
-        "text":"It will blow up the planet!",
+        "text":"It will blow\nup the planet!",
         "jump":"planet_talk"
       },
       {
-        "text":"You have no idea what you are doing!",
+        "text":"You have no\nidea what you\nare doing!",
         "jump":"no_idea"
       }
     ]
@@ -269,7 +269,7 @@
         "jump":"you_sure"
       },
       {
-        "text":"But what if I am right?",
+        "text":"But what if\nI am right?",
         "jump":"right"
       }
     ]
@@ -307,7 +307,7 @@
         "jump":"work_here"
       },
       {
-        "text":"Because it already happened!",
+        "text":"Because it\nalready happened!",
         "jump":"already_happened"
       }
     ]

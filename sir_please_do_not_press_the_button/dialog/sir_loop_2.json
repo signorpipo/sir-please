@@ -3,7 +3,7 @@
     "text":"Who are you?\n",
     "responses":[
       {
-        "text":"DON'T PRESS IT!",
+        "text":"DON'T\nPRESS IT!",
         "jump":"dont_press"
       },
       {
@@ -20,11 +20,11 @@
     "text":"But you cannot! I will press this button!\n",
     "responses":[
       {
-        "text":"It will blow up the planet!",
+        "text":"It will blow\nup the planet!",
         "jump":"planet_talk"
       },
       {
-        "text":"You have no idea what you are doing!",
+        "text":"You have no\nidea what you\nare doing!",
         "jump":"no_idea"
       }
     ]
@@ -38,7 +38,7 @@
         "jump":"you_sure"
       },
       {
-        "text":"But what if I am right?",
+        "text":"But what\nif I am right?",
         "jump":"right"
       }
     ]
@@ -76,7 +76,7 @@
         "jump":"work_here"
       },
       {
-        "text":"Because it already happened!",
+        "text":"Because it\nalready happened!",
         "jump":"already_happened"
       }
     ]
@@ -96,7 +96,7 @@
         "jump":"idk"
       },
       {
-        "text":"I am from the future!",
+        "text":"I am from\nthe future!",
         "jump":"future"
       }
     ]
