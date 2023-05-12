@@ -40,7 +40,8 @@
                     "type": "pp-player-locomotion",
                     "pp-player-locomotion": {
                         "_myPhysicsBlockLayerFlags": "0, 1, 0, 0, 0, 0, 0, 0",
-                        "_myMoveThroughCollisionShortcutEnabled": true
+                        "_myMoveThroughCollisionShortcutEnabled": true,
+                        "_myTeleportMaxHeightDifference": 0.1
                     }
                 }
             ],
@@ -3269,8 +3270,8 @@
                         "_myMinDistance": 1.5,
                         "_myMaxAngle": 60.0,
                         "_myHandSpeedMultiplierOnShow": 0.5,
-                        "_myOptionSpeedMultiplierBad": 2.0,
-                        "_myOptionSpeedMultiplierGood": 0.75
+                        "_myOptionSpeedMultiplierBad": 1.0,
+                        "_myOptionSpeedMultiplierGood": 0.5
                     }
                 },
                 {

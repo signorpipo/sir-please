@@ -53,7 +53,11 @@ export class ButtonHandComponent extends Component {
     }
 
     multiplySpeed(multiplier) {
-        this._myCurrentSpeed *= multiplier;
+        if (multiplier > 0) {
+            this._myCurrentSpeed += this._mySpeed * multiplier;
+        } else {
+            this._myCurrentSpeed *= -multiplier;
+        }
 
         if (this._myCurrentSpeed < this._myMinSpeedToStop) {
             this._myCurrentSpeed = 0;

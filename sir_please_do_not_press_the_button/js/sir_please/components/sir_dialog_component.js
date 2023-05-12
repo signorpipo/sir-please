@@ -82,12 +82,14 @@ export class SirDialogComponent extends Component {
 
             GameGlobals.myDialogManager.addEventListener("bad", this._responseSelected.bind(this, -1));
             GameGlobals.myDialogManager.addEventListener("very_bad", this._responseSelected.bind(this, -2));
-            GameGlobals.myDialogManager.addEventListener("uber_bad", this._responseSelected.bind(this, -4));
+            GameGlobals.myDialogManager.addEventListener("uber_bad", this._responseSelected.bind(this, -5));
+            GameGlobals.myDialogManager.addEventListener("very_uber_bad", this._responseSelected.bind(this, -15));
             GameGlobals.myDialogManager.addEventListener("insta_bad", this._responseSelected.bind(this, -100000));
 
             GameGlobals.myDialogManager.addEventListener("good", this._responseSelected.bind(this, 1));
             GameGlobals.myDialogManager.addEventListener("very_good", this._responseSelected.bind(this, 2));
-            GameGlobals.myDialogManager.addEventListener("uber_good", this._responseSelected.bind(this, 4));
+            GameGlobals.myDialogManager.addEventListener("uber_good", this._responseSelected.bind(this, 5));
+            GameGlobals.myDialogManager.addEventListener("very_uber_good", this._responseSelected.bind(this, 15));
             GameGlobals.myDialogManager.addEventListener("insta_good", this._responseSelected.bind(this, 100000));
         }
         this._myResponseVisible = false;
@@ -292,7 +294,7 @@ export class SirDialogComponent extends Component {
     _responseSelected(responseGoodLevel) {
         if (responseGoodLevel > 0) {
             for (let i = 0; i < responseGoodLevel; i++) {
-                GameGlobals.myButtonHand.multiplySpeed(this._myOptionSpeedMultiplierGood);
+                GameGlobals.myButtonHand.multiplySpeed(-this._myOptionSpeedMultiplierGood);
             }
         } else {
             if (responseGoodLevel < -1000) {
