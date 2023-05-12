@@ -24,7 +24,11 @@
                         "_myFlatTransparentNoDepth": "90",
                         "_myPhongOpaque": "32",
                         "_myText": "110",
-                        "_myScene": "18"
+                        "_myScene": "18",
+                        "_myEnableDebugs": false,
+                        "_myEnableTools": false,
+                        "_myAddPPToWindow": false,
+                        "_myAddWLToWindow": false
                     }
                 },
                 {
@@ -473,8 +477,8 @@
                         "_mySirRoom": "231",
                         "_myEarthView": "232",
                         "_myStartDelayFrames": 10,
-                        "_myDebugEnabled": false,
-                        "_mySkipIntro": false,
+                        "_myDebugEnabled": true,
+                        "_mySkipIntro": true,
                         "_myClearConsoleOnStart": false
                     },
                     "active": true
@@ -556,6 +560,12 @@
                 0.5,
                 0.5,
                 0.5
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
             ]
         },
         "244": {
@@ -1120,7 +1130,7 @@
             "translation": [
                 0.0000011,
                 -0.0499958,
-                -4.7642700451433495e-7
+                -4.76427004514335e-7
             ],
             "rotation": [
                 0.0,
@@ -3415,7 +3425,10 @@
             "components": [
                 {
                     "type": "light",
-                    "active": true
+                    "active": true,
+                    "light": {
+                        "intensity": 0.1
+                    }
                 }
             ]
         },
@@ -4778,7 +4791,7 @@
             ],
             "rotation": [
                 4.7924601176418946e-8,
-                2.7773319644097686e-8,
+                2.777331964409769e-8,
                 -0.7071068,
                 0.7071066
             ],
@@ -6775,6 +6788,182 @@
                 0.7071068,
                 0.7071067
             ]
+        },
+        "422": {
+            "name": "Stars",
+            "parent": "235",
+            "translation": [
+                0.0,
+                -200.0,
+                0.0
+            ],
+            "components": [
+                {
+                    "type": "pp-set-active",
+                    "pp-set-active": {
+                        "_myActive": false
+                    }
+                }
+            ]
+        },
+        "424": {
+            "name": "Particle 1",
+            "parent": "422",
+            "translation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "scaling": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "components": [
+                {
+                    "type": "disable-if-close",
+                    "disable-if-close": {
+                        "_myObject": "243",
+                        "_myDistance": 1.0,
+                        "_myPivot": null
+                    }
+                },
+                {
+                    "type": "disable-if-close",
+                    "disable-if-close": {
+                        "_myObject": "234",
+                        "_myDistance": 2.0,
+                        "_myPivot": "435"
+                    }
+                }
+            ]
+        },
+        "425": {
+            "name": "Mesh",
+            "parent": "435",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "p1",
+                        "material": "148"
+                    }
+                }
+            ],
+            "scaling": [
+                0.025,
+                0.025,
+                0.025
+            ],
+            "translation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "428": {
+            "name": "Star Dome",
+            "parent": "232",
+            "components": [
+                {
+                    "type": "stars-dome",
+                    "stars-dome": {
+                        "_myStars": "422",
+                        "_myStarsCount": 1500,
+                        "_myMinDomeSize": 0.0,
+                        "_myMaxDomeSize": 10.0,
+                        "_myMinScale": 0.8999999,
+                        "_myMaxScale": 1.1
+                    }
+                }
+            ]
+        },
+        "429": {
+            "name": "Particle 1",
+            "parent": "422",
+            "translation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "scaling": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "components": [
+                {
+                    "type": "disable-if-close",
+                    "disable-if-close": {
+                        "_myObject": "243",
+                        "_myDistance": 1.0,
+                        "_myPivot": null
+                    }
+                },
+                {
+                    "type": "disable-if-close",
+                    "disable-if-close": {
+                        "_myObject": "234",
+                        "_myDistance": 2.0,
+                        "_myPivot": "436"
+                    }
+                }
+            ]
+        },
+        "430": {
+            "name": "Mesh",
+            "parent": "436",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "p1",
+                        "material": "149"
+                    }
+                }
+            ],
+            "scaling": [
+                0.025,
+                0.025,
+                0.025
+            ],
+            "translation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "435": {
+            "name": "Pivot",
+            "parent": "424"
+        },
+        "436": {
+            "name": "Pivot",
+            "parent": "429"
         }
     },
     "meshes": {
@@ -7223,9 +7412,9 @@
             "pipeline": "421",
             "Flat": {
                 "color": [
-                    0.2125804,
-                    0.6159999,
-                    0.5435293,
+                    0.2760785,
+                    0.8,
+                    0.7058823,
                     1.0
                 ]
             }
