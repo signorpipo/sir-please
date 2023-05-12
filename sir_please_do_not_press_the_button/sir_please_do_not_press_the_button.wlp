@@ -436,7 +436,7 @@
             "translation": [
                 0.0,
                 0.0,
-                -2.0
+                -3.0
             ]
         },
         "234": {
@@ -3268,7 +3268,7 @@
                         "_myOption2": "279",
                         "_myTriggerPosition": "289",
                         "_myMinDistance": 1.5,
-                        "_myMaxAngle": 60.0,
+                        "_myMaxAngle": 75.0,
                         "_myHandSpeedMultiplierOnShow": 0.5,
                         "_myOptionSpeedMultiplierBad": 1.0,
                         "_myOptionSpeedMultiplierGood": 0.5
@@ -4713,7 +4713,7 @@
                 }
             },
             "viewObject": "21",
-            "visualizePhysX": true
+            "visualizePhysX": false
         },
         "scripting": {
             "sourcePaths": [

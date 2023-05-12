@@ -268,10 +268,10 @@ export class SirDialogComponent extends Component {
         let flatPlayerForward = playerForward.vec3_removeComponentAlongAxis(GameGlobals.myUp);
 
         let flatDialogTriggerPosition = dialogTriggerPosition.vec3_removeComponentAlongAxis(GameGlobals.myUp);
+        let flatDialogBackward = this._myTriggerPosition.pp_getBackward().vec3_removeComponentAlongAxis(GameGlobals.myUp);
 
         if (flatPlayerPosition.vec3_distance(flatDialogTriggerPosition) <= this._myMinDistance) {
-            let flatVectorToTrigger = flatDialogTriggerPosition.vec3_sub(flatPlayerPosition);
-            if (flatPlayerForward.vec3_angle(flatVectorToTrigger) <= this._myMaxAngle) {
+            if (flatPlayerForward.vec3_angle(flatDialogBackward) <= this._myMaxAngle) {
                 visible = true;
             }
         }

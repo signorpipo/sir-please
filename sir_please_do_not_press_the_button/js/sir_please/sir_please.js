@@ -44,6 +44,7 @@ export class SirPlease {
     _collectSceneObjects() {
         let playerLocomotionComponent = Globals.getScene().pp_getComponent(PlayerLocomotionComponent);
         GameGlobals.myPlayerLocomotion = playerLocomotionComponent._myPlayerLocomotion;
+        GameGlobals.myPlayerLocomotion.setIdle(true);
         GameGlobals.myPlayerTransformManager = playerLocomotionComponent._myPlayerLocomotion._myPlayerTransformManager;
 
         GameGlobals.myExplodeParticlesSpawner = GameGlobals.myScene.pp_getObjectByName("Explode Particles Spawner").pp_getComponent(ParticlesSpawnerComponent);
