@@ -444,7 +444,7 @@
             "translation": [
                 0.0,
                 0.0,
-                -3.0
+                -3.5
             ]
         },
         "234": {
@@ -3427,7 +3427,7 @@
                     "type": "light",
                     "active": true,
                     "light": {
-                        "intensity": 0.1
+                        "intensity": 0.25
                     }
                 }
             ]
@@ -6824,24 +6824,6 @@
                 1.0,
                 1.0,
                 1.0
-            ],
-            "components": [
-                {
-                    "type": "disable-if-close",
-                    "disable-if-close": {
-                        "_myObject": "243",
-                        "_myDistance": 1.0,
-                        "_myPivot": null
-                    }
-                },
-                {
-                    "type": "disable-if-close",
-                    "disable-if-close": {
-                        "_myObject": "234",
-                        "_myDistance": 2.0,
-                        "_myPivot": "435"
-                    }
-                }
             ]
         },
         "425": {
@@ -6852,7 +6834,7 @@
                     "type": "mesh",
                     "mesh": {
                         "mesh": "p1",
-                        "material": "148"
+                        "material": "437"
                     }
                 }
             ],
@@ -6881,11 +6863,15 @@
                     "type": "stars-dome",
                     "stars-dome": {
                         "_myStars": "422",
-                        "_myStarsCount": 1500,
+                        "_myStarsCount": 1250,
                         "_myMinDomeSize": 0.0,
                         "_myMaxDomeSize": 10.0,
                         "_myMinScale": 0.8999999,
-                        "_myMaxScale": 1.1
+                        "_myMaxScale": 1.1,
+                        "_myAvoidObject1": "243",
+                        "_myAvoidObject2": "234",
+                        "_myAvoidObject1Distance": 1.25,
+                        "_myAvoidObject2Distance": 1.25
                     }
                 }
             ]
@@ -6908,24 +6894,6 @@
                 1.0,
                 1.0,
                 1.0
-            ],
-            "components": [
-                {
-                    "type": "disable-if-close",
-                    "disable-if-close": {
-                        "_myObject": "243",
-                        "_myDistance": 1.0,
-                        "_myPivot": null
-                    }
-                },
-                {
-                    "type": "disable-if-close",
-                    "disable-if-close": {
-                        "_myObject": "234",
-                        "_myDistance": 2.0,
-                        "_myPivot": "436"
-                    }
-                }
             ]
         },
         "430": {
@@ -6936,7 +6904,7 @@
                     "type": "mesh",
                     "mesh": {
                         "mesh": "p1",
-                        "material": "149"
+                        "material": "438"
                     }
                 }
             ],
@@ -7412,9 +7380,9 @@
             "pipeline": "421",
             "Flat": {
                 "color": [
-                    0.2760785,
-                    0.8,
-                    0.7058823,
+                    0.0796315,
+                    0.5381165,
+                    0.4557539,
                     1.0
                 ]
             }
@@ -7441,6 +7409,53 @@
                     1.0,
                     0.5882353,
                     0.1843137,
+                    1.0
+                ]
+            }
+        },
+        "437": {
+            "name": "Shiny Gold",
+            "Phong": {
+                "diffuseColor": [
+                    1.0,
+                    0.5882353,
+                    0.1843137,
+                    1.0
+                ],
+                "ambientColor": [
+                    0.5,
+                    0.5,
+                    0.5,
+                    1.0
+                ],
+                "shininess": 2,
+                "specularColor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            }
+        },
+        "438": {
+            "name": "Shiny Cyan",
+            "Phong": {
+                "ambientColor": [
+                    0.5,
+                    0.5,
+                    0.5,
+                    1.0
+                ],
+                "diffuseColor": [
+                    0.345098,
+                    1.0,
+                    0.8823529,
+                    1.0
+                ],
+                "specularColor": [
+                    1.0,
+                    1.0,
+                    1.0,
                     1.0
                 ]
             }

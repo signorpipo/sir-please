@@ -10,6 +10,10 @@ export class StarsDomeComponent extends Component {
         _myMaxDomeSize: Property.float(0),
         _myMinScale: Property.float(0),
         _myMaxScale: Property.float(0),
+        _myAvoidObject1: Property.object(),
+        _myAvoidObject1Distance: Property.float(0),
+        _myAvoidObject2: Property.object(),
+        _myAvoidObject2Distance: Property.float(0),
     };
 
     start() {
@@ -78,13 +82,23 @@ export class StarsDomeComponent extends Component {
     }
 
     _addStar(starDirection) {
-        let randomStar = Math.pp_randomPick(this._myStars.pp_getChildren()).pp_clone();
-        randomStar.pp_setParent(this.object, false);
-        randomStar.pp_resetTransformLocal();
-        randomStar.pp_setPositionLocal(starDirection);
-        randomStar.pp_setRotationLocal(vec3_create(Math.pp_random(-180, 180), Math.pp_random(-180, 180), Math.pp_random(-180, 180)));
-        randomStar.pp_setScaleLocal(Math.pp_random(this._myMinScale, this._myMaxScale));
+        let worldPosition = this.object.pp_convertPositionLocalToWorld(starDirection);
 
-        this._mySpawnedStars.push(randomStar);
+        let object1Position = this._myAvoidObject1.pp_getPosition();
+        let object2Position = this._myAvoidObject2.pp_getPosition();
+
+        let distance1 = worldPosition.vec3_distance(object1Position);
+        let distance2 = worldPosition.vec3_distance(object2Position);
+
+        if (distance1 > this._myAvoidObject1Distance && distance2 > this._myAvoidObject2Distance) {
+            let randomStar = Math.pp_randomPick(this._myStars.pp_getChildren()).pp_clone();
+            randomStar.pp_setParent(this.object, false);
+            randomStar.pp_resetTransformLocal();
+            randomStar.pp_setPositionLocal(starDirection);
+            randomStar.pp_setRotationLocal(vec3_create(Math.pp_random(-180, 180), Math.pp_random(-180, 180), Math.pp_random(-180, 180)));
+            randomStar.pp_setScaleLocal(Math.pp_random(this._myMinScale, this._myMaxScale));
+
+            this._mySpawnedStars.push(randomStar);
+        }
     }
 }
