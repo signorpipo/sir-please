@@ -47,8 +47,8 @@
     "text": "H[e:good]mmmmm\n"
   },
   "sir_maybe_dont_1": {
-    "autoAdvanceAfter": 3,
-    "text": "Maybe you are right.___\nI still want to press it though.___\n"
+    "autoAdvanceAfter": 1.5,
+    "text": "Maybe you are right.___\nI still want to press it though.__\n"
   },
   "sir_maybe_dont_2": {
     "event": "good",
