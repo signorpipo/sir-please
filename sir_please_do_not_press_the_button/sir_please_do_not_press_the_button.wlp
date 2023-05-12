@@ -3139,7 +3139,7 @@
                         "audioSource": "292",
                         "audioSourceCompnent": "dialog-sound",
                         "charSoundOne": "blip",
-                        "dialogPrefix": "> "
+                        "dialogPrefix": "sir: "
                     }
                 },
                 {
@@ -4791,7 +4791,7 @@
             ],
             "rotation": [
                 4.7924601176418946e-8,
-                2.777331964409769e-8,
+                2.7773319644097693e-8,
                 -0.7071068,
                 0.7071066
             ],

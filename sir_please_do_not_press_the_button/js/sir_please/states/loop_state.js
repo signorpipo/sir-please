@@ -23,7 +23,6 @@ class Loop {
         this._myParentFSM.perform("skip");
     }
 
-
     update(dt, fsm) {
         this._myParentFSM.update(dt);
     }
@@ -50,9 +49,13 @@ export class LoopState {
         this._myFSM.addState("init");
         this._myFSM.addState("loop_one", new LoopSection("sir_loop_one", "loop_one_end"));
         this._myFSM.addState("loop_two", new LoopSection("sir_loop_2", "loop_two_end"));
+        this._myFSM.addState("loop_three", new LoopSection("sir_loop_3", "loop_three_end"));
+        this._myFSM.addState("loop_four", new LoopSection("sir_loop_4", "loop_four_end"));
 
-        this._myFSM.addTransition("init", "loop_one", "start");
+        this._myFSM.addTransition("init", "loop_three", "start");
         this._myFSM.addTransition("loop_one", "loop_two", "loop_one_end");
+        this._myFSM.addTransition("loop_two", "loop_three", "loop_two_end");
+        this._myFSM.addTransition("loop_three", "loop_four", "loop_three_end");
 
         this._myFSM.init("init");
         this._myFSM.perform("start");
