@@ -1,5 +1,5 @@
-import {Component, Emitter, Property} from '@wonderlandengine/api';
-import {DialogManager} from './dialog-manager'
+import { Component, Emitter, Property } from '@wonderlandengine/api';
+import { DialogManager } from './dialog-manager'
 
 /**
  * dialog-controller
@@ -12,7 +12,7 @@ export class DialogController extends Component {
         text: Property.object(),
         responseOneText: Property.object(),
         responseTwoText: Property.object(),
-        dialog: Property.string(""),
+        dialog: Property.int(0),
         charDelay: Property.float(0.025),
         blankDelay: Property.float(0.5),
         audioSource: Property.object(),
@@ -32,9 +32,9 @@ export class DialogController extends Component {
         this.responseTexts.push(this.responseTwoText.getComponent('text'));
 
         this.charSounds = new Array();
-        if(this.charSoundOne != '') this.charSounds.push(this.charSoundOne);
-        if(this.charSoundTwo != '') this.charSounds.push(this.charSoundTwo);
-        if(this.charSoundThree != '') this.charSounds.push(this.charSoundThree);
+        if (this.charSoundOne != '') this.charSounds.push(this.charSoundOne);
+        if (this.charSoundTwo != '') this.charSounds.push(this.charSoundTwo);
+        if (this.charSoundThree != '') this.charSounds.push(this.charSoundThree);
 
         this.onHideResponses = new Emitter();
         this.onSetupResponses = new Emitter();
@@ -46,7 +46,7 @@ export class DialogController extends Component {
     }
 
     play() {
-        if(this.currentStateJSON) return;
+        if (this.currentStateJSON) return;
         this.reset();
         this.playingDialog = this.dialogManager.getComponent(DialogManager).getDialog(this.dialog);
         this.currentState = "starting";
@@ -57,7 +57,7 @@ export class DialogController extends Component {
     }
 
     pause() {
-        if(this.paused) return;
+        if (this.paused) return;
         this.hideResponses();
         this.paused = true;
         this.textReadPos = 0;
@@ -66,12 +66,12 @@ export class DialogController extends Component {
     }
 
     resume() {
-        if(!this.paused) return;
+        if (!this.paused) return;
         this.paused = false;
     }
 
     isWaitingForResponse() {
-        if(!this.currentStateJSON) return false;
+        if (!this.currentStateJSON) return false;
         var desiredText = this.currentStateJSON["text"];
         return this.textReadPos >= desiredText.length;
     }
@@ -89,9 +89,9 @@ export class DialogController extends Component {
     }
 
     update(dt) {
-        if(this.currentState == "" || this.paused) return;
+        if (this.currentState == "" || this.paused) return;
 
-        if(this.currentState == "starting") {
+        if (this.currentState == "starting") {
             this.reset();
             this.currentStateJSON = this.playingDialog["entry"];
             this.currentState = "entry";
@@ -99,23 +99,23 @@ export class DialogController extends Component {
         }
 
         var desiredText = this.currentStateJSON["text"];
-        if(this.textReadPos < desiredText.length) {
+        if (this.textReadPos < desiredText.length) {
             const char = desiredText[this.textReadPos];
             // Hello [s:name] World!
             // s: sound
             // a: animation
             // e: event
-            if(char == '[') {
+            if (char == '[') {
                 var firstBracketIndex = this.textReadPos;
                 var secondBracketIndex = -1;
-                while(true) {
+                while (true) {
                     ++this.textReadPos;
-                    if(this.textReadPos >= desiredText.length) {
+                    if (this.textReadPos >= desiredText.length) {
                         console.error("Missing ']' in dialog sub event");
                         return;
                     }
                     var nextChar = desiredText[this.textReadPos];
-                    if(nextChar == ']') {
+                    if (nextChar == ']') {
                         secondBracketIndex = this.textReadPos;
                         ++this.textReadPos;
                         break;
@@ -124,7 +124,7 @@ export class DialogController extends Component {
 
                 const eventData = desiredText.substring(firstBracketIndex + 1, secondBracketIndex);
                 const tokens = eventData.split(':', 2);
-                if(tokens.length < 2) {
+                if (tokens.length < 2) {
                     console.error('Expected type and name for dialog sub event');
                     return;
                 }
@@ -132,7 +132,7 @@ export class DialogController extends Component {
                 const type = tokens[0];
                 const name = tokens[1];
 
-                switch(type) {
+                switch (type) {
                     case 's': {
                         // Sound
                         this.dialogManager.getComponent(DialogManager).triggerSound(name, this.audioSource.getComponent(this.audioSourceCompnent));
@@ -160,25 +160,25 @@ export class DialogController extends Component {
 
             this.timer += dt;
             this.charSoundTimer += dt;
-            if(this.timer < delay) {
+            if (this.timer < delay) {
                 return;
             }
             this.timer -= delay;
 
-            if(!ignore) {
+            if (!ignore) {
                 this.currentText += char;
                 this.characterPrinted(char);
             }
             ++this.textReadPos;
 
-            if(this.textReadPos >= desiredText.length) {
+            if (this.textReadPos >= desiredText.length) {
                 this.setupResponses();
             }
         } else {
             var autoAdvanceTime = this.currentStateJSON["autoAdvanceAfter"];
-            if(autoAdvanceTime) {
+            if (autoAdvanceTime) {
                 this.timer += dt;
-                if(this.timer < autoAdvanceTime) return;
+                if (this.timer < autoAdvanceTime) return;
                 this.timer -= autoAdvanceTime;
                 this.advance(-1);
             }
@@ -188,11 +188,11 @@ export class DialogController extends Component {
     }
 
     advance(choiceIndex) {
-        if(this.paused) {
+        if (this.paused) {
             console.warn("Cannot advance a paused dialog!");
             return;
         }
-        if(!this.currentStateJSON) return;
+        if (!this.currentStateJSON) return;
 
         // Reset responses
         this.hideResponses();
@@ -200,9 +200,9 @@ export class DialogController extends Component {
         var responses = this.currentStateJSON["responses"];
 
         var jump = responses ? null : this.currentStateJSON["jump"];
-        if(!jump && responses && choiceIndex != -1) {
+        if (!jump && responses && choiceIndex != -1) {
             var response = responses[choiceIndex];
-            if(!response) {
+            if (!response) {
                 console.log("Cannot advance with invalid response!");
                 return;
             }
@@ -210,17 +210,17 @@ export class DialogController extends Component {
         }
 
         // Cannot advance without a response
-        if(!jump && responses) {
+        if (!jump && responses) {
             console.log("Cannot advance current dialog without response!");
             return;
         }
 
-        if(!jump && jump != "") {
+        if (!jump && jump != "") {
             var keys = Object.keys(this.playingDialog);
             var index = keys.indexOf(this.currentState);
             this.reset();
 
-            if(index + 1 >= keys.length) {
+            if (index + 1 >= keys.length) {
                 // Done!
                 this.dialogManager.getComponent(DialogManager).onEnd(this);
                 return;
@@ -239,7 +239,7 @@ export class DialogController extends Component {
 
     hideResponses() {
         this.onHideResponses.notify();
-        for(var i = 0; i < this.responseTexts.length; ++i) {
+        for (var i = 0; i < this.responseTexts.length; ++i) {
             //this.responseTexts[i].active = false;
             //this.responseTexts[i].text = "";
         }
@@ -247,9 +247,9 @@ export class DialogController extends Component {
 
     setupResponses() {
         var responses = this.currentStateJSON["responses"];
-        if(!responses) return;
+        if (!responses) return;
         this.onSetupResponses.notify();
-        for(var i = 0; i < responses.length; ++i) {
+        for (var i = 0; i < responses.length; ++i) {
             var response = responses[i]["text"];
             //this.responseTexts[i].active = true;
             this.responseTexts[i].text = response;
@@ -258,16 +258,16 @@ export class DialogController extends Component {
 
     handleEvent() {
         const event = this.currentStateJSON["event"];
-        if(!event) return;
+        if (!event) return;
         this.dialogManager.getComponent(DialogManager).dispatchEvent(event);
     }
 
     characterPrinted(char) {
         this.onCharacterPrinted.notify(char);
-        if(this.charSounds.length == 0) return;
+        if (this.charSounds.length == 0) return;
         const randomSound = Math.floor(Math.random() * this.charSounds.length);
         --this.charSoundCounter;
-        if(this.charSoundCounter > 0) return;
+        if (this.charSoundCounter > 0) return;
         this.dialogManager.getComponent(DialogManager).triggerSound(this.charSounds[randomSound], this.audioSource.getComponent(this.audioSourceCompnent));
         this.charSoundCounter = this.charSoundSkips;
     }

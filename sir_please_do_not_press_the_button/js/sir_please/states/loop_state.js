@@ -1,4 +1,4 @@
-import {Component, Property} from '@wonderlandengine/api';
+import { Property } from '@wonderlandengine/api';
 import { FSM } from '../../pp';
 import { GameGlobals } from "../game_globals";
 
@@ -52,10 +52,11 @@ export class LoopState {
         this._myFSM.addState("loop_three", new LoopSection("sir_loop_3", "loop_three_end"));
         this._myFSM.addState("loop_four", new LoopSection("sir_loop_4", "loop_four_end"));
 
-        this._myFSM.addTransition("init", "loop_four", "start");
+        this._myFSM.addTransition("init", "loop_one", "start");
         this._myFSM.addTransition("loop_one", "loop_two", "loop_one_end");
         this._myFSM.addTransition("loop_two", "loop_three", "loop_two_end");
         this._myFSM.addTransition("loop_three", "loop_four", "loop_three_end");
+        this._myFSM.addTransition("loop_four", "loop_one", "loop_four_end");
 
         this._myFSM.init("init");
         this._myFSM.perform("start");

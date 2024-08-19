@@ -1,4 +1,4 @@
-import {Component, Emitter, Property} from '@wonderlandengine/api';
+import { Component, Emitter, Property } from '@wonderlandengine/api';
 
 /**
  * dialog-manager
@@ -7,8 +7,10 @@ export class DialogManager extends Component {
     static TypeName = 'dialog-manager';
 
     init() {
-        fetch('./Dialog.json')
-            .then((response) => response.json())
+        fetch('./dialog.json')
+            .then((response) => {
+                response.json()
+            })
             .then((json) => {
                 console.log(json)
                 this.dialogs = json;
@@ -31,7 +33,7 @@ export class DialogManager extends Component {
      * @param dialogController Controller to play
      */
     play(dialogController) {
-        if(this.playingDialog) return;
+        if (this.playingDialog) return;
         this.playingDialog = dialogController;
         dialogController.play();
     }
@@ -42,7 +44,7 @@ export class DialogManager extends Component {
      * @param dialogController Controller that ended
      */
     onEnd(dialogController) {
-        if(this.playingDialog != dialogController) return;
+        if (this.playingDialog != dialogController) return;
         this.playingDialog = null;
     }
 
@@ -50,7 +52,7 @@ export class DialogManager extends Component {
      * Stop the current dialog which resets it
      */
     stop() {
-        if(!this.playingDialog) return;
+        if (!this.playingDialog) return;
         this.playingDialog.stop();
         this.playingDialog = null;
     }
@@ -60,7 +62,7 @@ export class DialogManager extends Component {
      * This also resets the text animator
      */
     pause() {
-        if(!this.playingDialog) return;
+        if (!this.playingDialog) return;
         this.playingDialog.pause();
     }
 
@@ -68,7 +70,7 @@ export class DialogManager extends Component {
      * Resume the current dialog
      */
     resume() {
-        if(!this.playingDialog) return;
+        if (!this.playingDialog) return;
         this.playingDialog.resume();
     }
 
@@ -77,7 +79,7 @@ export class DialogManager extends Component {
      * @param choiceIndex Index of the response to advance with, provide -1 if there are no responses
      */
     advance(choiceIndex) {
-        if(!this.playingDialog) return;
+        if (!this.playingDialog) return;
         this.playingDialog.advance(choiceIndex);
     }
 
@@ -85,7 +87,7 @@ export class DialogManager extends Component {
      * Wether the dialog is waiting for a response or timer
      */
     isWaitingForResponse() {
-        if(!this.playingDialog) return false;
+        if (!this.playingDialog) return false;
         return this.playingDialog.isWaitingForResponse();
     }
 
@@ -121,7 +123,7 @@ export class DialogManager extends Component {
     }
 
     triggerSound(name, source) {
-        if(!this.sounds.has(name)) {
+        if (!this.sounds.has(name)) {
             console.warn("No sound by name " + name + " exists");
             return;
         }

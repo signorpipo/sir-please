@@ -1,94 +1,94 @@
 {
-  "entry":{
-    "text":"Who are you?\nAnd how did you get here?\nYou are here to stop me aren't you?\n",
-    "responses":[
-      {
-        "text":"Stop you\nfrom what?",
-        "jump":"sir_hand"
-      },
-      {
-        "text":"Nah",
-        "jump":"sir_ded"
-      }
-    ]
-  },
-  "sir_hand":{
-    "autoAdvanceAfter":1,
-    "text":"Do you see my hand slowly \nmoving down?___\nI am going to press this button!\n"
-  },
-  "sir_hand_two":{
-    "text":"You cannot stop me![e:bad]\n",
-    "responses":[
-      {
-        "text":"What does\nit do?",
-        "jump":"sir_what_button_do"
-      },
-      {
-        "text":"Nah, go ahead",
-        "jump":"sir_ded"
-      }
-    ]
-  },
-  "sir_what_button_do":{
-    "text":"I don't know what it does.___\nBut I want to press it![e:bad]\n",
-    "responses":[
-      {
-        "text":"Maybe you\nshould not",
-        "jump":"sir_maybe_dont"
-      },
-      {
-        "text":"Ok do it!",
-        "jump":"sir_ded"
-      }
-    ]
-  },
-  "sir_maybe_dont":{
-    "autoAdvanceAfter":3,
-    "text":"H[e:good]mmmmm\n"
-  },
-  "sir_maybe_dont_1":{
-    "autoAdvanceAfter":1.5,
-    "event":"loop_one_end",
-    "text":"Maybe you are right.___\nI still want to press it though.__\n"
-  },
-  "sir_maybe_dont_2":{
-    "event":"good",
-    "text":"But I'll move my hand slower \neach time you make a good point.[e:good]___\nHow does that sound?\n",
-    "responses":[
-      {
-        "text":"Sounds good",
-        "jump":"sir_agree"
-      },
-      {
-        "text":"Nah just press it",
-        "jump":"sir_ded"
-      }
-    ]
-  },
-  "sir_agree":{
-    "text":"Glad we agree on something.\n_",
-    "responses":[
-      {
-        "text":"So who are you?",
-        "jump":"sir_name"
-      },
-      {
-        "text":"Actually just do it",
-        "jump":"sir_ded"
-      }
-    ]
-  },
-  "sir_name":{
-    "autoAdvanceAfter":1,
-    "jump":"ded",
-    "text":"I don't trust you to tell \nyou my name!___\nScrew this, you are stupid!___\nI am pressing the button!\n"
-  },
-  "sir_ded":{
-    "autoAdvanceAfter":1,
-    "text":"Ok!\n"
-  },
-  "ded":{
-    "event":"very_uber_bad",
-    "text":"Bye\n"
-  }
+    "entry": {
+        "text": "Who are you?\nAnd how did you get here?\nYou are here to stop me aren't you?\n",
+        "responses": [
+            {
+                "text": "Stop you\nfrom what?",
+                "jump": "sir_hand"
+            },
+            {
+                "text": "Nah",
+                "jump": "sir_ded"
+            }
+        ]
+    },
+    "sir_hand": {
+        "autoAdvanceAfter": 1,
+        "text": "Do you see my hand slowly \nmoving down?___\nI am going to press this button!\n"
+    },
+    "sir_hand_two": {
+        "text": "You cannot stop me![e:bad]\n",
+        "responses": [
+            {
+                "text": "What does\nit do?",
+                "jump": "sir_what_button_do"
+            },
+            {
+                "text": "Nah, go ahead",
+                "jump": "sir_ded"
+            }
+        ]
+    },
+    "sir_what_button_do": {
+        "text": "I don't know what it does.___\nBut I want to press it![e:bad]\n",
+        "responses": [
+            {
+                "text": "Maybe you\nshould not",
+                "jump": "sir_maybe_dont"
+            },
+            {
+                "text": "Ok do it!",
+                "jump": "sir_ded"
+            }
+        ]
+    },
+    "sir_maybe_dont": {
+        "autoAdvanceAfter": 3,
+        "text": "H[e:good]mmmmm\n"
+    },
+    "sir_maybe_dont_1": {
+        "autoAdvanceAfter": 1.5,
+        "event": "loop_one_end",
+        "text": "Maybe you are right.___\nI still want to press it though.__\n"
+    },
+    "sir_maybe_dont_2": {
+        "event": "good",
+        "text": "But I'll move my hand slower \neach time you make a good point.[e:good]___\nHow does that sound?\n",
+        "responses": [
+            {
+                "text": "Sounds good",
+                "jump": "sir_agree"
+            },
+            {
+                "text": "Nah just press it",
+                "jump": "sir_ded"
+            }
+        ]
+    },
+    "sir_agree": {
+        "text": "Glad we agree on something.\n_",
+        "responses": [
+            {
+                "text": "So who are you?",
+                "jump": "sir_name"
+            },
+            {
+                "text": "Actually just do it",
+                "jump": "sir_ded"
+            }
+        ]
+    },
+    "sir_name": {
+        "autoAdvanceAfter": 1,
+        "jump": "ded",
+        "text": "I don't trust you to tell \nyou my name!___\nScrew this, you are stupid!___\nI am pressing the button!\n"
+    },
+    "sir_ded": {
+        "autoAdvanceAfter": 1,
+        "text": "Ok!\n"
+    },
+    "ded": {
+        "event": "very_uber_bad",
+        "text": "Bye\n"
+    }
 }
