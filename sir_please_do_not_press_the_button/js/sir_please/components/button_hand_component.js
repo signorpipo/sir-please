@@ -25,7 +25,7 @@ export class ButtonHandComponent extends Component {
     }
 
     update(dt) {
-        if (this._myStarted) {
+        if (this._myStarted && this._myCurrentSpeed > 0) {
             this.object.pp_translateObject(this._myTranslateVector.vec3_set(this._myCurrentSpeed * this._mySpeedMultiplier * dt, 0, 0));
 
             this._mySpawnParticlesTimer.update(dt);
@@ -59,9 +59,11 @@ export class ButtonHandComponent extends Component {
             this._myCurrentSpeed *= -multiplier;
         }
 
-        if (this._myCurrentSpeed < this._myMinSpeedToStop) {
-            this._myCurrentSpeed = 0;
-        }
+        this._myCurrentSpeed = Math.max(this._myCurrentSpeed, 0.005);
+    }
+
+    stopSpeed() {
+        this._myCurrentSpeed = 0;
     }
 
     startButtonHand() {

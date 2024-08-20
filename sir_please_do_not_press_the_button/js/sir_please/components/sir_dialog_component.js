@@ -316,7 +316,9 @@ export class SirDialogComponent extends Component {
     }
 
     _responseSelected(responseGoodLevel) {
-        if (responseGoodLevel > 0) {
+        if (responseGoodLevel > 1000) {
+            GameGlobals.myButtonHand.stopSpeed();
+        } else if (responseGoodLevel > 0) {
             for (let i = 0; i < responseGoodLevel; i++) {
                 GameGlobals.myButtonHand.multiplySpeed(-this._myOptionSpeedMultiplierGood);
             }
@@ -333,7 +335,7 @@ export class SirDialogComponent extends Component {
         // if hand speed is 0 then change dialog to something like "ok you convinced me"
         // for now just insta win
         if (GameGlobals.myButtonHand.getSpeed() == 0) {
-            this._myWin = true;
+            //this._myWin = true;
         }
     }
 

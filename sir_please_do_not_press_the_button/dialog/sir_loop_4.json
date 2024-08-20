@@ -186,7 +186,7 @@
     "end_2": {
         "autoAdvanceAfter": 1,
         "jump": "end_3",
-        "text": "And than Pipo and Robin\n want to thank you for playing."
+        "text": "And that Robin and Pipo\n want to thank you for playing."
     },
     "end_3": {
         "text": "What a weird thing to say,\n don you think?",
