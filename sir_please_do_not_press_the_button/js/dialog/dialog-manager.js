@@ -9,10 +9,10 @@ export class DialogManager extends Component {
     init() {
         fetch('./dialog.json')
             .then((response) => {
-                response.json()
+                return response.json();
             })
             .then((json) => {
-                console.log(json)
+                //console.log(json);
                 this.dialogs = json;
             });
 
