@@ -118,6 +118,10 @@ export class SirDialogButtonComponent extends Component {
         return this._myFSM.isInState("pop_in") || this._myFSM.isInState("visible");
     }
 
+    isReallyVisible() {
+        return this._myFSM.isInState("pop_in") || this._myFSM.isInState("visible") || this._myFSM.isInState("pop_out");
+    }
+
     _popInUpdate(dt, fsm) {
         if (this._mySpawnTimer.isRunning()) {
             this._mySpawnTimer.update(dt);

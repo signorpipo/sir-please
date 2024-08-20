@@ -3125,7 +3125,8 @@
                         "_myMaxAngle": 75.0,
                         "_myHandSpeedMultiplierOnShow": 0.5,
                         "_myOptionSpeedMultiplierBad": 1.0,
-                        "_myOptionSpeedMultiplierGood": 0.5
+                        "_myOptionSpeedMultiplierGood": 0.5,
+                        "_myTextSpeech": "269"
                     }
                 },
                 {

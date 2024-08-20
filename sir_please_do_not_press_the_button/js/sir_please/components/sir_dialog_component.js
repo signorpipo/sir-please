@@ -9,6 +9,7 @@ export class SirDialogComponent extends Component {
     static Properties = {
         _myDialog: Property.object(),
         _mySpeech: Property.object(),
+        _myTextSpeech: Property.object(),
         _myOption1: Property.object(),
         _myOption2: Property.object(),
         _myTriggerPosition: Property.object(),
@@ -110,6 +111,12 @@ export class SirDialogComponent extends Component {
     }
 
     _popInUpdate(dt, fsm) {
+        if (this._myDialogController.currentStateJSON != null && this._myDialogController.currentStateJSON["text"] == null) {
+            this._myTextSpeech.pp_setActive(false);
+        } else {
+            this._myTextSpeech.pp_setActive(true);
+        }
+
         if (this._mySpawnTimer.isRunning()) {
             this._mySpawnTimer.update(dt);
 
@@ -131,6 +138,12 @@ export class SirDialogComponent extends Component {
     }
 
     _visibleUpdate(dt, fsm) {
+        if (this._myDialogController.currentStateJSON != null && this._myDialogController.currentStateJSON["text"] == null) {
+            this._myTextSpeech.pp_setActive(false);
+        } else {
+            this._myTextSpeech.pp_setActive(true);
+        }
+
         if (!this._isDialogVisible()) {
             fsm.perform("hide");
         }
@@ -178,6 +191,12 @@ export class SirDialogComponent extends Component {
     }
 
     _popOutUpdate(dt, fsm) {
+        if (this._myDialogController.currentStateJSON != null && this._myDialogController.currentStateJSON["text"] == null) {
+            this._myTextSpeech.pp_setActive(false);
+        } else {
+            this._myTextSpeech.pp_setActive(true);
+        }
+
         if (this._myUnspawnTimer.isRunning()) {
             this._myUnspawnTimer.update(dt);
 
@@ -206,9 +225,7 @@ export class SirDialogComponent extends Component {
 
         this._myDialog.pp_setScale(Math.PP_EPSILON * 100);
 
-        if (this._myDialogController.currentStateJSON["text"] != null) {
-            this._mySpeech.pp_setActive(true);
-        }
+        this._mySpeech.pp_setActive(true);
 
         this._myOption1Button.startButton();
         this._myOption2Button.startButton();
@@ -259,6 +276,11 @@ export class SirDialogComponent extends Component {
     }
 
     _isDialogVisible() {
+        if (this._myDialogController.currentStateJSON != null && this._myDialogController.currentStateJSON["text"] == null &&
+            !this._myOption1Button.isReallyVisible() && !this._myOption2Button.isReallyVisible()) {
+            return false;
+        }
+
         let visible = false;
 
         let playerPosition = GameGlobals.myPlayerTransformManager.getPosition();
