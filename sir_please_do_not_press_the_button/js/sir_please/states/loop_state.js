@@ -6,13 +6,13 @@ class Loop {
     constructor(dialog, endEvent) {
         this.dialogName = dialog;
         this.loopEndEvent = endEvent;
+
+        GameGlobals.myDialogManager.addEventListener(this.loopEndEvent, this.loopEnd.bind(this));
     }
 
     start(fsm) {
         this._myParentFSM = fsm;
         GameGlobals.myDialogController.dialog = this.dialogName;
-
-        GameGlobals.myDialogManager.addEventListener(this.loopEndEvent, this.loopEnd.bind(this));
     }
 
     loopEnd() {
