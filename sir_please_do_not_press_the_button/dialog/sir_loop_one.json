@@ -49,10 +49,9 @@
         "text": "H[e:good]mmmmm\n"
     },
     "sir_maybe_dont_1": {
-        "autoAdvanceAfter": 1.5,
+        "autoAdvanceAfter": 1,
         "jump": "sir_maybe_dont_2",
-        "event": "loop_one_end",
-        "text": "Maybe you are right.___\nI still want to press it though.__\n"
+        "text": "Maybe you are right.___\nI still want to press it though.[e:loop_one_end]\n"
     },
     "sir_maybe_dont_2": {
         "event": "good",

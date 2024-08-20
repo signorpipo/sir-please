@@ -109,10 +109,9 @@
         "text": "I don't need pitty from a liar.___\nAnd I still don't know\nwho you are.\n"
     },
     "no_friends": {
-        "event": "loop_three_end",
         "autoAdvanceAfter": 1,
         "jump": "no_friends_2",
-        "text": "Well___ there was Jeff.___\nThe only person who ever\ncared about me.\nBut we parted ways.\n"
+        "text": "Well___ there was Jeff.___\nThe only person who ever\ncared about me.\nBut we parted ways.[e:loop_three_end]\n"
     },
     "no_friends_2": {
         "text": "Anyways___\nI don't want to talk about this.____\n\n",

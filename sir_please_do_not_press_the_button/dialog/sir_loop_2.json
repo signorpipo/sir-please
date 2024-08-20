@@ -143,13 +143,12 @@
     "cant_prove": {
         "autoAdvanceAfter": 1,
         "jump": "cant_prove_explain",
-        "event": "loop_two_end",
         "text": "What do you mean you can't?___\nWell, if you are really from the future___\nThen you can go back in time\nagain and gather proof.\n"
     },
     "cant_prove_explain": {
         "autoAdvanceAfter": 1,
         "jump": "ded",
-        "text": "So, if this button really does what you say.___\nThen you can try convincing me next time!\n"
+        "text": "So, if this button really does what you say.___\nThen you can try convincing me next time![e:loop_two_end]\n"
     },
     "sir_ded": {
         "autoAdvanceAfter": 1,

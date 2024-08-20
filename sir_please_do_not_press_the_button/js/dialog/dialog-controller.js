@@ -12,7 +12,7 @@ export class DialogController extends Component {
         text: Property.object(),
         responseOneText: Property.object(),
         responseTwoText: Property.object(),
-        dialog: Property.int(0),
+        dialog: Property.string(""),
         charDelay: Property.float(0.025),
         blankDelay: Property.float(0.5),
         audioSource: Property.object(),
