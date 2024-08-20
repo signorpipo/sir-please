@@ -73,7 +73,7 @@ export class DialogController extends Component {
     isWaitingForResponse() {
         if (!this.currentStateJSON) return false;
         var desiredText = this.currentStateJSON["text"];
-        return this.textReadPos >= desiredText.length;
+        return desiredText != null && this.textReadPos >= desiredText.length;
     }
 
     reset() {
@@ -99,7 +99,7 @@ export class DialogController extends Component {
         }
 
         var desiredText = this.currentStateJSON["text"];
-        if (this.textReadPos < desiredText.length) {
+        if (desiredText != null && this.textReadPos < desiredText.length) {
             const char = desiredText[this.textReadPos];
             // Hello [s:name] World!
             // s: sound

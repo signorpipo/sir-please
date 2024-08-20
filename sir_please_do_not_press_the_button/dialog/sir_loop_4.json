@@ -101,12 +101,12 @@
         "text": "Question one___\nWhat is my favorite color?\n\n",
         "responses": [
             {
-                "text": "Red",
+                "text": "Yellow",
                 "jump": "color"
             },
             {
-                "text": "Green",
-                "jump": "color"
+                "text": "Blue",
+                "jump": "color_right"
             }
         ]
     },
@@ -114,11 +114,105 @@
         "event": "bad",
         "autoAdvanceAfter": 1,
         "jump": "end",
-        "text": "WRONG!___\nI knew you are not Jeff!\n"
+        "text": "WRONG!___\nI knew you were not Jeff!\n"
+    },
+    "color_right": {
+        "event": "good",
+        "autoAdvanceAfter": 1,
+        "jump": "question_two",
+        "text": "I'm impressed_._._.\nNo one aside from Jeff\n knows this.\n"
+    },
+    "question_two": {
+        "text": "Question two\nHow old am I?\n\n",
+        "responses": [
+            {
+                "text": "72",
+                "jump": "wrong_age"
+            },
+            {
+                "text": "22",
+                "jump": "good_age"
+            }
+        ]
+    },
+    "wrong_age": {
+        "event": "bad",
+        "autoAdvanceAfter": 1,
+        "jump": "end",
+        "text": "WRONG!___\nI knew you were not Jeff!\n"
+    },
+    "good_age": {
+        "event": "good",
+        "autoAdvanceAfter": 1,
+        "jump": "question_three",
+        "text": "Yeah, that is_._._ my age_._._\n You are totally right.\n"
+    },
+    "question_three": {
+        "text": "Last question\nWhat's the name of my\nbest friend?\n\n",
+        "responses": [
+            {
+                "text": "Jeff",
+                "jump": "wrong_three"
+            },
+            {
+                "text": "Ronald",
+                "jump": "good_three"
+            }
+        ]
+    },
+    "wrong_three": {
+        "event": "bad",
+        "autoAdvanceAfter": 1,
+        "jump": "end",
+        "text": "WRONG!___\nI knew you were not Jeff!\n"
+    },
+    "good_three": {
+        "event": "good",
+        "autoAdvanceAfter": 1,
+        "jump": "end",
+        "text": "So you are Jeff_._._.\n I'm sorry for doubting you."
     },
     "end": {
-        "event": "good",
-        "text": "This is the end of the demo.\nThanks for playing!\n"
+        "event": "insta_good",
+        "autoAdvanceAfter": 1,
+        "jump": "end_1",
+        "text": "I guess that I will\n not press the button then.\n I trust you, you know."
+    },
+    "end_1": {
+        "autoAdvanceAfter": 1,
+        "jump": "end_2",
+        "text": "I also feel like I need\n to say to you that this\n is the end of this game."
+    },
+    "end_2": {
+        "autoAdvanceAfter": 1,
+        "jump": "end_3",
+        "text": "And than Pipo and Robin\n want to thank you for playing."
+    },
+    "end_3": {
+        "text": "What a weird thing to say,\n don you think?",
+        "responses": [
+            {
+                "text": "Yeah...",
+                "jump": "end_4"
+            },
+            {
+                "text": "Not at all",
+                "jump": "end_4"
+            }
+        ]
+    },
+    "end_4": {
+        "text": "Anyway, I have to go now.\nSee you soon, Jeff.\n Let's do it again tomorrow.",
+        "responses": [
+            {
+                "text": "See you",
+                "jump": "win"
+            },
+            {
+                "text": "For sure",
+                "jump": "win"
+            }
+        ]
     },
     "time_loop": {
         "event": "very_bad",
@@ -194,7 +288,6 @@
         "text": "I don't need pitty from a liar.___\nAnd I still don't know\nwho you are.\n"
     },
     "no_friends": {
-        "event": "loop_three_end",
         "autoAdvanceAfter": 1,
         "jump": "no_friends_2",
         "text": "Well___ there was Jeff.___\nThe only person who ever\ncared about me.\nBut we parted ways.\n"
@@ -395,5 +488,8 @@
     "ded": {
         "event": "very_uber_bad",
         "text": "Bye"
+    },
+    "win": {
+        "event": "loop_four_end"
     }
 }

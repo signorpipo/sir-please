@@ -206,7 +206,9 @@ export class SirDialogComponent extends Component {
 
         this._myDialog.pp_setScale(Math.PP_EPSILON * 100);
 
-        this._mySpeech.pp_setActive(true);
+        if (this._myDialogController.currentStateJSON["text"] != null) {
+            this._mySpeech.pp_setActive(true);
+        }
 
         this._myOption1Button.startButton();
         this._myOption2Button.startButton();
