@@ -3139,7 +3139,7 @@
                         "audioSource": "292",
                         "audioSourceCompnent": "dialog-sound",
                         "charSoundOne": "blip",
-                        "dialogPrefix": "sir: "
+                        "dialogPrefix": "Sir: \n"
                     }
                 },
                 {
