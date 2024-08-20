@@ -15,6 +15,7 @@
         },
         "sir_hand": {
             "autoAdvanceAfter": 1,
+            "jump": "sir_hand_two",
             "text": "Do you see my hand slowly \nmoving down?___\nI am going to press this button!\n"
         },
         "sir_hand_two": {
@@ -45,10 +46,12 @@
         },
         "sir_maybe_dont": {
             "autoAdvanceAfter": 3,
+            "jump": "sir_maybe_dont_1",
             "text": "H[e:good]mmmmm\n"
         },
         "sir_maybe_dont_1": {
             "autoAdvanceAfter": 1.5,
+            "jump": "sir_maybe_dont_2",
             "event": "loop_one_end",
             "text": "Maybe you are right.___\nI still want to press it though.__\n"
         },
@@ -86,6 +89,7 @@
         },
         "sir_ded": {
             "autoAdvanceAfter": 1,
+            "jump": "ded",
             "text": "Ok!\n"
         },
         "ded": {
@@ -109,6 +113,7 @@
         },
         "dont_press": {
             "autoAdvanceAfter": 1,
+            "jump": "dont_press_1",
             "text": "I knew it!___ You are here to stop me!___\n"
         },
         "dont_press_1": {
@@ -236,6 +241,7 @@
         },
         "cant_prove": {
             "autoAdvanceAfter": 1,
+            "jump": "cant_prove_explain",
             "event": "loop_two_end",
             "text": "What do you mean you can't?___\nWell, if you are really from the future___\nThen you can go back in time\nagain and gather proof.\n"
         },
@@ -246,6 +252,7 @@
         },
         "sir_ded": {
             "autoAdvanceAfter": 1,
+            "jump": "ded",
             "text": "Ok!\n"
         },
         "ded": {
@@ -269,10 +276,12 @@
         },
         "remember": {
             "autoAdvanceAfter": 1,
+            "jump": "remember_2",
             "text": "I've never seen you\nin my entire life.\n"
         },
         "remember_2": {
             "autoAdvanceAfter": 1,
+            "jump": "remember_3",
             "text": "But my memory is not\nas it used to.___\n"
         },
         "remember_3": {
@@ -297,6 +306,7 @@
         "party": {
             "event": "very_good",
             "autoAdvanceAfter": 1,
+            "jump": "party_2",
             "text": "Oh!___ A party!___\nI love parties!\n"
         },
         "party_2": {
@@ -320,6 +330,7 @@
         },
         "thing": {
             "autoAdvanceAfter": 1,
+            "jump": "thing_1",
             "text": "You will have to be a\nbit more specific.\nI went to a lot of parties\nin the mountains.\n"
         },
         "thing_1": {
@@ -362,6 +373,7 @@
         "no_friends": {
             "event": "loop_three_end",
             "autoAdvanceAfter": 1,
+            "jump": "no_friends_2",
             "text": "Well___ there was Jeff.___\nThe only person who ever\ncared about me.\nBut we parted ways.\n"
         },
         "no_friends_2": {
@@ -416,6 +428,7 @@
         },
         "dont_press": {
             "autoAdvanceAfter": 1,
+            "jump": "dont_press_1",
             "text": "I knew it!___ You are here to stop me!___\n"
         },
         "dont_press_1": {
@@ -543,6 +556,7 @@
         },
         "cant_prove": {
             "autoAdvanceAfter": 1,
+            "jump": "cant_prove_explain",
             "text": "What do you mean you can't?___\nWell, if you are really from the future___\nThen you can go back in time\nagain and gather proof.\n"
         },
         "cant_prove_explain": {
@@ -552,6 +566,7 @@
         },
         "sir_ded": {
             "autoAdvanceAfter": 1,
+            "jump": "ded",
             "text": "Ok!\n"
         },
         "ded": {
@@ -620,10 +635,12 @@
         },
         "remember": {
             "autoAdvanceAfter": 1,
+            "jump": "remember_2",
             "text": "I've never seen you\nin my entire life.\n"
         },
         "remember_2": {
             "autoAdvanceAfter": 1,
+            "jump": "remember_3",
             "text": "But my memory is not\nas it used to.___\n"
         },
         "remember_3": {
@@ -642,15 +659,18 @@
         "bad_memory": {
             "event": "very_good",
             "autoAdvanceAfter": 1,
+            "jump": "bad_memory_1",
             "text": "Hmmmm___\nMy memory is not what it used to.\n"
         },
         "bad_memory_1": {
             "autoAdvanceAfter": 1,
+            "jump": "bad_memory_2",
             "text": "Perhaps you are Jeff___\nBut you will have to prove it!___\n"
         },
         "bad_memory_2": {
             "event": "good",
             "autoAdvanceAfter": 1,
+            "jump": "question_one",
             "text": "By answering a few questions\nthat only Jeff would know!\n"
         },
         "question_one": {
@@ -669,6 +689,7 @@
         "color": {
             "event": "bad",
             "autoAdvanceAfter": 1,
+            "jump": "end",
             "text": "WRONG!___\nI knew you are not Jeff!\n"
         },
         "end": {
@@ -684,6 +705,7 @@
         "party": {
             "event": "very_good",
             "autoAdvanceAfter": 1,
+            "jump": "party_2",
             "text": "Oh!___ A party!___\nI love parties!\n"
         },
         "party_2": {
@@ -707,6 +729,7 @@
         },
         "thing": {
             "autoAdvanceAfter": 1,
+            "jump": "thing_1",
             "text": "You will have to be a\nbit more specific.\nI went to a lot of parties\nin the mountains.\n"
         },
         "thing_1": {
@@ -749,6 +772,7 @@
         "no_friends": {
             "event": "loop_three_end",
             "autoAdvanceAfter": 1,
+            "jump": "no_friends_2",
             "text": "Well___ there was Jeff.___\nThe only person who ever\ncared about me.\nBut we parted ways.\n"
         },
         "no_friends_2": {
@@ -803,6 +827,7 @@
         },
         "dont_press": {
             "autoAdvanceAfter": 1,
+            "jump": "dont_press_1",
             "text": "I knew it!___ You are here to stop me!___\n"
         },
         "dont_press_1": {
@@ -930,6 +955,7 @@
         },
         "cant_prove": {
             "autoAdvanceAfter": 1,
+            "jump": "cant_prove_explain",
             "text": "What do you mean you can't?___\nWell, if you are really from the future___\nThen you can go back in time\nagain and gather proof.\n"
         },
         "cant_prove_explain": {
@@ -939,6 +965,7 @@
         },
         "sir_ded": {
             "autoAdvanceAfter": 1,
+            "jump": "ded",
             "text": "Ok!\n"
         },
         "ded": {

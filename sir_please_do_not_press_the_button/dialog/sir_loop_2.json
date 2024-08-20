@@ -14,6 +14,7 @@
     },
     "dont_press": {
         "autoAdvanceAfter": 1,
+        "jump": "dont_press_1",
         "text": "I knew it!___ You are here to stop me!___\n"
     },
     "dont_press_1": {
@@ -141,6 +142,7 @@
     },
     "cant_prove": {
         "autoAdvanceAfter": 1,
+        "jump": "cant_prove_explain",
         "event": "loop_two_end",
         "text": "What do you mean you can't?___\nWell, if you are really from the future___\nThen you can go back in time\nagain and gather proof.\n"
     },
@@ -151,6 +153,7 @@
     },
     "sir_ded": {
         "autoAdvanceAfter": 1,
+        "jump": "ded",
         "text": "Ok!\n"
     },
     "ded": {

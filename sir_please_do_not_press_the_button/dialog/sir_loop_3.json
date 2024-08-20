@@ -14,10 +14,12 @@
     },
     "remember": {
         "autoAdvanceAfter": 1,
+        "jump": "remember_2",
         "text": "I've never seen you\nin my entire life.\n"
     },
     "remember_2": {
         "autoAdvanceAfter": 1,
+        "jump": "remember_3",
         "text": "But my memory is not\nas it used to.___\n"
     },
     "remember_3": {
@@ -42,6 +44,7 @@
     "party": {
         "event": "very_good",
         "autoAdvanceAfter": 1,
+        "jump": "party_2",
         "text": "Oh!___ A party!___\nI love parties!\n"
     },
     "party_2": {
@@ -65,6 +68,7 @@
     },
     "thing": {
         "autoAdvanceAfter": 1,
+        "jump": "thing_1",
         "text": "You will have to be a\nbit more specific.\nI went to a lot of parties\nin the mountains.\n"
     },
     "thing_1": {
@@ -107,6 +111,7 @@
     "no_friends": {
         "event": "loop_three_end",
         "autoAdvanceAfter": 1,
+        "jump": "no_friends_2",
         "text": "Well___ there was Jeff.___\nThe only person who ever\ncared about me.\nBut we parted ways.\n"
     },
     "no_friends_2": {
@@ -161,6 +166,7 @@
     },
     "dont_press": {
         "autoAdvanceAfter": 1,
+        "jump": "dont_press_1",
         "text": "I knew it!___ You are here to stop me!___\n"
     },
     "dont_press_1": {
@@ -288,6 +294,7 @@
     },
     "cant_prove": {
         "autoAdvanceAfter": 1,
+        "jump": "cant_prove_explain",
         "text": "What do you mean you can't?___\nWell, if you are really from the future___\nThen you can go back in time\nagain and gather proof.\n"
     },
     "cant_prove_explain": {
@@ -297,6 +304,7 @@
     },
     "sir_ded": {
         "autoAdvanceAfter": 1,
+        "jump": "ded",
         "text": "Ok!\n"
     },
     "ded": {

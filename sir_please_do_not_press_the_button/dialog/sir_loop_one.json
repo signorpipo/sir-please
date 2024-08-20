@@ -14,6 +14,7 @@
     },
     "sir_hand": {
         "autoAdvanceAfter": 1,
+        "jump": "sir_hand_two",
         "text": "Do you see my hand slowly \nmoving down?___\nI am going to press this button!\n"
     },
     "sir_hand_two": {
@@ -44,10 +45,12 @@
     },
     "sir_maybe_dont": {
         "autoAdvanceAfter": 3,
+        "jump": "sir_maybe_dont_1",
         "text": "H[e:good]mmmmm\n"
     },
     "sir_maybe_dont_1": {
         "autoAdvanceAfter": 1.5,
+        "jump": "sir_maybe_dont_2",
         "event": "loop_one_end",
         "text": "Maybe you are right.___\nI still want to press it though.__\n"
     },
@@ -85,6 +88,7 @@
     },
     "sir_ded": {
         "autoAdvanceAfter": 1,
+        "jump": "ded",
         "text": "Ok!\n"
     },
     "ded": {
