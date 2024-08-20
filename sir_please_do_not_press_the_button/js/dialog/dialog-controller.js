@@ -189,7 +189,7 @@ export class DialogController extends Component {
 
     advance(choiceIndex) {
         if (this.paused) {
-            console.warn("Cannot advance a paused dialog!");
+            console.error("Cannot advance a paused dialog!");
             return;
         }
         if (!this.currentStateJSON) return;
@@ -203,7 +203,7 @@ export class DialogController extends Component {
         if (!jump && responses && choiceIndex != -1) {
             var response = responses[choiceIndex];
             if (!response) {
-                console.log("Cannot advance with invalid response!");
+                console.error("Cannot advance with invalid response!");
                 return;
             }
             jump = response["jump"];
@@ -211,7 +211,7 @@ export class DialogController extends Component {
 
         // Cannot advance without a response
         if (!jump && responses) {
-            console.log("Cannot advance current dialog without response!");
+            console.error("Cannot advance current dialog without response!");
             return;
         }
 

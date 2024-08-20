@@ -124,7 +124,7 @@ export class DialogManager extends Component {
 
     triggerSound(name, source) {
         if (!this.sounds.has(name)) {
-            console.warn("No sound by name " + name + " exists");
+            console.error("No sound by name " + name + " exists");
             return;
         }
         var sound = this.sounds.get(name);
