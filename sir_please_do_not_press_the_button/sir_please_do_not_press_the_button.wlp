@@ -6933,6 +6933,26 @@
         "436": {
             "name": "Pivot",
             "parent": "429"
+        },
+        "439": {
+            "name": "Player Spawn Hand",
+            "parent": "231",
+            "translation": [
+                0.0,
+                0.0,
+                -1.1
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
         }
     },
     "meshes": {
