@@ -1,11 +1,14 @@
-import { FSM, GamepadButtonID, Globals, TimerState } from "../../pp";
+import { FSM, GamepadButtonID, Globals, Handedness, InputSourceType, InputUtils, TimerState } from "../../pp";
 import { GameGlobals } from "../game_globals";
 
 export class SirRoomState {
     constructor() {
         this._myPlayerSpawn = GameGlobals.mySirRoom.pp_getObjectByName("Player Spawn");
+        this._myPlayerSpawnHand = GameGlobals.mySirRoom.pp_getObjectByName("Player Spawn Hand");
 
         this._myParentFSM = null;
+
+        this._myLastLeftHandType = null;
 
         this._myBackgroundMusicAudioPlayer = Globals.getAudioManager().createAudioPlayer("background_music");
 
@@ -47,6 +50,8 @@ export class SirRoomState {
         GameGlobals.mySirDialog.stopSirDialog();
 
         this._myFSM.perform("skip");
+
+        this._myLastLeftHandType = null;
     }
 
 
@@ -79,6 +84,19 @@ export class SirRoomState {
     }
 
     _gameUpdate(dt, fsm) {
+        if (GameGlobals.myPlayerLocomotion._myPlayerHeadManager.isSynced()) {
+            let currentLeftHandType = InputUtils.getInputSourceTypeByHandedness(Handedness.LEFT);
+            if (currentLeftHandType != this._myLastLeftHandType && currentLeftHandType == InputSourceType.TRACKED_HAND) {
+
+                let playerStartPosition = this._myPlayerSpawnHand.pp_getPosition();
+                let rotationQuat = this._myPlayerSpawnHand.pp_getRotationQuat();
+                GameGlobals.myPlayerTransformManager.teleportAndReset(playerStartPosition, rotationQuat);
+                Globals.getPlayerObjects().myCameraNonXR.pp_setUp(GameGlobals.myUp);
+            }
+
+            this._myLastLeftHandType = currentLeftHandType;
+        }
+
         if (GameGlobals.myDebugEnabled && Globals.getLeftGamepad().getButtonInfo(GamepadButtonID.TOP_BUTTON).isPressStart(2)) {
             this._myParentFSM.perform("lose");
         } else if (GameGlobals.myDebugEnabled && Globals.getLeftGamepad().getButtonInfo(GamepadButtonID.BOTTOM_BUTTON).isPressStart(2)) {

@@ -86,7 +86,7 @@ export class CleanedPlayerLocomotion {
             params.myHeadRadius = 0.15;
 
             params.myMaxDistanceFromRealToSyncEnabled = true;
-            params.myMaxDistanceFromRealToSync = 100;
+            params.myMaxDistanceFromRealToSync = 0.5;
 
             params.myIsFloatingValidIfVerticalMovement = false;
             params.myIsFloatingValidIfVerticalMovementAndRealOnGround = false;
