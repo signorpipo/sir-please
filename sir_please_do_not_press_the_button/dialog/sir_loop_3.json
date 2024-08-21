@@ -7,20 +7,20 @@
                 "jump": "dont_press"
             },
             {
-                "text": "Don't you remember me?!",
+                "text": "Don't you\nremember me?!",
                 "jump": "remember"
             }
         ]
     },
     "entry_2": {
-        "text": "Who are you!?_",
+        "text": "Who are you?!_",
         "responses": [
             {
                 "text": "DON'T\nPRESS IT!",
                 "jump": "dont_press"
             },
             {
-                "text": "Don't you remember me?!",
+                "text": "Don't you\nremember me?!",
                 "jump": "remember"
             }
         ]
@@ -64,7 +64,7 @@
         "text": "But which party did we meet at?_",
         "responses": [
             {
-                "text": "The one in\n the mountains",
+                "text": "The one in\nthe mountains",
                 "jump": "thing"
             },
             {
