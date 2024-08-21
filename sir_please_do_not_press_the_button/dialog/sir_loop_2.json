@@ -145,7 +145,7 @@
         "responses": [
             {
                 "text": "I can't",
-                "jump": "cant_prove"
+                "jump": "sir_ded"
             },
             {
                 "text": "I can't yet",
@@ -156,7 +156,7 @@
     "cant_prove": {
         "autoAdvanceAfter": 1,
         "jump": "cant_prove_2",
-        "text": "What do you mean you can't?"
+        "text": "What do you mean you can't yet?"
     },
     "cant_prove_2": {
         "autoAdvanceAfter": 1,

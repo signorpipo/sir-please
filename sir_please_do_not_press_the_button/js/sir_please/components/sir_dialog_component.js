@@ -146,45 +146,45 @@ export class SirDialogComponent extends Component {
 
         if (!this._isDialogVisible()) {
             fsm.perform("hide");
-        }
-
-        if (this._myResponseVisible) {
-            this._myOption1Button.setPreventClick(false);
-            this._myOption2Button.setPreventClick(false);
-
-            if (!this._myOption1Button.isVisible()) {
-                this._myOption1Button.show();
-                this._mySpawnButtonDelayTimer.start();
-            } else if (!this._myOption2Button.isVisible()) {
-                if (this._mySpawnButtonDelayTimer.isRunning()) {
-                    this._mySpawnButtonDelayTimer.update(dt);
-                    if (this._mySpawnButtonDelayTimer.isDone()) {
-                        this._myOption2Button.show();
-                    }
-
-                }
-            }
         } else {
-            this._myOption1Button.setPreventClick(true);
-            this._myOption2Button.setPreventClick(true);
+            if (this._myResponseVisible) {
+                this._myOption1Button.setPreventClick(false);
+                this._myOption2Button.setPreventClick(false);
 
-            if (this._myOption1Button.isVisible()) {
-                if (this._mySpawnButtonDelayTimer.isRunning()) {
-                    this._mySpawnButtonDelayTimer.update(dt);
-                    if (this._mySpawnButtonDelayTimer.isDone()) {
-                        this._myOption1Button.hide();
+                if (!this._myOption1Button.isVisible()) {
+                    this._myOption1Button.show();
+                    this._mySpawnButtonDelayTimer.start();
+                } else if (!this._myOption2Button.isVisible()) {
+                    if (this._mySpawnButtonDelayTimer.isRunning()) {
+                        this._mySpawnButtonDelayTimer.update(dt);
+                        if (this._mySpawnButtonDelayTimer.isDone()) {
+                            this._myOption2Button.show();
+                        }
+
+                    }
+                }
+            } else {
+                this._myOption1Button.setPreventClick(true);
+                this._myOption2Button.setPreventClick(true);
+
+                if (this._myOption1Button.isVisible()) {
+                    if (this._mySpawnButtonDelayTimer.isRunning()) {
+                        this._mySpawnButtonDelayTimer.update(dt);
+                        if (this._mySpawnButtonDelayTimer.isDone()) {
+                            this._myOption1Button.hide();
+                            this._mySpawnButtonDelayTimer.start();
+                        }
+                    } else {
                         this._mySpawnButtonDelayTimer.start();
                     }
-                } else {
-                    this._mySpawnButtonDelayTimer.start();
-                }
-            } else if (this._myOption2Button.isVisible()) {
-                if (this._mySpawnButtonDelayTimer.isRunning()) {
-                    this._mySpawnButtonDelayTimer.update(dt);
-                    if (this._mySpawnButtonDelayTimer.isDone()) {
-                        this._myOption2Button.hide();
-                    }
+                } else if (this._myOption2Button.isVisible()) {
+                    if (this._mySpawnButtonDelayTimer.isRunning()) {
+                        this._mySpawnButtonDelayTimer.update(dt);
+                        if (this._mySpawnButtonDelayTimer.isDone()) {
+                            this._myOption2Button.hide();
+                        }
 
+                    }
                 }
             }
         }
