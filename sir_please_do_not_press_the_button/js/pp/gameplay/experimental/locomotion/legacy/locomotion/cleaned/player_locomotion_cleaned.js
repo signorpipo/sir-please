@@ -100,8 +100,8 @@ export class CleanedPlayerLocomotion {
             params.myFloatingSplitCheckMaxSteps = 5;
             params.myRealMovementAllowVerticalAdjustments = false;
 
-            params.myUpdateRealPositionValid = true;
-            params.myUpdatePositionValid = true;
+            params.myUpdateRealPositionValid = false;
+            params.myUpdatePositionValid = false;
 
             params.myIsBodyCollidingWhenHeightBelowValue = null;
             params.myIsBodyCollidingWhenHeightAboveValue = null;

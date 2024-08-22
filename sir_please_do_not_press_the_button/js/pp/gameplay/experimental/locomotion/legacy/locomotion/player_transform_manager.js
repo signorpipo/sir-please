@@ -28,13 +28,13 @@ export class PlayerTransformManagerParams {
         this.mySyncEnabledFlagMap.set(PlayerTransformManagerSyncFlag.BODY_COLLIDING, true);
         this.mySyncEnabledFlagMap.set(PlayerTransformManagerSyncFlag.HEAD_COLLIDING, true);
         this.mySyncEnabledFlagMap.set(PlayerTransformManagerSyncFlag.FAR, true);
-        this.mySyncEnabledFlagMap.set(PlayerTransformManagerSyncFlag.FLOATING, true);
+        this.mySyncEnabledFlagMap.set(PlayerTransformManagerSyncFlag.FLOATING, false);
 
         this.mySyncPositionFlagMap = new Map();
         this.mySyncPositionFlagMap.set(PlayerTransformManagerSyncFlag.BODY_COLLIDING, true);
         this.mySyncPositionFlagMap.set(PlayerTransformManagerSyncFlag.HEAD_COLLIDING, false);
         this.mySyncPositionFlagMap.set(PlayerTransformManagerSyncFlag.FAR, true);
-        this.mySyncPositionFlagMap.set(PlayerTransformManagerSyncFlag.FLOATING, true);
+        this.mySyncPositionFlagMap.set(PlayerTransformManagerSyncFlag.FLOATING, false);
 
         this.mySyncPositionHeadFlagMap = new Map();
         this.mySyncPositionHeadFlagMap.set(PlayerTransformManagerSyncFlag.BODY_COLLIDING, false);
