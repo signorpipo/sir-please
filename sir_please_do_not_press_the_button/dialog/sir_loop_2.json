@@ -64,7 +64,7 @@
     },
     "you_sure_2": {
         "autoAdvanceAfter": 1,
-        "jump": "sir_ded",
+        "jump": "ded",
         "text": "Screw this, I do not trust you!___\nI am pressing the button!"
     },
     "right": {
