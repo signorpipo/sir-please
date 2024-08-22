@@ -8,7 +8,7 @@ export class AudioLoader {
             let audioSetup = new AudioSetup("assets/audio/music/pp/playground_ambient.mp3");
             audioSetup.myLoop = true;
             audioSetup.mySpatial = false;
-            audioSetup.myVolume = 2;
+            audioSetup.myVolume = 1;
             manager.addAudioSetup("background_music", audioSetup);
         }
 
@@ -47,7 +47,7 @@ export class AudioLoader {
         {
             let audioSetup = new AudioSetup("assets/audio/sfx/blip.wav");
             audioSetup.myRate = 1;
-            audioSetup.myVolume = 1;
+            audioSetup.myVolume = 0.4;
             audioSetup.myReferenceDistance = 1000;
             manager.addAudioSetup("blip", audioSetup);
         }

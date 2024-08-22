@@ -43,7 +43,7 @@ export class SirRoomState {
 
     end(fsm) {
         if (this._myBackgroundMusicAudioPlayer != null) {
-            this._myBackgroundMusicAudioPlayer.stop();
+            this._myBackgroundMusicAudioPlayer.fade(1, 0, 0.01);
         }
 
         GameGlobals.myButtonHand.stopButtonHand();
@@ -72,7 +72,11 @@ export class SirRoomState {
         GameGlobals.myHideHands.show();
 
         if (this._myBackgroundMusicAudioPlayer != null) {
-            this._myBackgroundMusicAudioPlayer.play();
+            if (!this._myBackgroundMusicAudioPlayer.isPlaying()) {
+                this._myBackgroundMusicAudioPlayer.play();
+            }
+
+            this._myBackgroundMusicAudioPlayer.fade(0, 1, 1);
         }
 
         GameGlobals.myButtonHand.startButtonHand();

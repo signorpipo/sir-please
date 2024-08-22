@@ -46,7 +46,7 @@
     "sir_maybe_dont": {
         "autoAdvanceAfter": 3,
         "jump": "sir_maybe_dont_1",
-        "text": "H[e:good]mmmmm"
+        "text": "H[e:good]mmmmm_._._."
     },
     "sir_maybe_dont_1": {
         "autoAdvanceAfter": 1,
