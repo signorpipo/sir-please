@@ -15,6 +15,7 @@
 import {Cursor} from '@wonderlandengine/components';
 import {CursorTarget} from '@wonderlandengine/components';
 import {MouseLookComponent} from '@wonderlandengine/components';
+import {TargetFramerate} from '@wonderlandengine/components';
 import {DialogController} from './dialog/dialog-controller.js';
 import {DialogManager} from './dialog/dialog-manager.js';
 import {ParticlesSpawnerComponent} from './playground/particles_spawner_component.js';
@@ -99,6 +100,7 @@ if (document.readyState === 'loading') {
 engine.registerComponent(Cursor);
 engine.registerComponent(CursorTarget);
 engine.registerComponent(MouseLookComponent);
+engine.registerComponent(TargetFramerate);
 engine.registerComponent(DialogController);
 engine.registerComponent(DialogManager);
 engine.registerComponent(ParticlesSpawnerComponent);
