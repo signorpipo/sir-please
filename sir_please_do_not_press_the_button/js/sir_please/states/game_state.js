@@ -7,12 +7,12 @@ import { SirRoomState } from "./sir_room_state";
 export class GameState {
     constructor() {
         this._myFSM = new FSM();
-        this._myFSM.setLogEnabled(true, "  Game");
+        //this._myFSM.setLogEnabled(true, "  Game");
 
         this._myFSM.addState("init");
         this._myFSM.addState("idle");
         this._myFSM.addState("wait_dialog", () => {
-            if(GameGlobals.myDialogManager != null && GameGlobals.myDialogManager.dialogs != null){
+            if (GameGlobals.myDialogManager != null && GameGlobals.myDialogManager.dialogs != null) {
                 this._myFSM.perform("end");
             }
         });
