@@ -87,8 +87,6 @@ export class PlayerLocomotionTeleportDetectionVisualizer {
     }
 
     _showTeleportPosition(dt) {
-        this._hideTeleportPosition();
-
         this._showTeleportParable(dt);
     }
 
@@ -300,11 +298,13 @@ PlayerLocomotionTeleportDetectionVisualizer.prototype._showTeleportParable = fun
             this._addVisualLines(lastParableIndex + 1, this._myValidVisualLines.length);
         }
 
+        const usedVisualLines = [];
         for (let i = 0; i <= lastParableIndex; i++) {
             currentPosition = this._myDetectionRuntimeParams.myParable.getPosition(i, currentPosition);
             nextPosition = this._myDetectionRuntimeParams.myParable.getPosition(i + 1, nextPosition);
 
             let visuaLine = (this._myDetectionRuntimeParams.myTeleportPositionValid) ? this._myValidVisualLines[i] : this._myInvalidVisualLines[i];
+            usedVisualLines.push(visuaLine);
 
             let currentVisualLineParams = visuaLine.getParams();
 
@@ -325,12 +325,27 @@ PlayerLocomotionTeleportDetectionVisualizer.prototype._showTeleportParable = fun
             }
         }
 
+        for (let visualLine of this._myValidVisualLines) {
+            if (usedVisualLines.indexOf(visualLine) == -1) {
+                visualLine.setVisible(false);
+            }
+        }
+
+        for (let visualLine of this._myInvalidVisualLines) {
+            if (usedVisualLines.indexOf(visualLine) == -1) {
+                visualLine.setVisible(false);
+            }
+        }
+
         let visualPoint = (this._myDetectionRuntimeParams.myTeleportPositionValid) ? this._myValidVisualPoint : this._myInvalidVisualPoint;
         let visualPointParams = visualPoint.getParams();
         visualPointParams.myPosition.vec3_copy(nextPosition);
         visualPointParams.myRadius = 0.01;
         visualPoint.paramsUpdated();
         visualPoint.setVisible(true);
+
+        let unusedVisualPoint = (this._myDetectionRuntimeParams.myTeleportPositionValid) ? this._myInvalidVisualPoint : this._myValidVisualPoint;
+        unusedVisualPoint.setVisible(false);
 
         if (this._myDetectionRuntimeParams.myTeleportPositionValid) {
             playerUp = this._myTeleportParams.myPlayerHeadManager.getPlayer().pp_getUp(playerUp);
@@ -349,11 +364,21 @@ PlayerLocomotionTeleportDetectionVisualizer.prototype._showTeleportParable = fun
 
                 this._myValidVisualVerticalLine.paramsUpdated();
                 this._myValidVisualVerticalLine.setVisible(true);
-
+            } else {
+                this._myValidVisualVerticalLine.setVisible(false);
             }
 
             this._showTeleportParablePosition(dt);
         } else {
+            this._myValidVisualTeleportPositionTorus.setVisible(false);
+            this._myValidVisualTeleportPositionTorusInner.setVisible(false);
+
+            this._myValidVisualVerticalLine.setVisible(false);
+
+            if (this._myTeleportParams.myVisualizerParams.myTeleportPositionObject != null) {
+                this._myTeleportParams.myVisualizerParams.myTeleportPositionObject.pp_setActive(false);
+            }
+
             this._myVisualTeleportTransformQuatReset = true;
             this._myVisualTeleportTransformPositionLerping = false;
             this._myVisualTeleportTransformRotationLerping = false;
