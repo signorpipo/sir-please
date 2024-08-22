@@ -1,3 +1,4 @@
+import { GameGlobals } from "../../../../../../../sir_please/game_globals";
 import { VisualLine, VisualLineParams } from "../../../../../../cauldron/visual/elements/visual_line";
 import { VisualPoint, VisualPointParams } from "../../../../../../cauldron/visual/elements/visual_point";
 import { VisualTorus, VisualTorusParams } from "../../../../../../cauldron/visual/elements/visual_torus";
@@ -172,10 +173,8 @@ export class PlayerLocomotionTeleportDetectionVisualizer {
 PlayerLocomotionTeleportDetectionVisualizer.prototype._setupVisuals = function () {
     let innerTorusPosition = vec3_create();
     return function _setupVisuals() {
-        this._myTeleportParableValidMaterial = Globals.getDefaultMaterials(this._myTeleportParams.myEngine).myFlatOpaque.clone();
-        this._myTeleportParableValidMaterial.color = vec4_create(0, 0.5, 1, 1);
-        this._myTeleportParableInvalidMaterial = Globals.getDefaultMaterials(this._myTeleportParams.myEngine).myFlatOpaque.clone();
-        this._myTeleportParableInvalidMaterial.color = vec4_create(0.75, 0.05, 0, 1);
+        this._myTeleportParableValidMaterial = GameGlobals.myCyanMaterial;
+        this._myTeleportParableInvalidMaterial = GameGlobals.myGoldMaterial;
 
         this._myValidVisualLines = [];
         this._myInvalidVisualLines = [];

@@ -497,7 +497,9 @@
                         "_myStartDelayFrames": 10,
                         "_myDebugEnabled": true,
                         "_mySkipIntro": true,
-                        "_myClearConsoleOnStart": false
+                        "_myClearConsoleOnStart": false,
+                        "_myGold": "442",
+                        "_myCyan": "443"
                     },
                     "active": true
                 },
@@ -7474,7 +7476,8 @@
                     1.0,
                     1.0
                 ]
-            }
+            },
+            "pipeline": "441"
         },
         "438": {
             "name": "Shiny Cyan",
@@ -7497,7 +7500,57 @@
                     1.0,
                     1.0
                 ]
-            }
+            },
+            "pipeline": "441"
+        },
+        "442": {
+            "name": "Gold No Shadow",
+            "Phong": {
+                "diffuseColor": [
+                    1.0,
+                    0.5882353,
+                    0.1843137,
+                    1.0
+                ],
+                "ambientColor": [
+                    0.5,
+                    0.5,
+                    0.5,
+                    1.0
+                ],
+                "shininess": 2,
+                "specularColor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.3921568
+                ]
+            },
+            "pipeline": "441"
+        },
+        "443": {
+            "name": "Cyan No Shadow",
+            "Phong": {
+                "ambientColor": [
+                    0.5,
+                    0.5,
+                    0.5,
+                    1.0
+                ],
+                "diffuseColor": [
+                    0.345098,
+                    1.0,
+                    0.8823529,
+                    1.0
+                ],
+                "specularColor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.3921568
+                ]
+            },
+            "pipeline": "441"
         }
     },
     "shaders": {
@@ -7716,6 +7769,18 @@
                 "name": "Phong Opaque",
                 "file": "default"
             }
+        },
+        "441": {
+            "link": {
+                "name": "Phong Opaque",
+                "file": "default"
+            },
+            "name": "Phong Opaque No Shadow",
+            "features": {
+                "SHADOW_NORMAL_OFFSET_SLOPE_SCALE": false,
+                "SHADOW_NORMAL_OFFSET_UV_ONLY": false
+            },
+            "castShadows": false
         },
         "239": {
             "link": {

@@ -18,7 +18,10 @@ export class SirPleaseGatewayComponent extends Component {
         _myStartDelayFrames: Property.int(0),
 
         _mySirRoom: Property.object(),
-        _myEarthView: Property.object()
+        _myEarthView: Property.object(),
+
+        _myGold: Property.material(),
+        _myCyan: Property.material()
     };
 
     static onRegister(engine) {
@@ -29,6 +32,9 @@ export class SirPleaseGatewayComponent extends Component {
     }
 
     start() {
+        GameGlobals.myGoldMaterial = this._myGold;
+        GameGlobals.myCyanMaterial = this._myCyan;
+
         GameGlobals.myScene = this.object;
         GameGlobals.mySirRoom = this._mySirRoom;
         GameGlobals.myEarthView = this._myEarthView;
