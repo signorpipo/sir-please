@@ -45,6 +45,12 @@
                         "_myRightTopButtonVisible": false,
                         "_myRightBottomButtonVisible": false
                     }
+                },
+                {
+                    "type": "target-framerate",
+                    "target-framerate": {
+                        "framerate": 72.0
+                    }
                 }
             ]
         },
