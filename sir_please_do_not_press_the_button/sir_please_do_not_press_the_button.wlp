@@ -32,7 +32,19 @@
                     }
                 },
                 {
-                    "type": "pp-virtual-gamepad"
+                    "type": "pp-virtual-gamepad",
+                    "pp-virtual-gamepad": {
+                        "_myLeftSelectButtonVisible": false,
+                        "_myLeftSqueezeButtonVisible": false,
+                        "_myLeftThumbstickButtonVisible": false,
+                        "_myLeftTopButtonVisible": false,
+                        "_myLeftBottomButtonVisible": false,
+                        "_myRightSelectButtonVisible": false,
+                        "_myRightSqueezeButtonVisible": false,
+                        "_myRightThumbstickButtonVisible": false,
+                        "_myRightTopButtonVisible": false,
+                        "_myRightBottomButtonVisible": false
+                    }
                 }
             ]
         },

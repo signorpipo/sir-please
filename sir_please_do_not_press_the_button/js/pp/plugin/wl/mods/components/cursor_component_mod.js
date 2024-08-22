@@ -44,6 +44,8 @@ export function initCursorComponentModPrototype() {
         this._lastHeight = null;
         this._lastPointerID = null;
 
+        this._pointerLeaveToProcess = false;
+
         this._handedness = null;
 
         this._transformQuat = quat2_create();
@@ -240,6 +242,8 @@ export function initCursorComponentModPrototype() {
                 this.hoverBehaviour(null, null, null, true); // Trigger unhover
             }
         }
+
+        this._pp_processPointerLeave();
 
         if (this.cursorObject) {
             if (this.hoveringObject && (this._cursorPos[0] != 0 || this._cursorPos[1] != 0 || this._cursorPos[2] != 0)) {
@@ -505,7 +509,7 @@ export function initCursorComponentModPrototype() {
     };
 
     cursorComponentMod.onPointerMove = function onPointerMove(e) {
-        if (this.active) {
+        if (this.active && !this._pointerLeaveToProcess) {
             // Don't care about secondary pointers 
             if (this._pointerID != null && this._pointerID != e.pointerId) return;
 
@@ -521,7 +525,7 @@ export function initCursorComponentModPrototype() {
         // Don't care about secondary pointers or non-left clicks 
         if ((this._pointerID != null && this._pointerID != e.pointerId) || e.button !== 0) return;
 
-        if (this.active) {
+        if (this.active && !this._pointerLeaveToProcess) {
             let bounds = Globals.getBody(this.engine).getBoundingClientRect();
             this.updateMouseData(e.clientX, e.clientY, bounds.width, bounds.height, e.pointerId);
 
@@ -540,7 +544,7 @@ export function initCursorComponentModPrototype() {
         // Don't care about secondary pointers or non-left clicks 
         if ((this._pointerID != null && this._pointerID != e.pointerId) || e.button !== 0) return;
 
-        if (this.active) {
+        if (this.active && !this._pointerLeaveToProcess) {
             let bounds = Globals.getBody(this.engine).getBoundingClientRect();
             this.updateMouseData(e.clientX, e.clientY, bounds.width, bounds.height, e.pointerId);
 
@@ -623,10 +627,14 @@ export function initCursorComponentModPrototype() {
 
         this._pointerID = null;
 
+        this._lastPointerID = null;
+
         this._lastClientX = null;
         this._lastClientY = null;
         this._lastWidth = null;
         this._lastHeight = null;
+
+        this._pointerLeaveToProcess = false;
     };
 
     cursorComponentMod.onDestroy = function onDestroy() {
@@ -692,12 +700,33 @@ export function initCursorComponentModPrototype() {
 
     cursorComponentMod._pp_onPointerLeave = function _pp_onPointerLeave(e) {
         if (this._pointerID == null || this._pointerID == e.pointerId) {
+            this._pointerLeaveToProcess = true;
+        }
+    };
+
+    cursorComponentMod._pp_processPointerLeave = function _pp_processPointerLeave() {
+        if (this._pointerLeaveToProcess) {
+            this._pointerID = null;
+
             this._lastPointerID = null;
 
             this._lastClientX = null;
             this._lastClientY = null;
             this._lastWidth = null;
             this._lastHeight = null;
+
+            this._pointerLeaveToProcess = false;
+
+            if (this.hoveringObject != null) {
+                this.hoverBehaviour(null, null, null, true); // Trigger unhover
+            }
+
+            this._isDown = false;
+            this._lastIsDown = false;
+            this._isRealDown = false;
+
+            this._isDownForUpWithDown = false;
+            this._isUpWithNoDown = false;
         }
     };
 

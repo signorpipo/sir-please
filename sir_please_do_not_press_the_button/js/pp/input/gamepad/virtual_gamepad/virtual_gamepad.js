@@ -189,7 +189,7 @@ export class VirtualGamepad {
             if (this._myParams.myThumbsticksOrder[Handedness.RIGHT][i] != null) {
                 let gamepadThumbstickHandedness = this._myParams.myThumbsticksOrder[Handedness.RIGHT][i][0];
                 let gamepadAxesID = this._myParams.myThumbsticksOrder[Handedness.RIGHT][i][1];
-                this._buildThumbstick(rightDiv, Handedness.RIGHT, gamepadThumbstickHandedness, gamepadAxesID);
+                //this._buildThumbstick(rightDiv, Handedness.RIGHT, gamepadThumbstickHandedness, gamepadAxesID);
             }
         }
     }
