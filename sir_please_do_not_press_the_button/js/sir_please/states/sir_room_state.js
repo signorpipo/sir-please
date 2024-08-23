@@ -37,6 +37,7 @@ export class SirRoomState {
         this._myParentFSM = fsm;
 
         GameGlobals.myEarthView.pp_setActive(false);
+        GameGlobals.myExplodeButton.setActive(true);
 
         this._myFSM.perform("start");
     }
@@ -46,6 +47,7 @@ export class SirRoomState {
             this._myBackgroundMusicAudioPlayer.fade(1, 0, 0.01);
         }
 
+        GameGlobals.myExplodeButton.setActive(false);
         GameGlobals.myButtonHand.stopButtonHand();
         GameGlobals.mySirDialog.stopSirDialog();
 

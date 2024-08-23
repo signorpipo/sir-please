@@ -2,6 +2,7 @@ import { Component, Emitter, PhysXComponent } from "@wonderlandengine/api";
 import { Globals, PhysicsCollisionCollector } from "../../pp";
 import { SetHandednessComponent } from "./set_handedness_component";
 import { CursorTarget } from "@wonderlandengine/components";
+import { GameGlobals } from "../game_globals";
 
 export class ExplodeButtonComponent extends Component {
     static TypeName = "explode-button";
@@ -15,9 +16,13 @@ export class ExplodeButtonComponent extends Component {
 
         this._myCursorTarget = this.object.pp_getComponent(CursorTarget);
         this._myCursorTarget.onUpWithDown.add(this.clickButton.bind(this));
+
+        this._myActive = false;
     }
 
     update(dt) {
+        if (!this._myActive) return;
+
         this._myCollisionsCollector.update(dt);
 
         if (this._myCollisionsCollector.getCollisionsStart().length > 0) {
@@ -29,6 +34,14 @@ export class ExplodeButtonComponent extends Component {
 
             this.clickButton();
         }
+
+        if (GameGlobals.myButtonHand != null && GameGlobals.myButtonHand.object.pp_getPosition()[1] < this.object.pp_getPosition()[1]) {
+            this.clickButton();
+        }
+    }
+
+    setActive(active) {
+        this._myActive = active;
     }
 
     registerClickEventListener(id, listener) {
@@ -40,6 +53,8 @@ export class ExplodeButtonComponent extends Component {
     }
 
     clickButton() {
+        if (!this._myActive) return;
+
         this._myClickEmitter.notify();
     }
 }
