@@ -16,7 +16,7 @@ export class AudioLoader {
             let audioSetup = new AudioSetup("assets/audio/sfx/pp/collision.mp3");
             audioSetup.myRate = 1;
             audioSetup.myVolume = 1;
-            audioSetup.myReferenceDistance = 1;
+            audioSetup.myReferenceDistance = 1000;
             manager.addAudioSetup("click", audioSetup);
         }
 
@@ -47,7 +47,7 @@ export class AudioLoader {
         {
             let audioSetup = new AudioSetup("assets/audio/sfx/blip.wav");
             audioSetup.myRate = 1;
-            audioSetup.myVolume = 0.4;
+            audioSetup.myVolume = 0.2;
             audioSetup.myReferenceDistance = 1000;
             manager.addAudioSetup("blip", audioSetup);
         }
