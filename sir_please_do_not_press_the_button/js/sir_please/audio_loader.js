@@ -49,6 +49,7 @@ export class AudioLoader {
             audioSetup.myRate = 1;
             audioSetup.myVolume = 0.2;
             audioSetup.myReferenceDistance = 1000;
+            audioSetup.myPool = 20;
             manager.addAudioSetup("blip", audioSetup);
         }
     }
