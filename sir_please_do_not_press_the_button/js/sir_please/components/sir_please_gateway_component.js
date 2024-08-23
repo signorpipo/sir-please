@@ -1,5 +1,5 @@
 import { Component, Property } from "@wonderlandengine/api";
-import { Globals } from "../../pp";
+import { Globals, XRUtils } from "../../pp";
 import { GameGlobals } from "../game_globals";
 import { initSirPlease } from "../init_sir_please";
 import { SirPlease } from "../sir_please";
@@ -57,6 +57,8 @@ export class SirPleaseGatewayComponent extends Component {
         this._myFirstUpdate = true;
 
         AnalyticsUtils.sendEventOnce("game_loaded");
+
+        XRUtils.registerSessionStartEndEventListeners(this, this._onXRSessionStart.bind(this), null, true, false);
     }
 
     update(dt) {
@@ -84,5 +86,9 @@ export class SirPleaseGatewayComponent extends Component {
         this._myGame.start();
 
         GameGlobals.myStarted = true;
+    }
+
+    _onXRSessionStart() {
+        AnalyticsUtils.sendEventOnce("enter_session");
     }
 }

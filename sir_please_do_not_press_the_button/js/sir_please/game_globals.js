@@ -27,5 +27,7 @@ export let GameGlobals = {
     myHandParticlesSpawner: null,
 
     myDebugEnabled: false,
-    mySkipIntro: false
+    mySkipIntro: false,
+
+    myGameCompleted: false
 };

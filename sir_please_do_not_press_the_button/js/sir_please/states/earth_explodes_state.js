@@ -1,4 +1,5 @@
-import { FSM, Globals, TimerState, vec3_create } from "../../pp";
+import { BrowserUtils, FSM, Globals, InputUtils, TimerState, vec3_create, XRUtils } from "../../pp";
+import { AnalyticsUtils } from "../analytics_utils";
 import { GameGlobals } from "../game_globals";
 
 export class EarthExplodesState {
@@ -55,6 +56,27 @@ export class EarthExplodesState {
 
         GameGlobals.myEarthView.pp_setActive(true);
         this._myEarth.pp_setActive(true);
+
+        AnalyticsUtils.sendEventOnce("earth_explode");
+        if (XRUtils.isSessionActive()) {
+            AnalyticsUtils.sendEventOnce("earth_explode_vr");
+            if (InputUtils.getInputSourceTypeByHandedness(Handedness.LEFT) == InputSourceType.TRACKED_HAND && InputUtils.getInputSourceTypeByHandedness(Handedness.RIGHT) == InputSourceType.TRACKED_HAND) {
+                AnalyticsUtils.sendEventOnce("earth_explode_vr_hand");
+            } else {
+                AnalyticsUtils.sendEventOnce("earth_explode_vr_gamepad");
+            }
+        } else {
+            AnalyticsUtils.sendEventOnce("earth_explode_flat");
+            if (BrowserUtils.isMobile()) {
+                AnalyticsUtils.sendEventOnce("earth_explode_flat_mobile");
+            } else {
+                AnalyticsUtils.sendEventOnce("earth_explode_flat_desktop");
+            }
+        }
+
+        if (GameGlobals.myGameCompleted) {
+            AnalyticsUtils.sendEventOnce("earth_explode_after_end");
+        }
     }
 
     end(fsm) {

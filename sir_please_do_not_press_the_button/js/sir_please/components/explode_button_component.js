@@ -1,8 +1,9 @@
 import { Component, Emitter, PhysXComponent } from "@wonderlandengine/api";
-import { Globals, PhysicsCollisionCollector } from "../../pp";
-import { SetHandednessComponent } from "./set_handedness_component";
 import { CursorTarget } from "@wonderlandengine/components";
+import { BrowserUtils, Globals, InputUtils, PhysicsCollisionCollector, XRUtils } from "../../pp";
+import { AnalyticsUtils } from "../analytics_utils";
 import { GameGlobals } from "../game_globals";
+import { SetHandednessComponent } from "./set_handedness_component";
 
 export class ExplodeButtonComponent extends Component {
     static TypeName = "explode-button";
@@ -15,7 +16,7 @@ export class ExplodeButtonComponent extends Component {
         this._myCollisionsCollector = new PhysicsCollisionCollector(this._myPhysX, true);
 
         this._myCursorTarget = this.object.pp_getComponent(CursorTarget);
-        this._myCursorTarget.onUpWithDown.add(this.clickButton.bind(this));
+        this._myCursorTarget.onUpWithDown.add(this.clickButton.bind(this, true));
 
         this._myActive = false;
     }
@@ -30,13 +31,15 @@ export class ExplodeButtonComponent extends Component {
             let handedness = physx.pp_getComponent(SetHandednessComponent);
             if (handedness != null) {
                 Globals.getGamepad(handedness.getHandedness()).pulse(0.2, 0.2);
-            }
 
-            this.clickButton();
+                this.clickButton(true, handedness.getHandedness());
+            } else {
+                this.clickButton(false);
+            }
         }
 
         if (GameGlobals.myButtonHand != null && GameGlobals.myButtonHand.object.pp_getPosition()[1] < this.object.pp_getPosition()[1]) {
-            this.clickButton();
+            this.clickButton(false);
         }
     }
 
@@ -52,9 +55,31 @@ export class ExplodeButtonComponent extends Component {
         this._myClickEmitter.remove(id);
     }
 
-    clickButton() {
+    clickButton(manualClick = true, handedness = null) {
         if (!this._myActive) return;
 
         this._myClickEmitter.notify();
+
+        if (manualClick) {
+            if (XRUtils.isSessionActive()) {
+                AnalyticsUtils.sendEventOnce("manual_explode_vr");
+                if (handedness != null) {
+                    if (InputUtils.getInputSourceTypeByHandedness(handedness.getHandedness()) == InputSourceType.TRACKED_HAND) {
+                        AnalyticsUtils.sendEventOnce("manual_explode_vr_hand");
+                    } else {
+                        AnalyticsUtils.sendEventOnce("manual_explode_vr_gamepad");
+                    }
+                } else {
+                    AnalyticsUtils.sendEventOnce("manual_explode_vr_no_handedness");
+                }
+            } else {
+                AnalyticsUtils.sendEventOnce("manual_explode_flat");
+                if (BrowserUtils.isMobile()) {
+                    AnalyticsUtils.sendEventOnce("manual_explode_flat_mobile");
+                } else {
+                    AnalyticsUtils.sendEventOnce("manual_explode_flat_desktop");
+                }
+            }
+        }
     }
 }

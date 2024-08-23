@@ -1,9 +1,9 @@
 import { Component, Emitter, PhysXComponent, Property } from "@wonderlandengine/api";
-import { EasingFunction, FSM, GamepadButtonID, Globals, PhysicsCollisionCollector, Timer, getPlayerObjects, vec3_create } from "../../pp";
-import { GameGlobals } from "../game_globals";
-import { DialogController } from "../../dialog/dialog-controller";
-import { SetHandednessComponent } from "./set_handedness_component";
 import { CursorTarget } from "@wonderlandengine/components";
+import { BrowserUtils, EasingFunction, FSM, Globals, InputUtils, PhysicsCollisionCollector, Timer, vec3_create, XRUtils } from "../../pp";
+import { AnalyticsUtils } from "../analytics_utils";
+import { GameGlobals } from "../game_globals";
+import { SetHandednessComponent } from "./set_handedness_component";
 
 export class SirDialogButtonComponent extends Component {
     static TypeName = "sir-dialog-button";
@@ -79,9 +79,11 @@ export class SirDialogButtonComponent extends Component {
                     let handedness = physx.pp_getComponent(SetHandednessComponent);
                     if (handedness != null) {
                         Globals.getGamepad(handedness.getHandedness()).pulse(0.2, 0.2);
+                        this.clickButton(false, handedness.getHandedness());
+                    } else {
+                        this.clickButton();
                     }
 
-                    this.clickButton();
                 }
             }
         }
@@ -188,7 +190,7 @@ export class SirDialogButtonComponent extends Component {
         this._myClickEmitter.remove(id);
     }
 
-    clickButton(cursorClick = false) {
+    clickButton(cursorClick = false, handedness = null) {
         if (!this._myPreventClick && (this._myFSM.isInState("pop_in") || this._myFSM.isInState("visible"))) {
             this._myClickEmitter.notify();
 
@@ -208,6 +210,25 @@ export class SirDialogButtonComponent extends Component {
             if (this._myClickAudioPlayer != null) {
                 this._myClickAudioPlayer.setPosition(this.object.pp_getPosition());
                 this._myClickAudioPlayer.play();
+            }
+
+            AnalyticsUtils.sendEventOnce("option_button_pressed");
+            if (XRUtils.isSessionActive()) {
+                AnalyticsUtils.sendEventOnce("option_button_pressed_vr");
+                if (handedness != null) {
+                    if (InputUtils.getInputSourceTypeByHandedness(handedness) == InputSourceType.TRACKED_HAND) {
+                        AnalyticsUtils.sendEventOnce("option_button_pressed_vr_hand");
+                    } else {
+                        AnalyticsUtils.sendEventOnce("option_button_pressed_vr_gamepad");
+                    }
+                }
+            } else {
+                AnalyticsUtils.sendEventOnce("option_button_pressed_flat");
+                if (BrowserUtils.isMobile()) {
+                    AnalyticsUtils.sendEventOnce("option_button_pressed_flat_mobile");
+                } else {
+                    AnalyticsUtils.sendEventOnce("option_button_pressed_flat_desktop");
+                }
             }
         }
     }

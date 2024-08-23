@@ -1,5 +1,6 @@
 import { Property } from '@wonderlandengine/api';
-import { FSM } from '../../pp';
+import { BrowserUtils, FSM, InputUtils, XRUtils } from '../../pp';
+import { AnalyticsUtils } from '../analytics_utils';
 import { GameGlobals } from "../game_globals";
 
 class Loop {
@@ -20,7 +21,30 @@ class Loop {
     }
 
     end(fsm) {
+        AnalyticsUtils.sendEventOnce(this.dialogName + "_end");
+
+        AnalyticsUtils.sendEventOnce("sir_loop_end");
+        if (XRUtils.isSessionActive()) {
+            AnalyticsUtils.sendEventOnce("sir_loop_end_vr");
+            if (InputUtils.getInputSourceTypeByHandedness(Handedness.LEFT) == InputSourceType.TRACKED_HAND && InputUtils.getInputSourceTypeByHandedness(Handedness.RIGHT) == InputSourceType.TRACKED_HAND) {
+                AnalyticsUtils.sendEventOnce("sir_loop_end_vr_hand");
+            } else {
+                AnalyticsUtils.sendEventOnce("sir_loop_end_vr_gamepad");
+            }
+        } else {
+            AnalyticsUtils.sendEventOnce("sir_loop_end_flat");
+            if (BrowserUtils.isMobile()) {
+                AnalyticsUtils.sendEventOnce("sir_loop_end_flat_mobile");
+            } else {
+                AnalyticsUtils.sendEventOnce("sir_loop_end_flat_desktop");
+            }
+        }
+
         this._myParentFSM.perform("skip");
+
+        if (this.dialogName == "sir_loop_4") {
+            GameGlobals.myGameCompleted = true;
+        }
     }
 
     update(dt, fsm) {

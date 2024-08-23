@@ -52,7 +52,7 @@
                 "jump": "planet_talk"
             },
             {
-                "text": "Ok you\ngot me",
+                "text": "Ok, you\ngot me",
                 "jump": "dont_press"
             }
         ]

@@ -324,7 +324,7 @@ export class SirDialogComponent extends Component {
             }
         } else {
             if (responseGoodLevel < -1000) {
-                GameGlobals.myExplodeButton.clickButton();
+                GameGlobals.myExplodeButton.clickButton(false);
             } else {
                 for (let i = 0; i < -responseGoodLevel; i++) {
                     GameGlobals.myButtonHand.multiplySpeed(this._myOptionSpeedMultiplierBad);
