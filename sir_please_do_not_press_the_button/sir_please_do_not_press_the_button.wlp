@@ -303,12 +303,6 @@
             "components": [
                 {
                     "type": "pp-set-hand-local-transform"
-                },
-                {
-                    "type": "hide-hand-if-pose-invalid",
-                    "hide-hand-if-pose-invalid": {
-                        "_myHand": "252"
-                    }
                 }
             ]
         },
@@ -341,13 +335,6 @@
                 {
                     "type": "pp-set-hand-local-transform",
                     "pp-set-hand-local-transform": {
-                        "_myHandedness": "Right"
-                    }
-                },
-                {
-                    "type": "hide-hand-if-pose-invalid",
-                    "hide-hand-if-pose-invalid": {
-                        "_myHand": "254",
                         "_myHandedness": "Right"
                     }
                 }
