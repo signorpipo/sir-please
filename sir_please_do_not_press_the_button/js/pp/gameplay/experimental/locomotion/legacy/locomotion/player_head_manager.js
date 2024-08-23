@@ -68,6 +68,8 @@ export class PlayerHeadManager {
         this._myActive = true;
         this._myDestroyed = false;
 
+        this._myViewResetThisFrame = false;
+
         // Config
 
         this._myResyncCounterFrames = 3;
@@ -218,6 +220,8 @@ export class PlayerHeadManager {
     }
 
     update(dt) {
+        this._myViewResetThisFrame = false;
+
         if (this._myIsSyncedDelayCounter != 0) {
             this._myIsSyncedDelayCounter--;
             this._myIsSyncedDelayCounter = Math.max(0, this._myIsSyncedDelayCounter);
@@ -680,8 +684,9 @@ PlayerHeadManager.prototype._onXRSessionBlurEnd = function () {
 PlayerHeadManager.prototype._onViewReset = function () {
     return function _onViewReset() {
         if (this._myActive) {
-            if (this._myParams.myResetTransformOnViewResetEnabled && this._mySessionActive && this.isSynced()) {
-                this.teleportPlayerToHeadTransformQuat(this._getHeadTransformFromLocal(this._myCurrentHeadTransformLocalQuat));
+            if (!this._myViewResetThisFrame && this._myParams.myResetTransformOnViewResetEnabled && this._mySessionActive && this.isSynced()) {
+                this._myViewResetThisFrame = true;
+                //this.teleportPlayerToHeadTransformQuat(this._getHeadTransformFromLocal(this._myCurrentHeadTransformLocalQuat));
             }
         }
     };

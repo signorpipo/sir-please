@@ -63,7 +63,8 @@
                     "pp-player-locomotion": {
                         "_myPhysicsBlockLayerFlags": "0, 1, 0, 0, 0, 0, 0, 0",
                         "_myMoveThroughCollisionShortcutEnabled": true,
-                        "_myTeleportMaxHeightDifference": 0.1
+                        "_myTeleportMaxHeightDifference": 0.1,
+                        "_myVRDirectionReferenceType": "Head"
                     }
                 }
             ],
@@ -2626,20 +2627,20 @@
             "name": "Options",
             "parent": "293",
             "translation": [
-                0.0,
-                -0.0749999,
-                0.0749998
+                -0.0,
+                -0.09,
+                0.07
             ],
             "rotation": [
+                0.1305261,
                 0.0,
                 0.0,
-                0.0,
-                1.0
+                0.9914448
             ],
             "scaling": [
                 1.0,
-                1.0,
-                1.0
+                0.9999999,
+                0.9999999
             ]
         },
         "284": {
@@ -7434,9 +7435,9 @@
             "Text": {
                 "font": "147",
                 "color": [
-                    0.345098,
-                    1.0,
-                    0.8823529,
+                    0.1592028,
+                    0.9103139,
+                    0.7753837,
                     1.0
                 ]
             }
