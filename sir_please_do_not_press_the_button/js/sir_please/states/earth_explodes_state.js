@@ -1,4 +1,4 @@
-import { BrowserUtils, FSM, Globals, InputUtils, TimerState, vec3_create, XRUtils } from "../../pp";
+import { BrowserUtils, FSM, Globals, Handedness, InputSourceType, InputUtils, TimerState, vec3_create, XRUtils } from "../../pp";
 import { AnalyticsUtils } from "../analytics_utils";
 import { GameGlobals } from "../game_globals";
 

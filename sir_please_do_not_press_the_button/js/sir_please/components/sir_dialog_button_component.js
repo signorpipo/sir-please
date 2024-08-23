@@ -1,6 +1,6 @@
 import { Component, Emitter, PhysXComponent, Property } from "@wonderlandengine/api";
 import { CursorTarget } from "@wonderlandengine/components";
-import { BrowserUtils, EasingFunction, FSM, Globals, InputUtils, PhysicsCollisionCollector, Timer, vec3_create, XRUtils } from "../../pp";
+import { BrowserUtils, EasingFunction, FSM, Globals, InputSourceType, InputUtils, PhysicsCollisionCollector, Timer, vec3_create, XRUtils } from "../../pp";
 import { AnalyticsUtils } from "../analytics_utils";
 import { GameGlobals } from "../game_globals";
 import { SetHandednessComponent } from "./set_handedness_component";

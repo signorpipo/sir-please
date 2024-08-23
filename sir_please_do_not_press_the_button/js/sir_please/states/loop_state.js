@@ -1,5 +1,5 @@
 import { Property } from '@wonderlandengine/api';
-import { BrowserUtils, FSM, InputUtils, XRUtils } from '../../pp';
+import { BrowserUtils, FSM, Handedness, InputSourceType, InputUtils, XRUtils } from '../../pp';
 import { AnalyticsUtils } from '../analytics_utils';
 import { GameGlobals } from "../game_globals";
 

@@ -1,6 +1,6 @@
 import { Component, Emitter, PhysXComponent } from "@wonderlandengine/api";
 import { CursorTarget } from "@wonderlandengine/components";
-import { BrowserUtils, Globals, InputUtils, PhysicsCollisionCollector, XRUtils } from "../../pp";
+import { BrowserUtils, Globals, InputSourceType, InputUtils, PhysicsCollisionCollector, XRUtils } from "../../pp";
 import { AnalyticsUtils } from "../analytics_utils";
 import { GameGlobals } from "../game_globals";
 import { SetHandednessComponent } from "./set_handedness_component";
@@ -64,7 +64,7 @@ export class ExplodeButtonComponent extends Component {
             if (XRUtils.isSessionActive()) {
                 AnalyticsUtils.sendEventOnce("manual_explode_vr");
                 if (handedness != null) {
-                    if (InputUtils.getInputSourceTypeByHandedness(handedness.getHandedness()) == InputSourceType.TRACKED_HAND) {
+                    if (InputUtils.getInputSourceTypeByHandedness(handedness) == InputSourceType.TRACKED_HAND) {
                         AnalyticsUtils.sendEventOnce("manual_explode_vr_hand");
                     } else {
                         AnalyticsUtils.sendEventOnce("manual_explode_vr_gamepad");
