@@ -5,6 +5,7 @@ import { initSirPlease } from "../init_sir_please";
 import { SirPlease } from "../sir_please";
 import { FadeViewInOutComponent } from "./fade_view_in_out_component";
 import { HideHandsComponent } from "./hide_hands";
+import { AnalyticsUtils } from "../analytics_utils";
 
 let _alreadyRegisteredEngines = [];
 
@@ -54,6 +55,8 @@ export class SirPleaseGatewayComponent extends Component {
         this._myStartCounter = this._myStartDelayFrames;
 
         this._myFirstUpdate = true;
+
+        AnalyticsUtils.sendEventOnce("game_loaded");
     }
 
     update(dt) {

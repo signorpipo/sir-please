@@ -7669,7 +7669,8 @@
                 }
             },
             "viewObject": "21",
-            "visualizePhysX": false
+            "visualizePhysX": false,
+            "googleAnalytics": "G-G96NTKRDEZ"
         },
         "scripting": {
             "sourcePaths": [
