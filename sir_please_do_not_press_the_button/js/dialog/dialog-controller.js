@@ -168,7 +168,10 @@ export class DialogController extends Component {
             if (!ignore) {
                 this.currentText += char;
                 this.characterPrinted(char);
+            } else {
+                this.charSoundCounter = 1;
             }
+
             ++this.textReadPos;
 
             if (this.textReadPos >= desiredText.length) {
