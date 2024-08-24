@@ -1,5 +1,5 @@
 import { Component, Property } from "@wonderlandengine/api";
-import { InputUtils, XRUtils } from "../../pp";
+import { InputUtils } from "../../pp";
 
 export class SetHandednessComponent extends Component {
     static TypeName = "set-handedness";

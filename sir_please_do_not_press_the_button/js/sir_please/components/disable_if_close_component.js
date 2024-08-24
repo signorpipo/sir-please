@@ -1,6 +1,5 @@
 import { Component, Property } from "@wonderlandengine/api";
-import { ComponentUtils, Globals, vec3_create } from "../../pp";
-import { GameGlobals } from "../game_globals";
+import { ComponentUtils, vec3_create } from "../../pp";
 
 export class DisableIfCloseComponent extends Component {
     static TypeName = "disable-if-close";

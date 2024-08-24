@@ -3,7 +3,6 @@ import { GamepadsManager } from "../gamepad/cauldron/gamepads_manager";
 import { BasePoseParams } from "../pose/base_pose";
 import { HandPose, HandPoseParams } from "../pose/hand_pose";
 import { HeadPose } from "../pose/head_pose";
-import { TrackedHandPose, TrackedHandPoseParams } from "../pose/tracked_hand_pose";
 import { Handedness } from "./input_types";
 import { Keyboard } from "./keyboard";
 import { Mouse } from "./mouse";

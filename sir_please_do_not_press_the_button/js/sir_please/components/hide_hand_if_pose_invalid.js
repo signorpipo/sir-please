@@ -1,6 +1,5 @@
-import { Component, Emitter, PhysXComponent, Property } from "@wonderlandengine/api";
-import { Globals, InputUtils, PhysicsCollisionCollector } from "../../pp";
-import { SetHandednessComponent } from "./set_handedness_component";
+import { Component, Property } from "@wonderlandengine/api";
+import { Globals, InputUtils } from "../../pp";
 
 export class HideHandIfPoseInvalidComponent extends Component {
     static TypeName = "hide-hand-if-pose-invalid";

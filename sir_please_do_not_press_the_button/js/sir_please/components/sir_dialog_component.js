@@ -1,7 +1,7 @@
 import { Component, Property } from "@wonderlandengine/api";
-import { EasingFunction, FSM, GamepadButtonID, Globals, Timer, getPlayerObjects, vec3_create } from "../../pp";
-import { GameGlobals } from "../game_globals";
 import { DialogController } from "../../dialog/dialog-controller";
+import { EasingFunction, FSM, Timer, vec3_create } from "../../pp";
+import { GameGlobals } from "../game_globals";
 import { SirDialogButtonComponent } from "./sir_dialog_button_component";
 
 export class SirDialogComponent extends Component {

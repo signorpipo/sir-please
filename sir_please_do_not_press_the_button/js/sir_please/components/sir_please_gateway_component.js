@@ -1,11 +1,11 @@
 import { Component, Property } from "@wonderlandengine/api";
 import { Globals, XRUtils } from "../../pp";
+import { AnalyticsUtils } from "../analytics_utils";
 import { GameGlobals } from "../game_globals";
 import { initSirPlease } from "../init_sir_please";
 import { SirPlease } from "../sir_please";
 import { FadeViewInOutComponent } from "./fade_view_in_out_component";
 import { HideHandsComponent } from "./hide_hands";
-import { AnalyticsUtils } from "../analytics_utils";
 
 let _alreadyRegisteredEngines = [];
 
