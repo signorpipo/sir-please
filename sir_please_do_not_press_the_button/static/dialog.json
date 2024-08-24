@@ -47,7 +47,7 @@
         "sir_maybe_dont": {
             "autoAdvanceAfter": 3,
             "jump": "sir_maybe_dont_1",
-            "text": "H[e:good]mmmmm"
+            "text": "H[e:good]mmmmm_._._."
         },
         "sir_maybe_dont_1": {
             "autoAdvanceAfter": 1,
@@ -156,7 +156,7 @@
                     "jump": "planet_talk"
                 },
                 {
-                    "text": "Ok you\ngot me",
+                    "text": "Ok, you\ngot me",
                     "jump": "dont_press"
                 }
             ]
@@ -168,7 +168,7 @@
         },
         "you_sure_2": {
             "autoAdvanceAfter": 1,
-            "jump": "sir_ded",
+            "jump": "ded",
             "text": "Screw this, I do not trust you!___\nI am pressing the button!"
         },
         "right": {
@@ -514,7 +514,7 @@
                     "jump": "planet_talk"
                 },
                 {
-                    "text": "Ok you\ngot me",
+                    "text": "Ok, you\ngot me",
                     "jump": "dont_press"
                 }
             ]
@@ -526,7 +526,7 @@
         },
         "you_sure_2": {
             "autoAdvanceAfter": 1,
-            "jump": "sir_ded",
+            "jump": "ded",
             "text": "Screw this, I do not trust you!___\nI am pressing the button!"
         },
         "right": {
@@ -1051,7 +1051,7 @@
                     "jump": "planet_talk"
                 },
                 {
-                    "text": "Ok you\ngot me",
+                    "text": "Ok, you\ngot me",
                     "jump": "dont_press"
                 }
             ]
@@ -1063,7 +1063,7 @@
         },
         "you_sure_2": {
             "autoAdvanceAfter": 1,
-            "jump": "sir_ded",
+            "jump": "ded",
             "text": "Screw this, I do not trust you!___\nI am pressing the button!"
         },
         "right": {
