@@ -1,5 +1,5 @@
 import { Component, Emitter, Property } from '@wonderlandengine/api';
-import { DialogManager } from './dialog-manager'
+import { DialogManager } from './dialog-manager';
 
 /**
  * dialog-controller
