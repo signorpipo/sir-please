@@ -212,7 +212,7 @@ export class SirDialogButtonComponent extends Component {
                 this._myClickAudioPlayer.play();
             }
 
-            AnalyticsUtils.sendEventOnce("option_button_pressed");
+            AnalyticsUtils.sendEventOnce("option_button_pressed", false);
             if (XRUtils.isSessionActive()) {
                 AnalyticsUtils.sendEventOnce("option_button_pressed_vr");
                 if (handedness != null) {

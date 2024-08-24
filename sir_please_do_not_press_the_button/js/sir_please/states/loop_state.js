@@ -23,7 +23,7 @@ class Loop {
     end(fsm) {
         AnalyticsUtils.sendEventOnce(this.dialogName + "_end");
 
-        AnalyticsUtils.sendEventOnce("sir_loop_end");
+        AnalyticsUtils.sendEventOnce("sir_loop_end", false);
         if (XRUtils.isSessionActive()) {
             AnalyticsUtils.sendEventOnce("sir_loop_end_vr");
             if (InputUtils.getInputSourceTypeByHandedness(Handedness.LEFT) == InputSourceType.TRACKED_HAND && InputUtils.getInputSourceTypeByHandedness(Handedness.RIGHT) == InputSourceType.TRACKED_HAND) {

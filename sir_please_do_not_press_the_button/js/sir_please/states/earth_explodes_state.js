@@ -57,7 +57,7 @@ export class EarthExplodesState {
         GameGlobals.myEarthView.pp_setActive(true);
         this._myEarth.pp_setActive(true);
 
-        AnalyticsUtils.sendEventOnce("earth_explode");
+        AnalyticsUtils.sendEventOnce("earth_explode", false);
         if (XRUtils.isSessionActive()) {
             AnalyticsUtils.sendEventOnce("earth_explode_vr");
             if (InputUtils.getInputSourceTypeByHandedness(Handedness.LEFT) == InputSourceType.TRACKED_HAND && InputUtils.getInputSourceTypeByHandedness(Handedness.RIGHT) == InputSourceType.TRACKED_HAND) {

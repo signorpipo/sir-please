@@ -62,7 +62,7 @@ export class ExplodeButtonComponent extends Component {
 
         if (manualClick) {
             if (XRUtils.isSessionActive()) {
-                AnalyticsUtils.sendEventOnce("manual_explode_vr");
+                AnalyticsUtils.sendEventOnce("manual_explode_vr", false);
                 if (handedness != null) {
                     if (InputUtils.getInputSourceTypeByHandedness(handedness) == InputSourceType.TRACKED_HAND) {
                         AnalyticsUtils.sendEventOnce("manual_explode_vr_hand");

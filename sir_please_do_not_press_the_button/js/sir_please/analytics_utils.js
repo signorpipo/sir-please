@@ -41,7 +41,7 @@ export function sendData(...args) {
     }
 }
 
-export function sendEvent(eventName, value = null, sendOnce = false) {
+export function sendEvent(eventName, value = null, sendOnce = false, timeout = true) {
     try {
         if (_myAnalyticsEnabled) {
             let sendEventAllowed = true;
@@ -60,10 +60,20 @@ export function sendEvent(eventName, value = null, sendOnce = false) {
                 }
 
                 if (_mySendDataCallback != null) {
-                    if (value != null) {
-                        _mySendDataCallback("event", eventName, { "value": value });
+                    if (!timeout) {
+                        if (value != null) {
+                            _mySendDataCallback("event", eventName, { "value": value });
+                        } else {
+                            _mySendDataCallback("event", eventName);
+                        }
                     } else {
-                        _mySendDataCallback("event", eventName);
+                        setTimeout(() => {
+                            if (value != null) {
+                                _mySendDataCallback("event", eventName, { "value": value });
+                            } else {
+                                _mySendDataCallback("event", eventName);
+                            }
+                        }, Math.pp_randomInt(100, 1000));
                     }
 
                     if (sendOnce) {
@@ -81,8 +91,8 @@ export function sendEvent(eventName, value = null, sendOnce = false) {
     }
 }
 
-export function sendEventOnce(eventName, value = null) {
-    AnalyticsUtils.sendEvent(eventName, value, true);
+export function sendEventOnce(eventName, timeout = true) {
+    AnalyticsUtils.sendEvent(eventName, null, true, timeout);
 }
 
 export function clearEventSentOnceState(eventName) {
