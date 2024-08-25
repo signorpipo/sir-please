@@ -39,6 +39,8 @@ export class DialogController extends Component {
         this.onHideResponses = new Emitter();
         this.onSetupResponses = new Emitter();
         this.onCharacterPrinted = new Emitter();
+
+        this.textReadPosReached = 0;
     }
 
     start() {
@@ -61,6 +63,7 @@ export class DialogController extends Component {
         this.hideResponses();
         this.paused = true;
         this.textReadPos = 0;
+        this.timer = 0.0;
         this.currentText = this.dialogPrefix;
         this.text.getComponent('text').text = this.currentText;
     }
@@ -82,6 +85,7 @@ export class DialogController extends Component {
         this.currentState = "";
         this.currentStateJSON = null;
         this.textReadPos = 0;
+        this.textReadPosReached = 0;
         this.timer = 0.0;
         this.charSoundCounter = 1;
 
@@ -112,12 +116,17 @@ export class DialogController extends Component {
                     ++this.textReadPos;
                     if (this.textReadPos >= desiredText.length) {
                         console.error("Missing ']' in dialog sub event");
+
+                        if (this.textReadPos > this.textReadPosReached) {
+                            this.textReadPosReached = this.textReadPos;
+                        }
                         return;
                     }
                     var nextChar = desiredText[this.textReadPos];
                     if (nextChar == ']') {
                         secondBracketIndex = this.textReadPos;
                         ++this.textReadPos;
+
                         break;
                     }
                 }
@@ -126,6 +135,10 @@ export class DialogController extends Component {
                 const tokens = eventData.split(':', 2);
                 if (tokens.length < 2) {
                     console.error('Expected type and name for dialog sub event');
+
+                    if (this.textReadPos > this.textReadPosReached) {
+                        this.textReadPosReached = this.textReadPos;
+                    }
                     return;
                 }
 
@@ -146,17 +159,26 @@ export class DialogController extends Component {
                     }
 
                     case 'e': {
-                        // Custom Event
-                        this.dialogManager.getComponent(DialogManager).dispatchEvent(name);
+                        if (this.textReadPos > this.textReadPosReached) {
+                            // Custom Event
+                            this.dialogManager.getComponent(DialogManager).dispatchEvent(name);
+                        }
                         break;
                     }
                 }
+
+                if (this.textReadPos > this.textReadPosReached) {
+                    this.textReadPosReached = this.textReadPos;
+                }
+
                 // No need to continue processing the next character, next frame will do that
                 return;
             }
 
+            const delayMultiplier = this.textReadPos < this.textReadPosReached ? 2 : 1;
+
             const ignore = char == '_';
-            const delay = char == '_' ? this.blankDelay : this.charDelay;
+            const delay = char == '_' ? (this.blankDelay / delayMultiplier) : (this.charDelay / delayMultiplier);
 
             this.timer += dt;
             this.charSoundTimer += dt;
@@ -173,6 +195,10 @@ export class DialogController extends Component {
             }
 
             ++this.textReadPos;
+
+            if (this.textReadPos > this.textReadPosReached) {
+                this.textReadPosReached = this.textReadPos;
+            }
 
             if (this.textReadPos >= desiredText.length) {
                 this.setupResponses();

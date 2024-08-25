@@ -44,7 +44,7 @@
         ]
     },
     "sir_maybe_dont": {
-        "autoAdvanceAfter": 3,
+        "autoAdvanceAfter": 1,
         "jump": "sir_maybe_dont_1",
         "text": "H[e:good]mmmmm_._._."
     },
