@@ -1,6 +1,6 @@
 {
     "entry": {
-        "text": "Who are you?_\nAnd how did you get here?_\nYou are here to stop me, aren't you?_",
+        "text": "Who are you?_\nAnd how did you get here?_\nYou are here to stop me,_ aren't you?_",
         "responses": [
             {
                 "text": "Stop you\nfrom what?",
@@ -25,7 +25,7 @@
                 "jump": "sir_what_button_do"
             },
             {
-                "text": "Nah, go ahead",
+                "text": "Nah,\ngo ahead",
                 "jump": "sir_ded"
             }
         ]
@@ -89,7 +89,7 @@
     "sir_name_2": {
         "autoAdvanceAfter": 1,
         "jump": "ded",
-        "text": "Screw this, you are stupid!__\nI am pressing the button!"
+        "text": "Screw this,_ you are stupid!__\nI am pressing the button!"
     },
     "sir_ded": {
         "autoAdvanceAfter": 1,
