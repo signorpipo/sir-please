@@ -63,7 +63,7 @@
                     "jump": "sir_agree"
                 },
                 {
-                    "text": "Nah just\npress it",
+                    "text": "Nah, just\npress it",
                     "jump": "sir_ded"
                 }
             ]

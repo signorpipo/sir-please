@@ -7420,7 +7420,7 @@
             "name": "Cyan Text",
             "pipeline": "82",
             "Text": {
-                "font": "147",
+                "font": "444",
                 "color": [
                     0.1592028,
                     0.9103139,
@@ -7433,7 +7433,7 @@
             "name": "Gold Text",
             "pipeline": "82",
             "Text": {
-                "font": "147",
+                "font": "444",
                 "color": [
                     1.0,
                     0.5882353,
@@ -7862,13 +7862,20 @@
     "images": {},
     "files": [
         "assets/models/pp/meta_quest_1_gamepads_credits_Jezza3D.fbx",
-        "assets/models/pp/wondermelon.fbx"
+        "assets/models/pp/wondermelon.fbx",
+        "assets/font.ttf"
     ],
     "fonts": {
         "147": {
             "link": {
                 "name": "DejaVuSans.ttf",
                 "file": "default"
+            }
+        },
+        "444": {
+            "link": {
+                "name": "font_0",
+                "file": "assets\\font.ttf"
             }
         }
     },
