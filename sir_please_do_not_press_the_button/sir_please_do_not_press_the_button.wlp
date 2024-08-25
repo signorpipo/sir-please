@@ -51,6 +51,9 @@
                     "target-framerate": {
                         "framerate": 72.0
                     }
+                },
+                {
+                    "type": "pp-show-xr-buttons"
                 }
             ]
         },
@@ -7697,7 +7700,8 @@
                 1,
                 0,
                 2
-            ]
+            ],
+            "customIndexHtml": true
         },
         "rendering": {
             "clearColor": [
