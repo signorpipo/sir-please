@@ -15520,6 +15520,7 @@ var DialogController = class extends Component {
     this.onHideResponses = new Emitter();
     this.onSetupResponses = new Emitter();
     this.onCharacterPrinted = new Emitter();
+    this.textReadPosReached = 0;
   }
   start() {
     this.hideResponses();
@@ -15540,6 +15541,7 @@ var DialogController = class extends Component {
     this.hideResponses();
     this.paused = true;
     this.textReadPos = 0;
+    this.timer = 0;
     this.currentText = this.dialogPrefix;
     this.text.getComponent("text").text = this.currentText;
   }
@@ -15560,6 +15562,7 @@ var DialogController = class extends Component {
     this.currentState = "";
     this.currentStateJSON = null;
     this.textReadPos = 0;
+    this.textReadPosReached = 0;
     this.timer = 0;
     this.charSoundCounter = 1;
     this.text.getComponent("text").text = this.currentText;
@@ -15583,6 +15586,9 @@ var DialogController = class extends Component {
           ++this.textReadPos;
           if (this.textReadPos >= desiredText.length) {
             console.error("Missing ']' in dialog sub event");
+            if (this.textReadPos > this.textReadPosReached) {
+              this.textReadPosReached = this.textReadPos;
+            }
             return;
           }
           var nextChar = desiredText[this.textReadPos];
@@ -15596,6 +15602,9 @@ var DialogController = class extends Component {
         const tokens = eventData.split(":", 2);
         if (tokens.length < 2) {
           console.error("Expected type and name for dialog sub event");
+          if (this.textReadPos > this.textReadPosReached) {
+            this.textReadPosReached = this.textReadPos;
+          }
           return;
         }
         const type = tokens[0];
@@ -15610,14 +15619,20 @@ var DialogController = class extends Component {
             break;
           }
           case "e": {
-            this.dialogManager.getComponent(DialogManager).dispatchEvent(name);
+            if (this.textReadPos > this.textReadPosReached) {
+              this.dialogManager.getComponent(DialogManager).dispatchEvent(name);
+            }
             break;
           }
         }
+        if (this.textReadPos > this.textReadPosReached) {
+          this.textReadPosReached = this.textReadPos;
+        }
         return;
       }
+      const delayMultiplier = this.textReadPos < this.textReadPosReached ? 2 : 1;
       const ignore = char == "_";
-      const delay = char == "_" ? this.blankDelay : this.charDelay;
+      const delay = char == "_" ? this.blankDelay / delayMultiplier : this.charDelay / delayMultiplier;
       this.timer += dt;
       this.charSoundTimer += dt;
       if (this.timer < delay) {
@@ -15627,8 +15642,13 @@ var DialogController = class extends Component {
       if (!ignore) {
         this.currentText += char;
         this.characterPrinted(char);
+      } else {
+        this.charSoundCounter = 1;
       }
       ++this.textReadPos;
+      if (this.textReadPos > this.textReadPosReached) {
+        this.textReadPosReached = this.textReadPos;
+      }
       if (this.textReadPos >= desiredText.length) {
         this.setupResponses();
       }
@@ -31375,187 +31395,6 @@ HandPose.prototype.getRotationQuat = function() {
 var HeadPose = class extends BasePose {
   _getPose(xrFrame) {
     return xrFrame.getViewerPose(this.getReferenceSpace());
-  }
-};
-
-// js/pp/input/pose/tracked_hand_joint_pose.js
-var TrackedHandJointPose = class extends BasePose {
-  constructor(handedness, trackedHandJointID, basePoseParams = new BasePoseParams()) {
-    super(basePoseParams);
-    this._myInputSource = null;
-    this._myHandedness = handedness;
-    this._myTrackedHandJointID = trackedHandJointID;
-    this._myJointRadius = 0;
-    this._myInputSourcesChangeEventListener = null;
-  }
-  getHandedness() {
-    return this._myHandedness;
-  }
-  getTrackedHandJointID() {
-    return this._myTrackedHandJointID;
-  }
-  setTrackedHandJointID(trackedHandJointID) {
-    this._myTrackedHandJointID = trackedHandJointID;
-  }
-  getJointRadius() {
-    return this._myJointRadius;
-  }
-  _isReadyToGetPose() {
-    return this._myInputSource != null;
-  }
-  _getPose(xrFrame) {
-    return xrFrame.getJointPose(this._myInputSource.hand.get(this._myTrackedHandJointID), this.getReferenceSpace());
-  }
-  _updateHook(dt, updateVelocity, xrPose) {
-    if (xrPose != null) {
-      this._myJointRadius = xrPose.radius;
-    }
-  }
-  _onXRSessionStartHook(manualCall, session) {
-    this._myInputSourcesChangeEventListener = function(event) {
-      if (event.removed) {
-        for (let item of event.removed) {
-          if (item == this._myInputSource) {
-            this._myInputSource = null;
-          }
-        }
-      }
-      if (event.added) {
-        for (let item of event.added) {
-          if (item.handedness == this._myHandedness) {
-            if (InputUtils.getInputSourceType(item) == InputSourceType.TRACKED_HAND) {
-              this._myInputSource = item;
-            }
-          }
-        }
-      }
-    }.bind(this);
-    session.addEventListener("inputsourceschange", this._myInputSourcesChangeEventListener);
-    if (manualCall && this._myInputSource == null && session.inputSources) {
-      for (let item of session.inputSources) {
-        if (item.handedness == this._myHandedness) {
-          if (InputUtils.getInputSourceType(item) == InputSourceType.TRACKED_HAND) {
-            this._myInputSource = item;
-          }
-        }
-      }
-    }
-  }
-  _onXRSessionEndHook() {
-    this._myInputSource = null;
-    this._myInputSourcesChangeEventListener = null;
-  }
-  _destroyHook() {
-    XRUtils.getSession(this.getEngine())?.removeEventListener("inputsourceschange", this._myInputSourcesChangeEventListener);
-  }
-};
-
-// js/pp/input/pose/tracked_hand_pose.js
-var TrackedHandPoseParams = class extends BasePoseParams {
-  constructor(addAllJointIDs = true, engine3 = Globals.getMainEngine()) {
-    super(engine3);
-    this.myTrackedHandJointIDList = [];
-    if (addAllJointIDs) {
-      for (let key in TrackedHandJointID) {
-        this.myTrackedHandJointIDList.push([TrackedHandJointID[key]]);
-      }
-    }
-  }
-};
-var TrackedHandPose = class {
-  constructor(handedness, trackedHandPoseParams = new TrackedHandPoseParams()) {
-    this._myHandedness = handedness;
-    this._myForwardFixed = trackedHandPoseParams.myForwardFixed;
-    this._myForceEmulatedVelocities = trackedHandPoseParams.myForceEmulatedVelocities;
-    this._myReferenceObject = trackedHandPoseParams.myReferenceObject;
-    this._myEngine = trackedHandPoseParams.myEngine;
-    this._myTrackedHandJointPoseParams = new BasePoseParams(this._myEngine);
-    this._myTrackedHandJointPoseParams.myForwardFixed = this._myForwardFixed;
-    this._myTrackedHandJointPoseParams.myForceEmulatedVelocities = this._myForceEmulatedVelocities;
-    this._myTrackedHandJointPoseParams.myReferenceObject = this._myReferenceObject;
-    this._myTrackedHandJointPoses = [];
-    for (let jointID of trackedHandPoseParams.myTrackedHandJointIDList) {
-      let trackedHandJointPose = new TrackedHandJointPose(this._myHandedness, jointID, this._myTrackedHandJointPoseParams);
-      this._myTrackedHandJointPoses[jointID] = trackedHandJointPose;
-    }
-  }
-  start() {
-    for (let jointPoseKey in this._myTrackedHandJointPoses) {
-      let jointPose = this._myTrackedHandJointPoses[jointPoseKey];
-      jointPose.start();
-    }
-  }
-  update(dt) {
-    for (let jointPoseKey in this._myTrackedHandJointPoses) {
-      let jointPose = this._myTrackedHandJointPoses[jointPoseKey];
-      jointPose.update(dt);
-    }
-  }
-  getEngine() {
-    this._myEngine;
-  }
-  getHandedness() {
-    return this._myHandedness;
-  }
-  getJointPose(jointID) {
-    return this._myTrackedHandJointPoses[jointID];
-  }
-  getJointPoseByIndex(jointIDIndex) {
-    return this._myTrackedHandJointPoses[InputUtils.getJointIDByIndex(jointIDIndex)];
-  }
-  getJointPoses() {
-    return this._myTrackedHandJointPoses;
-  }
-  addTrackedHandJointID(jointID) {
-    if (!this._myTrackedHandJointPoses.pp_has((element) => element.getTrackedHandJointID() == jointID)) {
-      let trackedHandJointPose = new TrackedHandJointPose(this._myHandedness, jointID, this._myTrackedHandJointPoseParams);
-      this._myTrackedHandJointPoses.push(trackedHandJointPose);
-    }
-  }
-  removeTrackedHandJointID(jointID) {
-    this._myTrackedHandJointPoses.pp_remove((element) => element.getTrackedHandJointID() == jointID);
-  }
-  setReferenceObject(referenceObject) {
-    this._myReferenceObject = referenceObject;
-    this._myTrackedHandJointPoseParams.myReferenceObject = this._myReferenceObject;
-    for (let jointPoseKey in this._myTrackedHandJointPoses) {
-      let jointPose = this._myTrackedHandJointPoses[jointPoseKey];
-      jointPose.setReferenceObject(referenceObject);
-    }
-  }
-  getReferenceObject() {
-    return this._myReferenceObject;
-  }
-  setForwardFixed(forwardFixed) {
-    this._myForwardFixed = forwardFixed;
-    this._myTrackedHandJointPoseParams.myForwardFixed = this._myForwardFixed;
-    for (let jointPoseKey in this._myTrackedHandJointPoses) {
-      let jointPose = this._myTrackedHandJointPoses[jointPoseKey];
-      jointPose.setForwardFixed(forwardFixed);
-    }
-  }
-  isForwardFixed() {
-    return this._myForwardFixed;
-  }
-  setForceEmulatedVelocities(forceEmulatedVelocities) {
-    this._myForceEmulatedVelocities = forceEmulatedVelocities;
-    this._myTrackedHandJointPoseParams.myForceEmulatedVelocities = this._myForceEmulatedVelocities;
-    for (let jointPoseKey in this._myTrackedHandJointPoses) {
-      let jointPose = this._myTrackedHandJointPoses[jointPoseKey];
-      jointPose.setForceEmulatedVelocities(forceEmulatedVelocities);
-    }
-  }
-  isForceEmulatedVelocities() {
-    return this._myForceEmulatedVelocities;
-  }
-  destroy() {
-    this._myDestroyed = true;
-    for (let jointPose of this._myTrackedHandJointPoses) {
-      jointPose.destroy();
-    }
-  }
-  isDestroyed() {
-    return this._myDestroyed;
   }
 };
 
@@ -50596,6 +50435,187 @@ __publicField(VirtualGamepadComponent, "Properties", {
   _myRightBottomButtonIconType: Property.enum(["None", "Label", "Image", "Dot", "Circle", "Square", "Ring", "Frame"], "Ring"),
   _myRightBottomButtonIconLabelOrImageUrl: Property.string("")
 });
+
+// js/pp/input/pose/tracked_hand_joint_pose.js
+var TrackedHandJointPose = class extends BasePose {
+  constructor(handedness, trackedHandJointID, basePoseParams = new BasePoseParams()) {
+    super(basePoseParams);
+    this._myInputSource = null;
+    this._myHandedness = handedness;
+    this._myTrackedHandJointID = trackedHandJointID;
+    this._myJointRadius = 0;
+    this._myInputSourcesChangeEventListener = null;
+  }
+  getHandedness() {
+    return this._myHandedness;
+  }
+  getTrackedHandJointID() {
+    return this._myTrackedHandJointID;
+  }
+  setTrackedHandJointID(trackedHandJointID) {
+    this._myTrackedHandJointID = trackedHandJointID;
+  }
+  getJointRadius() {
+    return this._myJointRadius;
+  }
+  _isReadyToGetPose() {
+    return this._myInputSource != null;
+  }
+  _getPose(xrFrame) {
+    return xrFrame.getJointPose(this._myInputSource.hand.get(this._myTrackedHandJointID), this.getReferenceSpace());
+  }
+  _updateHook(dt, updateVelocity, xrPose) {
+    if (xrPose != null) {
+      this._myJointRadius = xrPose.radius;
+    }
+  }
+  _onXRSessionStartHook(manualCall, session) {
+    this._myInputSourcesChangeEventListener = function(event) {
+      if (event.removed) {
+        for (let item of event.removed) {
+          if (item == this._myInputSource) {
+            this._myInputSource = null;
+          }
+        }
+      }
+      if (event.added) {
+        for (let item of event.added) {
+          if (item.handedness == this._myHandedness) {
+            if (InputUtils.getInputSourceType(item) == InputSourceType.TRACKED_HAND) {
+              this._myInputSource = item;
+            }
+          }
+        }
+      }
+    }.bind(this);
+    session.addEventListener("inputsourceschange", this._myInputSourcesChangeEventListener);
+    if (manualCall && this._myInputSource == null && session.inputSources) {
+      for (let item of session.inputSources) {
+        if (item.handedness == this._myHandedness) {
+          if (InputUtils.getInputSourceType(item) == InputSourceType.TRACKED_HAND) {
+            this._myInputSource = item;
+          }
+        }
+      }
+    }
+  }
+  _onXRSessionEndHook() {
+    this._myInputSource = null;
+    this._myInputSourcesChangeEventListener = null;
+  }
+  _destroyHook() {
+    XRUtils.getSession(this.getEngine())?.removeEventListener("inputsourceschange", this._myInputSourcesChangeEventListener);
+  }
+};
+
+// js/pp/input/pose/tracked_hand_pose.js
+var TrackedHandPoseParams = class extends BasePoseParams {
+  constructor(addAllJointIDs = true, engine3 = Globals.getMainEngine()) {
+    super(engine3);
+    this.myTrackedHandJointIDList = [];
+    if (addAllJointIDs) {
+      for (let key in TrackedHandJointID) {
+        this.myTrackedHandJointIDList.push([TrackedHandJointID[key]]);
+      }
+    }
+  }
+};
+var TrackedHandPose = class {
+  constructor(handedness, trackedHandPoseParams = new TrackedHandPoseParams()) {
+    this._myHandedness = handedness;
+    this._myForwardFixed = trackedHandPoseParams.myForwardFixed;
+    this._myForceEmulatedVelocities = trackedHandPoseParams.myForceEmulatedVelocities;
+    this._myReferenceObject = trackedHandPoseParams.myReferenceObject;
+    this._myEngine = trackedHandPoseParams.myEngine;
+    this._myTrackedHandJointPoseParams = new BasePoseParams(this._myEngine);
+    this._myTrackedHandJointPoseParams.myForwardFixed = this._myForwardFixed;
+    this._myTrackedHandJointPoseParams.myForceEmulatedVelocities = this._myForceEmulatedVelocities;
+    this._myTrackedHandJointPoseParams.myReferenceObject = this._myReferenceObject;
+    this._myTrackedHandJointPoses = [];
+    for (let jointID of trackedHandPoseParams.myTrackedHandJointIDList) {
+      let trackedHandJointPose = new TrackedHandJointPose(this._myHandedness, jointID, this._myTrackedHandJointPoseParams);
+      this._myTrackedHandJointPoses[jointID] = trackedHandJointPose;
+    }
+  }
+  start() {
+    for (let jointPoseKey in this._myTrackedHandJointPoses) {
+      let jointPose = this._myTrackedHandJointPoses[jointPoseKey];
+      jointPose.start();
+    }
+  }
+  update(dt) {
+    for (let jointPoseKey in this._myTrackedHandJointPoses) {
+      let jointPose = this._myTrackedHandJointPoses[jointPoseKey];
+      jointPose.update(dt);
+    }
+  }
+  getEngine() {
+    this._myEngine;
+  }
+  getHandedness() {
+    return this._myHandedness;
+  }
+  getJointPose(jointID) {
+    return this._myTrackedHandJointPoses[jointID];
+  }
+  getJointPoseByIndex(jointIDIndex) {
+    return this._myTrackedHandJointPoses[InputUtils.getJointIDByIndex(jointIDIndex)];
+  }
+  getJointPoses() {
+    return this._myTrackedHandJointPoses;
+  }
+  addTrackedHandJointID(jointID) {
+    if (!this._myTrackedHandJointPoses.pp_has((element) => element.getTrackedHandJointID() == jointID)) {
+      let trackedHandJointPose = new TrackedHandJointPose(this._myHandedness, jointID, this._myTrackedHandJointPoseParams);
+      this._myTrackedHandJointPoses.push(trackedHandJointPose);
+    }
+  }
+  removeTrackedHandJointID(jointID) {
+    this._myTrackedHandJointPoses.pp_remove((element) => element.getTrackedHandJointID() == jointID);
+  }
+  setReferenceObject(referenceObject) {
+    this._myReferenceObject = referenceObject;
+    this._myTrackedHandJointPoseParams.myReferenceObject = this._myReferenceObject;
+    for (let jointPoseKey in this._myTrackedHandJointPoses) {
+      let jointPose = this._myTrackedHandJointPoses[jointPoseKey];
+      jointPose.setReferenceObject(referenceObject);
+    }
+  }
+  getReferenceObject() {
+    return this._myReferenceObject;
+  }
+  setForwardFixed(forwardFixed) {
+    this._myForwardFixed = forwardFixed;
+    this._myTrackedHandJointPoseParams.myForwardFixed = this._myForwardFixed;
+    for (let jointPoseKey in this._myTrackedHandJointPoses) {
+      let jointPose = this._myTrackedHandJointPoses[jointPoseKey];
+      jointPose.setForwardFixed(forwardFixed);
+    }
+  }
+  isForwardFixed() {
+    return this._myForwardFixed;
+  }
+  setForceEmulatedVelocities(forceEmulatedVelocities) {
+    this._myForceEmulatedVelocities = forceEmulatedVelocities;
+    this._myTrackedHandJointPoseParams.myForceEmulatedVelocities = this._myForceEmulatedVelocities;
+    for (let jointPoseKey in this._myTrackedHandJointPoses) {
+      let jointPose = this._myTrackedHandJointPoses[jointPoseKey];
+      jointPose.setForceEmulatedVelocities(forceEmulatedVelocities);
+    }
+  }
+  isForceEmulatedVelocities() {
+    return this._myForceEmulatedVelocities;
+  }
+  destroy() {
+    this._myDestroyed = true;
+    for (let jointPose of this._myTrackedHandJointPoses) {
+      jointPose.destroy();
+    }
+  }
+  isDestroyed() {
+    return this._myDestroyed;
+  }
+};
 
 // js/pp/input/pose/components/set_player_height_component.js
 var SetPlayerHeightComponent = class extends Component {
