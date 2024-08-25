@@ -15,7 +15,7 @@
     "sir_hand": {
         "autoAdvanceAfter": 1,
         "jump": "sir_hand_two",
-        "text": "Do you see my hand slowly\nmoving down?___\nI am going to press this button!"
+        "text": "Do you see my hand slowly\nmoving down?__\nI am going to press this button!"
     },
     "sir_hand_two": {
         "text": "You cannot stop me[e:bad]!_",
@@ -31,7 +31,7 @@
         ]
     },
     "sir_what_button_do": {
-        "text": "I don't know what it does.___\nBut I want to press it[e:bad]!_",
+        "text": "I don't know what it does.__\nBut I want to press it[e:bad]!_",
         "responses": [
             {
                 "text": "Maybe you\nshould'nt",
@@ -51,11 +51,11 @@
     "sir_maybe_dont_1": {
         "autoAdvanceAfter": 1,
         "jump": "sir_maybe_dont_2",
-        "text": "Maybe you are right.___\nI still want to press it though."
+        "text": "Maybe you are right.__\nI still want to press it though."
     },
     "sir_maybe_dont_2": {
         "event": "good",
-        "text": "But I'll move my hand slower\neach time you make a good point.[e:good]___\nHow does that sound[e:loop_one_end]?_",
+        "text": "But I'll move my hand slower\neach time you make a good point.[e:good]__\nHow does that sound[e:loop_one_end]?_",
         "responses": [
             {
                 "text": "Sounds good",
@@ -89,7 +89,7 @@
     "sir_name_2": {
         "autoAdvanceAfter": 1,
         "jump": "ded",
-        "text": "Screw this, you are stupid!___\nI am pressing the button!"
+        "text": "Screw this, you are stupid!__\nI am pressing the button!"
     },
     "sir_ded": {
         "autoAdvanceAfter": 1,
