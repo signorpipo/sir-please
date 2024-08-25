@@ -6961,6 +6961,57 @@
                 1.0,
                 1.0
             ]
+        },
+        "445": {
+            "link": {
+                "name": "Wondermelon",
+                "file": "assets\\models\\pp\\wondermelon.fbx"
+            },
+            "parent": "232",
+            "scaling": [
+                1.0,
+                0.9999999,
+                1.0
+            ],
+            "translation": [
+                -12.0000019,
+                3.5,
+                -5.4999985
+            ],
+            "rotation": [
+                0.0713938,
+                0.5713939,
+                -0.0499904,
+                0.8160348
+            ]
+        },
+        "446": {
+            "link": {
+                "name": "Wondermelon Peel<Wondermelon",
+                "file": "assets\\models\\pp\\wondermelon.fbx"
+            },
+            "parent": "445"
+        },
+        "447": {
+            "link": {
+                "name": "Wondermelon Rind<Wondermelon",
+                "file": "assets\\models\\pp\\wondermelon.fbx"
+            },
+            "parent": "445"
+        },
+        "448": {
+            "link": {
+                "name": "Wondermelon Pulp<Wondermelon",
+                "file": "assets\\models\\pp\\wondermelon.fbx"
+            },
+            "parent": "445"
+        },
+        "449": {
+            "link": {
+                "name": "Wondermelon Seed<Wondermelon",
+                "file": "assets\\models\\pp\\wondermelon.fbx"
+            },
+            "parent": "445"
         }
     },
     "meshes": {
