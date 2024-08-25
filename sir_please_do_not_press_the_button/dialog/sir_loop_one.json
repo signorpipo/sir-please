@@ -98,6 +98,9 @@
     },
     "ded": {
         "event": "very_uber_bad",
+        "autoAdvanceAfter": 1,
+        "jump": "ded_end",
         "text": "Bye"
-    }
+    },
+    "ded_end": {}
 }

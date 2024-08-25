@@ -99,8 +99,11 @@
         },
         "ded": {
             "event": "very_uber_bad",
+            "autoAdvanceAfter": 1,
+            "jump": "ded_end",
             "text": "Bye"
-        }
+        },
+        "ded_end": {}
     },
     "sir_loop_2": {
         "entry": {
@@ -279,8 +282,11 @@
         },
         "ded": {
             "event": "very_uber_bad",
+            "autoAdvanceAfter": 1,
+            "jump": "ded_end",
             "text": "Bye"
-        }
+        },
+        "ded_end": {}
     },
     "sir_loop_3": {
         "entry": {
@@ -637,8 +643,11 @@
         },
         "ded": {
             "event": "very_uber_bad",
+            "autoAdvanceAfter": 1,
+            "jump": "ded_end",
             "text": "Bye"
-        }
+        },
+        "ded_end": {}
     },
     "sir_loop_4": {
         "entry": {
@@ -1174,8 +1183,11 @@
         },
         "ded": {
             "event": "very_uber_bad",
+            "autoAdvanceAfter": 1,
+            "jump": "ded_end",
             "text": "Bye"
         },
+        "ded_end": {},
         "win": {
             "event": "loop_four_end"
         }
