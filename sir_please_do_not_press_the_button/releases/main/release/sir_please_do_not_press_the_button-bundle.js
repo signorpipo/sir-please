@@ -58749,6 +58749,8 @@ var SirPleaseGatewayComponent = class extends Component {
     if (this._myStartCounter > 0) {
       this._myStartCounter--;
       if (this._myStartCounter == 0) {
+        let currentVersion = "0.9.0";
+        console.log("Game Version:", currentVersion);
         this._start();
       }
     } else {
