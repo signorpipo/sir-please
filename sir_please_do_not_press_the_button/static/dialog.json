@@ -194,16 +194,30 @@
                 }
             ]
         },
+        "right_2_after": {
+            "event": "good",
+            "text": "How do you know that?_",
+            "responses": [
+                {
+                    "text": "Because I\nwork here!",
+                    "jump": "work_here"
+                },
+                {
+                    "text": "It's already\nhappened!",
+                    "jump": "already_happened"
+                }
+            ]
+        },
         "work_here": {
             "event": "bad",
             "autoAdvanceAfter": 1,
             "jump": "try_again",
-            "text": "Hah!_ Nice try!__\nBut until you and I got here,_\nthis place was abandoned."
+            "text": "Aha!_ Nice try!__\nBut until you and I got here,_\nthis place was abandoned."
         },
         "try_again": {
             "event": "bad",
             "autoAdvanceAfter": 1,
-            "jump": "right_2",
+            "jump": "right_2_after",
             "text": "Try again."
         },
         "already_happened": {
@@ -224,7 +238,7 @@
             "event": "very_bad",
             "autoAdvanceAfter": 1,
             "jump": "try_again",
-            "text": "Hah!__ I knew you were lying!"
+            "text": "Aha!__ I knew you were lying!"
         },
         "future": {
             "event": "very_bad",
@@ -244,7 +258,7 @@
             "autoAdvanceAfter": 1,
             "event": "very_bad",
             "jump": "try_again",
-            "text": "Hah!__ I knew you were lying!"
+            "text": "Aha!__ I knew you were lying!"
         },
         "future_yes": {
             "event": "very_good",
@@ -555,16 +569,30 @@
                 }
             ]
         },
+        "right_2_after": {
+            "event": "good",
+            "text": "How do you know that?_",
+            "responses": [
+                {
+                    "text": "Because I\nwork here!",
+                    "jump": "work_here"
+                },
+                {
+                    "text": "It's already\nhappened!",
+                    "jump": "already_happened"
+                }
+            ]
+        },
         "work_here": {
             "event": "bad",
             "autoAdvanceAfter": 1,
             "jump": "try_again",
-            "text": "Hah!_ Nice try!__\nBut until you and I got here,_\nthis place was abandoned."
+            "text": "Aha!_ Nice try!__\nBut until you and I got here,_\nthis place was abandoned."
         },
         "try_again": {
             "event": "bad",
             "autoAdvanceAfter": 1,
-            "jump": "right_2",
+            "jump": "right_2_after",
             "text": "Try again."
         },
         "already_happened": {
@@ -585,7 +613,7 @@
             "event": "very_bad",
             "autoAdvanceAfter": 1,
             "jump": "try_again",
-            "text": "Hah!__ I knew you were lying!"
+            "text": "Aha!__ I knew you were lying!"
         },
         "future": {
             "event": "very_bad",
@@ -605,7 +633,7 @@
             "autoAdvanceAfter": 1,
             "event": "very_bad",
             "jump": "try_again",
-            "text": "Hah!__ I knew you were lying!"
+            "text": "Aha!__ I knew you were lying!"
         },
         "future_yes": {
             "event": "very_good",
@@ -1095,16 +1123,30 @@
                 }
             ]
         },
+        "right_2_after": {
+            "event": "good",
+            "text": "How do you know that?_",
+            "responses": [
+                {
+                    "text": "Because I\nwork here!",
+                    "jump": "work_here"
+                },
+                {
+                    "text": "It's already\nhappened!",
+                    "jump": "already_happened"
+                }
+            ]
+        },
         "work_here": {
             "event": "bad",
             "autoAdvanceAfter": 1,
             "jump": "try_again",
-            "text": "Hah!_ Nice try!__\nBut until you and I got here,_\nthis place was abandoned."
+            "text": "Aha!_ Nice try!__\nBut until you and I got here,_\nthis place was abandoned."
         },
         "try_again": {
             "event": "bad",
             "autoAdvanceAfter": 1,
-            "jump": "right_2",
+            "jump": "right_2_after",
             "text": "Try again."
         },
         "already_happened": {
@@ -1125,7 +1167,7 @@
             "event": "very_bad",
             "autoAdvanceAfter": 1,
             "jump": "try_again",
-            "text": "Hah!__ I knew you were lying!"
+            "text": "Aha!__ I knew you were lying!"
         },
         "future": {
             "event": "very_bad",
@@ -1145,7 +1187,7 @@
             "autoAdvanceAfter": 1,
             "event": "very_bad",
             "jump": "try_again",
-            "text": "Hah!__ I knew you were lying!"
+            "text": "Aha!__ I knew you were lying!"
         },
         "future_yes": {
             "event": "very_good",
