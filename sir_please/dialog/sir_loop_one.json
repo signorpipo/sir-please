@@ -54,7 +54,6 @@
         "text": "Maybe you are right.__\nI still want to press it though."
     },
     "sir_maybe_dont_2": {
-        "event": "good",
         "text": "But I'll move my hand slower\neach time you make a good point.[e:good]__\nHow does that sound[e:loop_one_end]?_",
         "responses": [
             {

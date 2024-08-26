@@ -18,8 +18,7 @@
         "text": "I knew it!_\nYou are here to stop me!"
     },
     "dont_press_1": {
-        "event": "bad",
-        "text": "But you cannot!_\nI will press this button!_",
+        "text": "But you cannot![e:bad]_\nI will press this button!_",
         "responses": [
             {
                 "text": "It will blow\nup the planet!",
@@ -32,8 +31,7 @@
         ]
     },
     "planet_talk": {
-        "event": "bad",
-        "text": "What?__ You made that up!_\nI am not stupid!_",
+        "text": "What?__ You made that up!_\nI am not stupid![e:bad]_",
         "responses": [
             {
                 "text": "Are you sure?",
@@ -70,10 +68,9 @@
         "text": "Screw this,_ I do not trust you!__\nI am pressing the button!"
     },
     "right": {
-        "event": "good",
         "autoAdvanceAfter": 1,
         "jump": "right_2",
-        "text": "Allright smartass_._._."
+        "text": "Allright smartass_._._[e:good]."
     },
     "right_2": {
         "text": "Let's say I give you\nthe benefit of the doubt.__\nHow do you even know that?_",
@@ -113,8 +110,7 @@
         "text": "Try again."
     },
     "already_happened": {
-        "event": "good",
-        "text": "Already happened_._._.__\nWhat do you mean by that?_",
+        "text": "Already happened_._._.__\n[e:good]What do you mean by that?_",
         "responses": [
             {
                 "text": "Idk",
@@ -132,8 +128,7 @@
         "text": "Aha!__ I knew you were lying!"
     },
     "future": {
-        "event": "very_bad",
-        "text": "Pfffffffff_._._.__\nYou expect me to believe that?_",
+        "text": "Pfffffffff_._._.__\n[e:very_bad]You expect me to believe that?_",
         "responses": [
             {
                 "text": "Yes",
@@ -151,8 +146,7 @@
         "text": "Aha!__ I knew you were lying!"
     },
     "future_yes": {
-        "event": "very_good",
-        "text": "Well then you better prove it!_",
+        "text": "Well_._.[e:good]_.[e:good]__ then you better prove it!_",
         "responses": [
             {
                 "text": "I can't",
@@ -170,16 +164,14 @@
         "text": "What do you mean you can't yet?"
     },
     "cant_prove_2": {
-        "event": "good",
         "autoAdvanceAfter": 1,
         "jump": "cant_prove_explain",
-        "text": "Well,_ if you are really from\nthe future_._._.__ then you can go back\nin time again and gather proof."
+        "text": "Well,[e:good]_ if you are really from\nthe future_._._.__ then you can go back\nin time again and gather proof."
     },
     "cant_prove_explain": {
-        "event": "good",
         "autoAdvanceAfter": 1,
         "jump": "ded",
-        "text": "So,_ if this button really does\nwhat you say_._._.__ then you can try\nconvincing me next time[e:loop_two_end]!"
+        "text": "So,[e:good]_ if this button really does\nwhat you say_._._.__ then you can try\nconvincing me next time[e:loop_two_end]!"
     },
     "sir_ded": {
         "autoAdvanceAfter": 1,
