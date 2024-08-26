@@ -64,6 +64,9 @@ export class SirDialogButtonComponent extends Component {
         this._myClickAudioPlayer = Globals.getAudioManager().createAudioPlayer("click");
 
         this._stop();
+
+        this._myAvoidClickTimer = new Timer(0.5);
+        XRUtils.registerSessionStartEndEventListeners(this, this._onXRSessionStart.bind(this), this._onXRSessionEnd.bind(this), true, false);
     }
 
     update(dt) {
@@ -92,6 +95,8 @@ export class SirDialogButtonComponent extends Component {
             this._myButtonVisual.pp_resetPositionLocal();
             this._myText.pp_resetPositionLocal();
         }
+
+        this._myAvoidClickTimer.update(dt);
     }
 
     setPreventClick(preventClick) {
@@ -191,6 +196,8 @@ export class SirDialogButtonComponent extends Component {
     }
 
     clickButton(cursorClick = false, handedness = null) {
+        if (this._myAvoidClickTimer.isRunning()) return;
+
         if (!this._myPreventClick && (this._myFSM.isInState("pop_in") || this._myFSM.isInState("visible"))) {
             this._myClickEmitter.notify();
 
@@ -232,4 +239,10 @@ export class SirDialogButtonComponent extends Component {
             }
         }
     }
+
+    _onXRSessionStart() {
+        this._myAvoidClickTimer.start();
+    }
+
+    _onXRSessionEnd() { }
 }
