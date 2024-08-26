@@ -96,7 +96,9 @@ export class SirDialogButtonComponent extends Component {
             this._myText.pp_resetPositionLocal();
         }
 
-        this._myAvoidClickTimer.update(dt);
+        if (GameGlobals.myPlayerLocomotion != null && GameGlobals.myPlayerLocomotion._myPlayerHeadManager.isSynced()) {
+            this._myAvoidClickTimer.update(dt);
+        }
     }
 
     setPreventClick(preventClick) {

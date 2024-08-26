@@ -16,7 +16,7 @@ export class ExplodeButtonComponent extends Component {
         this._myCollisionsCollector = new PhysicsCollisionCollector(this._myPhysX, true);
 
         this._myCursorTarget = this.object.pp_getComponent(CursorTarget);
-        this._myCursorTarget.onUpWithDown.add(this.clickButton.bind(this, true));
+        this._myCursorTarget.onUpWithDown.add(this.clickButton.bind(this, true, null));
 
         this._myActive = false;
     }
