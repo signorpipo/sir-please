@@ -30,8 +30,6 @@ export class ExplodeButtonComponent extends Component {
             let physx = this._myCollisionsCollector.getCollisionsStart()[0];
             let handedness = physx.pp_getComponent(SetHandednessComponent);
             if (handedness != null) {
-                Globals.getGamepad(handedness.getHandedness()).pulse(0.2, 0.2);
-
                 this.clickButton(true, handedness.getHandedness());
             } else {
                 this.clickButton(false);
@@ -57,6 +55,13 @@ export class ExplodeButtonComponent extends Component {
 
     clickButton(manualClick = true, handedness = null) {
         if (!this._myActive) return;
+
+        if (handedness == null) {
+            Globals.getLeftGamepad().pulse(0.2, 0.2);
+            Globals.getRightGamepad().pulse(0.2, 0.2);
+        } else {
+            Globals.getGamepad(handedness).pulse(0.2, 0.2);
+        }
 
         this._myClickEmitter.notify();
 

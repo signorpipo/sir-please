@@ -140,6 +140,9 @@ export class EarthExplodesState {
             this._myExplodeAudioPlayer.play();
         }
 
+        Globals.getLeftGamepad().pulse(0.5, 0.5);
+        Globals.getRightGamepad().pulse(0.5, 0.5);
+
         this._myEarth.pp_setActive(false);
 
         GameGlobals.myExplodeParticlesSpawner.spawn(this._myEarth.pp_getPosition());
