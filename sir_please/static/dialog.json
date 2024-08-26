@@ -422,7 +422,7 @@
         "no_friends": {
             "autoAdvanceAfter": 1,
             "jump": "no_friends_2",
-            "text": "Well,[e:good]_ there was Jeff.__\nThe only person who ever cared about me[e:loop_three_end]."
+            "text": "Well,[e:good]_ there was Jeff.__\nThe only person who ever cared\nabout me[e:loop_three_end]."
         },
         "no_friends_2": {
             "autoAdvanceAfter": 1,
