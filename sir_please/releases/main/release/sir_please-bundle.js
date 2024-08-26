@@ -57277,11 +57277,10 @@ var ExplodeButtonComponent = class extends Component {
     if (!this._myActive)
       return;
     this._myCollisionsCollector.update(dt);
-    if (this._myCollisionsCollector.getCollisionsStart().length > 0) {
+    if (this._myCollisionsCollector.getCollisionsStart().length > 0 && !GameGlobals.myBlackFader.isFading()) {
       let physx = this._myCollisionsCollector.getCollisionsStart()[0];
       let handedness = physx.pp_getComponent(SetHandednessComponent);
       if (handedness != null) {
-        Globals.getGamepad(handedness.getHandedness()).pulse(0.2, 0.2);
         this.clickButton(true, handedness.getHandedness());
       } else {
         this.clickButton(false);
@@ -57303,6 +57302,12 @@ var ExplodeButtonComponent = class extends Component {
   clickButton(manualClick = true, handedness = null) {
     if (!this._myActive)
       return;
+    if (handedness == null) {
+      Globals.getLeftGamepad().pulse(0.2, 0.2);
+      Globals.getRightGamepad().pulse(0.2, 0.2);
+    } else {
+      Globals.getGamepad(handedness).pulse(0.2, 0.2);
+    }
     this._myClickEmitter.notify();
     if (manualClick) {
       if (XRUtils.isSessionActive()) {
@@ -57619,6 +57624,8 @@ var SirDialogButtonComponent = class extends Component {
     this._myVisualUnpressTimer.end();
     this._myClickAudioPlayer = Globals.getAudioManager().createAudioPlayer("click");
     this._stop();
+    this._myAvoidClickTimer = new Timer(0.5);
+    XRUtils.registerSessionStartEndEventListeners(this, this._onXRSessionStart.bind(this), this._onXRSessionEnd.bind(this), true, false);
   }
   update(dt) {
     this._myFSM.update(dt);
@@ -57643,6 +57650,7 @@ var SirDialogButtonComponent = class extends Component {
       this._myButtonVisual.pp_resetPositionLocal();
       this._myText.pp_resetPositionLocal();
     }
+    this._myAvoidClickTimer.update(dt);
   }
   setPreventClick(preventClick) {
     this._myPreventClick = preventClick;
@@ -57714,6 +57722,8 @@ var SirDialogButtonComponent = class extends Component {
     this._myClickEmitter.remove(id);
   }
   clickButton(cursorClick = false, handedness = null) {
+    if (this._myAvoidClickTimer.isRunning())
+      return;
     if (!this._myPreventClick && (this._myFSM.isInState("pop_in") || this._myFSM.isInState("visible"))) {
       this._myClickEmitter.notify();
       GameGlobals.myButtonParticlesSpawner.spawn(this.object.pp_getPosition());
@@ -57748,6 +57758,11 @@ var SirDialogButtonComponent = class extends Component {
         }
       }
     }
+  }
+  _onXRSessionStart() {
+    this._myAvoidClickTimer.start();
+  }
+  _onXRSessionEnd() {
   }
 };
 __publicField(SirDialogButtonComponent, "TypeName", "sir-dialog-button");
@@ -57954,6 +57969,9 @@ var SirDialogComponent = class extends Component {
     this._myResponseVisible = false;
   }
   _isDialogVisible() {
+    if (GameGlobals.myBlackFader.isFading()) {
+      return false;
+    }
     if (this._myDialogController.currentStateJSON != null && this._myDialogController.currentStateJSON["text"] == null && !this._myOption1Button.isReallyVisible() && !this._myOption2Button.isReallyVisible()) {
       return false;
     }
@@ -58610,6 +58628,8 @@ var EarthExplodesState = class {
       this._myExplodeAudioPlayer.setPosition(this._myEarth.pp_getPosition());
       this._myExplodeAudioPlayer.play();
     }
+    Globals.getLeftGamepad().pulse(0.5, 0.5);
+    Globals.getRightGamepad().pulse(0.5, 0.5);
     this._myEarth.pp_setActive(false);
     GameGlobals.myExplodeParticlesSpawner.spawn(this._myEarth.pp_getPosition());
   }
