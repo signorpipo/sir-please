@@ -54,7 +54,7 @@ export class SirDialogButtonComponent extends Component {
         this._myCollisionsCollector = new PhysicsCollisionCollector(this._myPhysX, true);
 
         this._myCursorTarget = this.object.pp_getComponent(CursorTarget);
-        this._myCursorTarget.onUpWithDown.add(this.clickButton.bind(this, true));
+        this._myCursorTarget.onUpWithDown.add(this.clickButton.bind(this, true, null));
 
         this._myPreventClick = true;
         this._myIgnoreCollisionTimer = new Timer(0.1, false);
