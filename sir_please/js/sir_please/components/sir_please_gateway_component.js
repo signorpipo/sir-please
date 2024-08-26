@@ -56,7 +56,7 @@ export class SirPleaseGatewayComponent extends Component {
 
         this._myFirstUpdate = true;
 
-        AnalyticsUtils.sendEventOnce("game_loaded");
+        AnalyticsUtils.sendEventOnce("game_loaded", false);
 
         XRUtils.registerSessionStartEndEventListeners(this, this._onXRSessionStart.bind(this), null, true, false);
     }
@@ -93,6 +93,6 @@ export class SirPleaseGatewayComponent extends Component {
     }
 
     _onXRSessionStart() {
-        AnalyticsUtils.sendEventOnce("enter_session");
+        AnalyticsUtils.sendEventOnce("enter_session", false);
     }
 }

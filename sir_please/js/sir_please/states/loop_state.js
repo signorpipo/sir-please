@@ -21,8 +21,6 @@ class Loop {
     }
 
     end(fsm) {
-        AnalyticsUtils.sendEventOnce(this.dialogName + "_end");
-
         AnalyticsUtils.sendEventOnce("sir_loop_end", false);
         if (XRUtils.isSessionActive()) {
             AnalyticsUtils.sendEventOnce("sir_loop_end_vr");
@@ -39,6 +37,8 @@ class Loop {
                 AnalyticsUtils.sendEventOnce("sir_loop_end_flat_desktop");
             }
         }
+
+        AnalyticsUtils.sendEventOnce(this.dialogName + "_end");
 
         this._myParentFSM.perform("skip");
 

@@ -1,4 +1,4 @@
-import { BrowserUtils, FSM, Globals, Handedness, InputSourceType, InputUtils, TimerState, vec3_create, XRUtils } from "../../pp";
+import { BrowserUtils, FSM, Globals, Handedness, InputSourceType, InputUtils, Timer, TimerState, vec3_create, XRUtils } from "../../pp";
 import { AnalyticsUtils } from "../analytics_utils";
 import { GameGlobals } from "../game_globals";
 
@@ -8,6 +8,7 @@ export class EarthExplodesState {
 
         this._myPlayerSpawn = GameGlobals.myEarthView.pp_getObjectByName("Player Spawn");
         this._myEarth = GameGlobals.myEarthView.pp_getObjectByName("Earth");
+        this._myWondermelon = GameGlobals.myEarthView.pp_getObjectByName("Wondermelon");
 
         this._myFSM = new FSM();
         //this._myFSM.setLogEnabled(true, "  Earth Explodes" + (explodesAnyway ? " Anyway" : ""));
@@ -34,6 +35,9 @@ export class EarthExplodesState {
 
         this._myClickAudioPlayer = Globals.getAudioManager().createAudioPlayer("clickEarth");
         this._myExplodeAudioPlayer = Globals.getAudioManager().createAudioPlayer("explode");
+
+        this._myWondermelonTimer = new Timer(0.75, false);
+        this._myWondermelonSeen = false;
     }
 
     start(fsm) {
@@ -75,15 +79,45 @@ export class EarthExplodesState {
         }
 
         if (GameGlobals.myGameCompleted) {
-            AnalyticsUtils.sendEventOnce("earth_explode_after_end");
+            AnalyticsUtils.sendEventOnce("earth_explode_after_end", false);
         }
     }
 
     end(fsm) {
         GameGlobals.myBlackFader.fadeOut(true);
+
+        if (this._myWondermelonSeen) {
+            this._myWondermelonSeen = false;
+
+            AnalyticsUtils.sendEventOnce("wondermelon_seen", false);
+            if (XRUtils.isSessionActive()) {
+                AnalyticsUtils.sendEventOnce("wondermelon_seen_vr", false);
+            } else {
+                AnalyticsUtils.sendEventOnce("wondermelon_seen_flat", false);
+                if (BrowserUtils.isMobile()) {
+                    AnalyticsUtils.sendEventOnce("wondermelon_seen_flat_mobile", false);
+                } else {
+                    AnalyticsUtils.sendEventOnce("wondermelon_seen_flat_desktop", false);
+                }
+            }
+        }
     }
 
     update(dt, fsm) {
+        this._myWondermelonTimer.update(dt);
+
+        if (this._lookingAtWondermelon()) {
+            if (this._myWondermelonTimer.isDone()) {
+                this._myWondermelonSeen = true;
+            }
+
+            if (!this._myWondermelonTimer.isRunning()) {
+                this._myWondermelonTimer.start();
+            }
+        } else {
+            this._myWondermelonTimer.reset();
+        }
+
         this._myFSM.update(dt);
     }
 
@@ -117,5 +151,20 @@ export class EarthExplodesState {
 
     _explodeEnd(fsm) {
         this._myParentFSM.perform("end");
+    }
+
+    _lookingAtWondermelon() {
+        const headForward = Globals.getPlayerObjects().myHead.pp_getForward();
+        const headPosition = Globals.getPlayerObjects().myHead.pp_getPosition();
+        const wondermelonPosition = this._myWondermelon.pp_getPosition();
+
+        const wondermelonDirection = wondermelonPosition.vec3_sub(headPosition);
+        const angleToWondermelon = wondermelonDirection.vec3_angle(headForward);
+
+        if (angleToWondermelon < 9) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
