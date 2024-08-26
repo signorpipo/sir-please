@@ -57804,12 +57804,12 @@ var SirDialogComponent = class extends Component {
       this._myFirstStart = false;
       GameGlobals.myDialogManager.addEventListener("bad", this._responseSelected.bind(this, -1));
       GameGlobals.myDialogManager.addEventListener("very_bad", this._responseSelected.bind(this, -2));
-      GameGlobals.myDialogManager.addEventListener("uber_bad", this._responseSelected.bind(this, -5));
+      GameGlobals.myDialogManager.addEventListener("uber_bad", this._responseSelected.bind(this, -3));
       GameGlobals.myDialogManager.addEventListener("very_uber_bad", this._responseSelected.bind(this, -15));
       GameGlobals.myDialogManager.addEventListener("insta_bad", this._responseSelected.bind(this, -1e5));
       GameGlobals.myDialogManager.addEventListener("good", this._responseSelected.bind(this, 1));
       GameGlobals.myDialogManager.addEventListener("very_good", this._responseSelected.bind(this, 2));
-      GameGlobals.myDialogManager.addEventListener("uber_good", this._responseSelected.bind(this, 5));
+      GameGlobals.myDialogManager.addEventListener("uber_good", this._responseSelected.bind(this, 3));
       GameGlobals.myDialogManager.addEventListener("very_uber_good", this._responseSelected.bind(this, 15));
       GameGlobals.myDialogManager.addEventListener("insta_good", this._responseSelected.bind(this, 1e5));
     }
@@ -58504,6 +58504,7 @@ var EarthExplodesState = class {
     this._myExplodesAnyway = explodesAnyway;
     this._myPlayerSpawn = GameGlobals.myEarthView.pp_getObjectByName("Player Spawn");
     this._myEarth = GameGlobals.myEarthView.pp_getObjectByName("Earth");
+    this._myWondermelon = GameGlobals.myEarthView.pp_getObjectByName("Wondermelon");
     this._myFSM = new FSM();
     this._myFSM.addState("init");
     this._myFSM.addState("idle");
@@ -58523,6 +58524,8 @@ var EarthExplodesState = class {
     this._myParentFSM = null;
     this._myClickAudioPlayer = Globals.getAudioManager().createAudioPlayer("clickEarth");
     this._myExplodeAudioPlayer = Globals.getAudioManager().createAudioPlayer("explode");
+    this._myWondermelonTimer = new Timer(0.75, false);
+    this._myWondermelonSeen = false;
   }
   start(fsm) {
     this._myParentFSM = fsm;
@@ -58557,13 +58560,38 @@ var EarthExplodesState = class {
       }
     }
     if (GameGlobals.myGameCompleted) {
-      AnalyticsUtils.sendEventOnce("earth_explode_after_end");
+      AnalyticsUtils.sendEventOnce("earth_explode_after_end", false);
     }
   }
   end(fsm) {
     GameGlobals.myBlackFader.fadeOut(true);
+    if (this._myWondermelonSeen) {
+      this._myWondermelonSeen = false;
+      AnalyticsUtils.sendEventOnce("wondermelon_seen", false);
+      if (XRUtils.isSessionActive()) {
+        AnalyticsUtils.sendEventOnce("wondermelon_seen_vr", false);
+      } else {
+        AnalyticsUtils.sendEventOnce("wondermelon_seen_flat", false);
+        if (BrowserUtils.isMobile()) {
+          AnalyticsUtils.sendEventOnce("wondermelon_seen_flat_mobile", false);
+        } else {
+          AnalyticsUtils.sendEventOnce("wondermelon_seen_flat_desktop", false);
+        }
+      }
+    }
   }
   update(dt, fsm) {
+    this._myWondermelonTimer.update(dt);
+    if (this._lookingAtWondermelon()) {
+      if (this._myWondermelonTimer.isDone()) {
+        this._myWondermelonSeen = true;
+      }
+      if (!this._myWondermelonTimer.isRunning()) {
+        this._myWondermelonTimer.start();
+      }
+    } else {
+      this._myWondermelonTimer.reset();
+    }
     this._myFSM.update(dt);
   }
   _fadeOutUpdate(dt, fsm) {
@@ -58591,6 +58619,18 @@ var EarthExplodesState = class {
   _explodeEnd(fsm) {
     this._myParentFSM.perform("end");
   }
+  _lookingAtWondermelon() {
+    const headForward = Globals.getPlayerObjects().myHead.pp_getForward();
+    const headPosition = Globals.getPlayerObjects().myHead.pp_getPosition();
+    const wondermelonPosition = this._myWondermelon.pp_getPosition();
+    const wondermelonDirection = wondermelonPosition.vec3_sub(headPosition);
+    const angleToWondermelon = wondermelonDirection.vec3_angle(headForward);
+    if (angleToWondermelon < 9) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 };
 
 // js/sir_please/states/loop_state.js
@@ -58608,7 +58648,6 @@ var Loop = class {
     this._myParentFSM.perform(this.loopEndEvent);
   }
   end(fsm) {
-    AnalyticsUtils.sendEventOnce(this.dialogName + "_end");
     AnalyticsUtils.sendEventOnce("sir_loop_end", false);
     if (XRUtils.isSessionActive()) {
       AnalyticsUtils.sendEventOnce("sir_loop_end_vr");
@@ -58625,6 +58664,7 @@ var Loop = class {
         AnalyticsUtils.sendEventOnce("sir_loop_end_flat_desktop");
       }
     }
+    AnalyticsUtils.sendEventOnce(this.dialogName + "_end");
     this._myParentFSM.perform("skip");
     if (this.dialogName == "sir_loop_4") {
       GameGlobals.myGameCompleted = true;
@@ -58684,6 +58724,8 @@ var SirRoomState = class {
     this._myFSM.addTransition("win_wait", "idle", "skip");
     this._myFSM.init("init");
     this._myFSM.perform("start");
+    this._mySetButtonHeightDirty = false;
+    XRUtils.registerSessionStartEndEventListeners(this, this._onXRSessionStart.bind(this), this._onXRSessionEnd.bind(this), true, false);
   }
   start(fsm) {
     this._myParentFSM = fsm;
@@ -58702,6 +58744,12 @@ var SirRoomState = class {
     this._myLastLeftHandType = null;
   }
   update(dt, fsm) {
+    if (GameGlobals.myPlayerLocomotion._myPlayerHeadManager.isSynced()) {
+      if (this._mySetButtonHeightDirty) {
+        this._mySetButtonHeightDirty = false;
+        this._setButtonHeight();
+      }
+    }
     this._myFSM.update(dt);
   }
   _startGame() {
@@ -58721,6 +58769,7 @@ var SirRoomState = class {
     }
     GameGlobals.myButtonHand.startButtonHand();
     GameGlobals.mySirDialog.startSirDialog();
+    this._setButtonHeight();
   }
   _win() {
     this._myParentFSM.perform("win");
@@ -58744,6 +58793,25 @@ var SirRoomState = class {
     if (GameGlobals.mySirDialog.isWin()) {
       this._myFSM.perform("win");
     }
+  }
+  _setButtonHeight() {
+    if (XRUtils.isSessionActive()) {
+      const height = GameGlobals.myPlayerTransformManager.getHeight();
+      GameGlobals.mySirDialog.object.pp_setPositionLocal([0.1, MathUtils2.mapToRange(height, 1.3, 1.8, 0.9, 1.1), 0.75]);
+    } else {
+      GameGlobals.mySirDialog.object.pp_setPositionLocal([0.1, 1.1, 0.75]);
+    }
+  }
+  _onXRSessionStart() {
+    this._mySetButtonHeightDirty = true;
+    let referenceSpace = XRUtils.getReferenceSpace();
+    referenceSpace.addEventListener("reset", () => {
+      this._mySetButtonHeightDirty = true;
+    });
+  }
+  _onXRSessionEnd() {
+    this._mySetButtonHeightDirty = false;
+    this._setButtonHeight();
   }
 };
 
@@ -58867,7 +58935,7 @@ var SirPleaseGatewayComponent = class extends Component {
     this._myGame = new SirPlease();
     this._myStartCounter = this._myStartDelayFrames;
     this._myFirstUpdate = true;
-    AnalyticsUtils.sendEventOnce("game_loaded");
+    AnalyticsUtils.sendEventOnce("game_loaded", false);
     XRUtils.registerSessionStartEndEventListeners(this, this._onXRSessionStart.bind(this), null, true, false);
   }
   update(dt) {
@@ -58895,7 +58963,7 @@ var SirPleaseGatewayComponent = class extends Component {
     GameGlobals.myStarted = true;
   }
   _onXRSessionStart() {
-    AnalyticsUtils.sendEventOnce("enter_session");
+    AnalyticsUtils.sendEventOnce("enter_session", false);
   }
 };
 __publicField(SirPleaseGatewayComponent, "TypeName", "sir-please-gateway");
