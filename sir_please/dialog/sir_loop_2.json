@@ -18,6 +18,7 @@
         "text": "I knew it!_\nYou are here to stop me!"
     },
     "dont_press_1": {
+        "event": "bad",
         "text": "But you cannot!_\nI will press this button!_",
         "responses": [
             {
@@ -58,6 +59,7 @@
         ]
     },
     "you_sure": {
+        "event": "bad",
         "autoAdvanceAfter": 1,
         "jump": "you_sure_2",
         "text": "Are you questioning me?"
@@ -74,7 +76,6 @@
         "text": "Allright smartass_._._."
     },
     "right_2": {
-        "event": "good",
         "text": "Let's say I give you\nthe benefit of the doubt.__\nHow do you even know that?_",
         "responses": [
             {
@@ -88,7 +89,6 @@
         ]
     },
     "right_2_after": {
-        "event": "good",
         "text": "How do you know that?_",
         "responses": [
             {
@@ -102,7 +102,6 @@
         ]
     },
     "work_here": {
-        "event": "bad",
         "autoAdvanceAfter": 1,
         "jump": "try_again",
         "text": "Aha!_ Nice try!__\nBut until you and I got here,_\nthis place was abandoned."
@@ -128,7 +127,6 @@
         ]
     },
     "idk": {
-        "event": "very_bad",
         "autoAdvanceAfter": 1,
         "jump": "try_again",
         "text": "Aha!__ I knew you were lying!"
@@ -149,7 +147,6 @@
     },
     "future_no": {
         "autoAdvanceAfter": 1,
-        "event": "very_bad",
         "jump": "try_again",
         "text": "Aha!__ I knew you were lying!"
     },
@@ -173,11 +170,13 @@
         "text": "What do you mean you can't yet?"
     },
     "cant_prove_2": {
+        "event": "good",
         "autoAdvanceAfter": 1,
         "jump": "cant_prove_explain",
         "text": "Well,_ if you are really from\nthe future_._._.__ then you can go back\nin time again and gather proof."
     },
     "cant_prove_explain": {
+        "event": "good",
         "autoAdvanceAfter": 1,
         "jump": "ded",
         "text": "So,_ if this button really does\nwhat you say_._._.__ then you can try\nconvincing me next time[e:loop_two_end]!"

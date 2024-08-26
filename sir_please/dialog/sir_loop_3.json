@@ -26,11 +26,13 @@
         ]
     },
     "remember": {
+        "event": "bad",
         "autoAdvanceAfter": 1,
         "jump": "remember_2",
         "text": "I've never seen you\nin my entire life."
     },
     "remember_2": {
+        "event": "good",
         "autoAdvanceAfter": 1,
         "jump": "remember_3",
         "text": "But my memory is not\nas it used to."
@@ -74,12 +76,13 @@
         ]
     },
     "yesterday": {
-        "event": "bad",
+        "event": "uber_bad",
         "autoAdvanceAfter": 1,
         "jump": "entry_2",
         "text": "There was no party yesterday_._._.__\nLiar!"
     },
     "thing": {
+        "event": "bad",
         "autoAdvanceAfter": 1,
         "jump": "thing_0",
         "text": "You will have to be a\nbit more specific."
@@ -108,7 +111,7 @@
         "text": "Oh so you know about that huh_._._.__\nYou are one of those bullies then!"
     },
     "married": {
-        "text": "Well,_ no,_ you see__\nno one likes me_._._.__\nEven the girls hate me._",
+        "text": "Well,_ no,_ you see__\nno one likes me_._._.[e:good]__\nEven the girls hate me._",
         "responses": [
             {
                 "text": "That is sad",
@@ -127,6 +130,7 @@
         "text": "I don't need pitty from a liar.__\nAnd I still don't know who you are.\nSo_._._."
     },
     "no_friends": {
+        "event": "good",
         "autoAdvanceAfter": 1,
         "jump": "no_friends_2",
         "text": "Well,_ there was Jeff.__\nThe only person who ever cared about me[e:loop_three_end]."
@@ -155,6 +159,7 @@
         "text": "Because I don't want to.__\nNow you are annoying me."
     },
     "talk_about_bullies": {
+        "event": "very_good",
         "text": "Perhaps,_\nbut why should I trust you?",
         "responses": [
             {
@@ -169,15 +174,10 @@
     },
     "I_am_bully": {
         "autoAdvanceAfter": 1,
-        "jump": "I_am_bully_2",
-        "text": "Well,_\nthen I certainly don't trust you."
-    },
-    "I_am_bully_2": {
-        "event": "very_uber_bad",
-        "text": "Buzz off!"
+        "jump": "ded",
+        "text": "Well,_\nthen I certainly don't trust you!"
     },
     "world_at_stake": {
-        "event": "very_good",
         "text": "How so?_",
         "responses": [
             {
@@ -196,6 +196,7 @@
         "text": "I knew it!_\nYou are here to stop me!"
     },
     "dont_press_1": {
+        "event": "bad",
         "text": "But you cannot!_\nI will press this button!_",
         "responses": [
             {
@@ -236,6 +237,7 @@
         ]
     },
     "you_sure": {
+        "event": "bad",
         "autoAdvanceAfter": 1,
         "jump": "you_sure_2",
         "text": "Are you questioning me?"
@@ -246,13 +248,11 @@
         "text": "Screw this,_ I do not trust you!__\nI am pressing the button!"
     },
     "right": {
-        "event": "good",
         "autoAdvanceAfter": 1,
         "jump": "right_2",
         "text": "Allright smartass_._._."
     },
     "right_2": {
-        "event": "good",
         "text": "Let's say I give you\nthe benefit of the doubt.__\nHow do you even know that?_",
         "responses": [
             {
@@ -280,7 +280,6 @@
         ]
     },
     "work_here": {
-        "event": "bad",
         "autoAdvanceAfter": 1,
         "jump": "try_again",
         "text": "Aha!_ Nice try!__\nBut until you and I got here,_\nthis place was abandoned."
@@ -306,7 +305,6 @@
         ]
     },
     "idk": {
-        "event": "very_bad",
         "autoAdvanceAfter": 1,
         "jump": "try_again",
         "text": "Aha!__ I knew you were lying!"
@@ -327,7 +325,6 @@
     },
     "future_no": {
         "autoAdvanceAfter": 1,
-        "event": "very_bad",
         "jump": "try_again",
         "text": "Aha!__ I knew you were lying!"
     },
@@ -351,11 +348,13 @@
         "text": "What do you mean you can't yet?"
     },
     "cant_prove_2": {
+        "event": "good",
         "autoAdvanceAfter": 1,
         "jump": "cant_prove_explain",
         "text": "Well,_ if you are really from\nthe future_._._.__ then you can go back\nin time again and gather proof."
     },
     "cant_prove_explain": {
+        "event": "good",
         "autoAdvanceAfter": 1,
         "jump": "ded",
         "text": "So,_ if this button really does\nwhat you say_._._.__ then you can try\nconvincing me next time!"
