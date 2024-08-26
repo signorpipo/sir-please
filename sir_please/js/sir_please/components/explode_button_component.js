@@ -26,7 +26,7 @@ export class ExplodeButtonComponent extends Component {
 
         this._myCollisionsCollector.update(dt);
 
-        if (this._myCollisionsCollector.getCollisionsStart().length > 0) {
+        if (this._myCollisionsCollector.getCollisionsStart().length > 0 && !GameGlobals.myBlackFader.isFading()) {
             let physx = this._myCollisionsCollector.getCollisionsStart()[0];
             let handedness = physx.pp_getComponent(SetHandednessComponent);
             if (handedness != null) {

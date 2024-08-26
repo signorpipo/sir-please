@@ -276,6 +276,10 @@ export class SirDialogComponent extends Component {
     }
 
     _isDialogVisible() {
+        if (GameGlobals.myBlackFader.isFading()) {
+            return false;
+        }
+
         if (this._myDialogController.currentStateJSON != null && this._myDialogController.currentStateJSON["text"] == null &&
             !this._myOption1Button.isReallyVisible() && !this._myOption2Button.isReallyVisible()) {
             return false;
