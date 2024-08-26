@@ -1,0 +1,77 @@
+{
+    "name": "Sir, please, do not press that button!",
+    "short_name": "Sir, please!",
+    "version": "0.9.0",
+    "author": "robin x pipo",
+    "description": "Why do you want to press it anyway?!",
+    "homepage_url": "https://signorpipo.itch.io/sir-please",
+    "lang": "en-US",
+    "display": "standalone",
+    "ovr_package_name": "com.robinxpipo.sirplease",
+    "start_url": "https://sir-please.netlify.app/",
+    "scope": "./",
+    "focusaware": true,
+    "orientation": "landscape",
+    "theme_color": "#ffffff",
+    "background_color": "#6cffde",
+    "icons": [
+        {
+            "src": "icon512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "icon192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "icon168.png",
+            "sizes": "168x168",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "icon144.png",
+            "sizes": "144x144",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "icon96.png",
+            "sizes": "96x96",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "icon72.png",
+            "sizes": "72x72",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "icon48.png",
+            "sizes": "48x48",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "pwa/screenshots/wide.png",
+            "sizes": "1920x1080",
+            "type": "image/png",
+            "description": "Sir, please, do not press that button!",
+            "form_factor": "wide"
+        },
+        {
+            "src": "pwa/screenshots/narrow.png",
+            "sizes": "1080x1920",
+            "type": "image/png",
+            "description": "Sir, please, do not press that button!",
+            "form_factor": "narrow"
+        }
+    ]
+}

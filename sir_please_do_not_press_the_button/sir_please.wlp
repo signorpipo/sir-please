@@ -7695,7 +7695,7 @@
     },
     "settings": {
         "project": {
-            "name": "sir_please_do_not_press_the_button",
+            "name": "sir_please",
             "version": [
                 1,
                 0,
@@ -7725,7 +7725,13 @@
             },
             "viewObject": "21",
             "visualizePhysX": false,
-            "googleAnalytics": "G-G96NTKRDEZ"
+            "googleAnalytics": "G-G96NTKRDEZ",
+            "pwa": {
+                "appIcon": "450",
+                "enable": true,
+                "customServiceWorker": true,
+                "customManifest": true
+            }
         },
         "scripting": {
             "sourcePaths": [
@@ -7913,12 +7919,29 @@
             "blendEqAlpha": "max"
         }
     },
-    "textures": {},
-    "images": {},
+    "textures": {
+        "451": {
+            "link": {
+                "name": "icon.png",
+                "file": "assets\\icon.png"
+            }
+        }
+    },
+    "images": {
+        "450": {
+            "link": {
+                "name": "icon.png",
+                "file": "assets\\icon.png"
+            },
+            "compression": "none",
+            "stream": false
+        }
+    },
     "files": [
         "assets/models/pp/meta_quest_1_gamepads_credits_Jezza3D.fbx",
         "assets/models/pp/wondermelon.fbx",
-        "assets/font.ttf"
+        "assets/font.ttf",
+        "assets/icon.png"
     ],
     "fonts": {
         "147": {
