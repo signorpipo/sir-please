@@ -11,8 +11,17 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico">
 
     
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon192.png">
 
-    <script type="module" src="sir_please_do_not_press_the_button-bundle.js"></script>
+    <script>
+        if (navigator.serviceWorker != null) {
+            navigator.serviceWorker.register("service-worker.js");
+        }
+    </script>
+    
+
+    <script type="module" src="sir_please-bundle.js"></script>
 
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-G96NTKRDEZ"></script>
