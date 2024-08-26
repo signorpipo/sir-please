@@ -92,7 +92,16 @@ let _myResourceURLsToPrecache = [
     //"WonderlandRuntime-physx-simd-threads.js",
     //"WonderlandRuntime-physx-simd-threads.worker.js",
     _myAppName + ".bin",
-    _myAppName + "-textures.bin"
+    _myAppName + "-textures.bin",
+    "dialog.json",
+    "assets/audio/music/pp/playground_ambient.mp3",
+    "assets/audio/sfx/alert.mp3",
+    "assets/audio/sfx/blip.wav",
+    "assets/audio/sfx/pp/collision.mp3",
+    "assets/audio/sfx/pp/grab.mp3",
+    "450.png",
+    "pwa/screenshots/wide.png",
+    "pwa/screenshots/narrow.png"
 ];
 
 
