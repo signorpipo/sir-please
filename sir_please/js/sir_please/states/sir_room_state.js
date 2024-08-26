@@ -1,4 +1,4 @@
-import { FSM, GamepadButtonID, Globals, Handedness, InputSourceType, InputUtils, TimerState } from "../../pp";
+import { FSM, GamepadButtonID, Globals, Handedness, InputSourceType, InputUtils, MathUtils, TimerState, XRUtils } from "../../pp";
 import { GameGlobals } from "../game_globals";
 
 export class SirRoomState {
@@ -31,6 +31,9 @@ export class SirRoomState {
 
         this._myFSM.init("init");
         this._myFSM.perform("start");
+
+        this._mySetButtonHeightDirty = false;
+        XRUtils.registerSessionStartEndEventListeners(this, this._onXRSessionStart.bind(this), this._onXRSessionEnd.bind(this), true, false);
     }
 
     start(fsm) {
@@ -58,6 +61,14 @@ export class SirRoomState {
 
 
     update(dt, fsm) {
+        if (GameGlobals.myPlayerLocomotion._myPlayerHeadManager.isSynced()) {
+            if (this._mySetButtonHeightDirty) {
+                this._mySetButtonHeightDirty = false;
+
+                this._setButtonHeight();
+            }
+        }
+
         this._myFSM.update(dt);
     }
 
@@ -83,6 +94,8 @@ export class SirRoomState {
 
         GameGlobals.myButtonHand.startButtonHand();
         GameGlobals.mySirDialog.startSirDialog();
+
+        this._setButtonHeight();
     }
 
     _win() {
@@ -112,5 +125,26 @@ export class SirRoomState {
         if (GameGlobals.mySirDialog.isWin()) {
             this._myFSM.perform("win");
         }
+    }
+
+    _setButtonHeight() {
+        if (XRUtils.isSessionActive()) {
+            const height = GameGlobals.myPlayerTransformManager.getHeight();
+            GameGlobals.mySirDialog.object.pp_setPositionLocal([0.1, MathUtils.mapToRange(height, 1.3, 1.8, 0.9, 1.1), 0.75]);
+        } else {
+            GameGlobals.mySirDialog.object.pp_setPositionLocal([0.1, 1.1, 0.75]);
+        }
+    }
+
+    _onXRSessionStart() {
+        this._mySetButtonHeightDirty = true;
+
+        let referenceSpace = XRUtils.getReferenceSpace();
+        referenceSpace.addEventListener("reset", () => { this._mySetButtonHeightDirty = true; });
+    }
+
+    _onXRSessionEnd() {
+        this._mySetButtonHeightDirty = false;
+        this._setButtonHeight();
     }
 }
