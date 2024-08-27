@@ -29,5 +29,7 @@ export let GameGlobals = {
     myDebugEnabled: false,
     mySkipIntro: false,
 
-    myGameCompleted: false
+    myGameCompleted: false,
+
+    myDebugDialogs: false
 };
