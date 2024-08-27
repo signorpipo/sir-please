@@ -70,7 +70,7 @@
     "right": {
         "autoAdvanceAfter": 1,
         "jump": "right_2",
-        "text": "Allright smartass_._._[e:good]."
+        "text": "A[e:good]llright smartass_._._[e:good]."
     },
     "right_2": {
         "text": "Let's say I give you the benefit\nof the doubt.__\nHow do you even know that?_",
@@ -128,7 +128,7 @@
         "text": "Aha!__ I knew you were lying!"
     },
     "future": {
-        "text": "Pfffffffff_._._.__\n[e:very_bad]You expect me to believe that?_",
+        "text": "Pfffffffff_._._.__\n[e:bad]You expect me to believe that?_",
         "responses": [
             {
                 "text": "Yes",
@@ -156,12 +156,12 @@
     "cant_prove": {
         "autoAdvanceAfter": 1,
         "jump": "cant_prove_2",
-        "text": "What do you mean you can't yet?!"
+        "text": "W[e:bad]hat do you mean you can't yet?!"
     },
     "cant_prove_2": {
         "autoAdvanceAfter": 1.5,
         "jump": "cant_prove_explain",
-        "text": "Either way,[e:good]_ if you are really from\nthe future_._._.__ then you can go back\nin time again and gather proof."
+        "text": "E[e:good]ither way,_ if you are really from\nthe future_._._.[e:good]__ then you can go back\nin time again and gather proof."
     },
     "cant_prove_explain": {
         "autoAdvanceAfter": 2,
