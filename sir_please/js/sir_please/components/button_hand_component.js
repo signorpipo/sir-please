@@ -26,7 +26,9 @@ export class ButtonHandComponent extends Component {
 
     update(dt) {
         if (this._myStarted && this._myCurrentSpeed > 0) {
-            this.object.pp_translateObject(this._myTranslateVector.vec3_set(this._myCurrentSpeed * this._mySpeedMultiplier * dt, 0, 0));
+            if (!GameGlobals.myDebugEnabled || !GameGlobals.myDebugDialogs) {
+                this.object.pp_translateObject(this._myTranslateVector.vec3_set(this._myCurrentSpeed * this._mySpeedMultiplier * dt, 0, 0));
+            }
 
             this._mySpawnParticlesTimer.update(dt);
             if (this._mySpawnParticlesTimer.isDone()) {

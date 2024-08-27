@@ -226,25 +226,7 @@ export class DialogController extends Component {
         // Reset responses
         this.hideResponses();
 
-        var responses = this.currentStateJSON["responses"];
-
-        var jump = responses ? null : this.currentStateJSON["jump"];
-        if (!jump && responses && choiceIndex != -1) {
-            var response = responses[choiceIndex];
-            if (!response) {
-                console.error("Cannot advance with invalid response!");
-                return;
-            }
-            jump = response["jump"];
-        }
-
-        // Cannot advance without a response
-        if (!jump && responses) {
-            console.error("Cannot advance current dialog without response!");
-            return;
-        }
-
-        if (!jump && jump != "") {
+        if (GameGlobals.myDebugEnabled && GameGlobals.myDebugDialogs) {
             var keys = Object.keys(this.playingDialog);
             var index = keys.indexOf(this.currentState);
             this.reset();
@@ -254,10 +236,46 @@ export class DialogController extends Component {
                 this.dialogManager.getComponent(DialogManager).onEnd(this);
                 return;
             }
+
             this.currentState = keys[index + 1];
             this.currentStateJSON = this.playingDialog[this.currentState];
             this.handleEvent();
             return;
+        } else {
+            var responses = this.currentStateJSON["responses"];
+
+            var jump = responses ? null : this.currentStateJSON["jump"];
+            if (!jump && responses && choiceIndex != -1) {
+                var response = responses[choiceIndex];
+                if (!response) {
+                    console.error("Cannot advance with invalid response!");
+                    return;
+                }
+                jump = response["jump"];
+            }
+
+            // Cannot advance without a response
+            if (!jump && responses) {
+                console.error("Cannot advance current dialog without response!");
+                return;
+            }
+
+            if (!jump && jump != "") {
+                var keys = Object.keys(this.playingDialog);
+                var index = keys.indexOf(this.currentState);
+                this.reset();
+
+                if (index + 1 >= keys.length) {
+                    // Done!
+                    this.dialogManager.getComponent(DialogManager).onEnd(this);
+                    return;
+                }
+
+                this.currentState = keys[index + 1];
+                this.currentStateJSON = this.playingDialog[this.currentState];
+                this.handleEvent();
+                return;
+            }
         }
 
         this.reset();

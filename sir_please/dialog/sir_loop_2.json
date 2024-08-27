@@ -73,7 +73,7 @@
         "text": "Allright smartass_._._[e:good]."
     },
     "right_2": {
-        "text": "Let's say I give you\nthe benefit of the doubt.__\nHow do you even know that?_",
+        "text": "Let's say I give you the benefit\nof the doubt.__\nHow do you even know that?_",
         "responses": [
             {
                 "text": "Because I\nwork here!",
@@ -114,7 +114,7 @@
         "responses": [
             {
                 "text": "Idk",
-                "jump": "idk"
+                "jump": "lying"
             },
             {
                 "text": "I am from\nthe future!",
@@ -122,7 +122,7 @@
             }
         ]
     },
-    "idk": {
+    "lying": {
         "autoAdvanceAfter": 1,
         "jump": "try_again",
         "text": "Aha!__ I knew you were lying!"
@@ -136,14 +136,9 @@
             },
             {
                 "text": "No",
-                "jump": "future_no"
+                "jump": "lying"
             }
         ]
-    },
-    "future_no": {
-        "autoAdvanceAfter": 1,
-        "jump": "try_again",
-        "text": "Aha!__ I knew you were lying!"
     },
     "future_yes": {
         "text": "Well_._.[e:good]_.[e:good]__ then you better prove it!_",
@@ -161,15 +156,15 @@
     "cant_prove": {
         "autoAdvanceAfter": 1,
         "jump": "cant_prove_2",
-        "text": "What do you mean you can't yet?"
+        "text": "What do you mean you can't yet?!"
     },
     "cant_prove_2": {
-        "autoAdvanceAfter": 1,
+        "autoAdvanceAfter": 1.5,
         "jump": "cant_prove_explain",
-        "text": "Well,[e:good]_ if you are really from\nthe future_._._.__ then you can go back\nin time again and gather proof."
+        "text": "Either way,[e:good]_ if you are really from\nthe future_._._.__ then you can go back\nin time again and gather proof."
     },
     "cant_prove_explain": {
-        "autoAdvanceAfter": 1,
+        "autoAdvanceAfter": 2,
         "jump": "ded",
         "text": "So,[e:good]_ if this button really does\nwhat you say_._._.__ then you can try\nconvincing me next time[e:loop_two_end]!"
     },
