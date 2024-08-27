@@ -33,6 +33,7 @@ export class SirRoomState {
         this._myFSM.perform("start");
 
         this._mySetButtonHeightDirty = false;
+        this._myFirstEnterVR = true;
         XRUtils.registerSessionStartEndEventListeners(this, this._onXRSessionStart.bind(this), this._onXRSessionEnd.bind(this), true, false);
     }
 
@@ -137,6 +138,14 @@ export class SirRoomState {
     }
 
     _onXRSessionStart() {
+        if (this._myFirstEnterVR) {
+            if (this._myFSM.isInState("game")) {
+                GameGlobals.myButtonHand.resetButtonHand();
+            }
+        }
+
+        this._myFirstEnterVR = false;
+
         this._mySetButtonHeightDirty = true;
 
         let referenceSpace = XRUtils.getReferenceSpace();

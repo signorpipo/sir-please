@@ -59,6 +59,10 @@ export class ParticlesSpawnerComponent extends Component {
         }
     }
 
+    hide() {
+        this._myObjectPoolsManager.releaseAll();
+    }
+
     onParticleDone(particle) {
         this._myObjectPoolsManager.release(particle);
     }

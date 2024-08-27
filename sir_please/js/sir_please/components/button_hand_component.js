@@ -81,6 +81,11 @@ export class ButtonHandComponent extends Component {
         this._myStarted = false;
     }
 
+    resetButtonHand() {
+        this.object.pp_setTransformQuat(this._myInitialTransform);
+        GameGlobals.myHandParticlesSpawner.hide();
+    }
+
     registerHandStopEventListener(id, listener) {
         this._myHandStopEmitter.add(listener, { id: id });
     }
