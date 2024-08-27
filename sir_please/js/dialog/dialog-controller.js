@@ -1,4 +1,5 @@
 import { Component, Emitter, Property } from '@wonderlandengine/api';
+import { GameGlobals } from '../sir_please/game_globals';
 import { DialogManager } from './dialog-manager';
 
 /**
