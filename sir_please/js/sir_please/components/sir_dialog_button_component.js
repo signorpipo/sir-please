@@ -59,7 +59,7 @@ export class SirDialogButtonComponent extends Component {
         this._myCursorTarget.onUpWithDown.add(this.clickButton.bind(this, true, null));
 
         this._myPreventClick = true;
-        this._myIgnoreCollisionTimer = new Timer(0.1, false);
+        this._myIgnoreCollisionCounter = 8;
         this._myVisualUnpressTimer = new Timer(0.1);
         this._myVisualUnpressTimer.end();
 
@@ -85,8 +85,7 @@ export class SirDialogButtonComponent extends Component {
         this._myVisualUnpressTimer.update(dt);
 
         if (!this._myPreventClick && (this._myFSM.isInState("pop_in") || this._myFSM.isInState("visible"))) {
-            this._myIgnoreCollisionTimer.update(dt);
-            if (this._myIgnoreCollisionTimer.isDone()) {
+            if (this._myIgnoreCollisionCounter == 0) {
                 if (this._myCollisionsCollector.getCollisionsStart().length > 0) {
                     let physx = this._myCollisionsCollector.getCollisionsStart()[0];
                     let handedness = physx.pp_getComponent(SetHandednessComponent);
@@ -98,6 +97,8 @@ export class SirDialogButtonComponent extends Component {
                     }
 
                 }
+            } else {
+                this._myIgnoreCollisionCounter--;
             }
         }
 
@@ -187,7 +188,7 @@ export class SirDialogButtonComponent extends Component {
         this._myButtonVisual.pp_resetPositionLocal();
         this._myText.pp_resetPositionLocal();
 
-        this._myIgnoreCollisionTimer.start();
+        this._myIgnoreCollisionCounter = 8;
 
         this._mySpawnTimer.start();
 
