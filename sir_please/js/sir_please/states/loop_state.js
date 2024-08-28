@@ -40,8 +40,6 @@ class Loop {
 
         AnalyticsUtils.sendEventOnce(this.dialogName + "_end");
 
-        this._myParentFSM.perform("skip");
-
         if (this.dialogName == "sir_loop_4") {
             GameGlobals.myGameCompleted = true;
         }
