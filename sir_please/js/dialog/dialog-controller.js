@@ -1,4 +1,5 @@
 import { Component, Emitter, Property } from '@wonderlandengine/api';
+import { SirDialogButtonComponent } from '../sir_please/components/sir_dialog_button_component';
 import { GameGlobals } from '../sir_please/game_globals';
 import { DialogManager } from './dialog-manager';
 
@@ -29,8 +30,8 @@ export class DialogController extends Component {
         this.reset();
 
         this.responseTexts = new Array();
-        this.responseTexts.push(this.responseOneText.getComponent('text'));
-        this.responseTexts.push(this.responseTwoText.getComponent('text'));
+        this.responseTexts.push(this.responseOneText.getComponent(SirDialogButtonComponent));
+        this.responseTexts.push(this.responseTwoText.getComponent(SirDialogButtonComponent));
 
         this.charSounds = new Array();
         if (this.charSoundOne != '') this.charSounds.push(this.charSoundOne);
@@ -300,7 +301,7 @@ export class DialogController extends Component {
         for (var i = 0; i < responses.length; ++i) {
             var response = responses[i]["text"];
             //this.responseTexts[i].active = true;
-            this.responseTexts[i].text = response;
+            this.responseTexts[i].setNextText(response);
         }
     }
 

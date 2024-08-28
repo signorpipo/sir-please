@@ -2634,7 +2634,7 @@
             ]
         },
         "284": {
-            "name": "Option 1 Text",
+            "name": "Option Text",
             "parent": "305",
             "components": [
                 {
@@ -2663,7 +2663,7 @@
             ]
         },
         "286": {
-            "name": "Option 2 Text",
+            "name": "Option Text",
             "parent": "304",
             "components": [
                 {
@@ -3145,8 +3145,8 @@
                     "dialog-controller": {
                         "dialogManager": "235",
                         "text": "269",
-                        "responseOneText": "284",
-                        "responseTwoText": "286",
+                        "responseOneText": "270",
+                        "responseTwoText": "279",
                         "dialog": "",
                         "audioSource": "292",
                         "audioSourceCompnent": "dialog-sound",

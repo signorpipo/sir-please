@@ -67,6 +67,7 @@ export class SirDialogComponent extends Component {
 
         this._myWin = false;
         this._myResponseVisible = false;
+        this._myLastResponseVisible = false;
 
         this._myFirstStart = true;
     }
@@ -94,6 +95,7 @@ export class SirDialogComponent extends Component {
             GameGlobals.myDialogManager.addEventListener("insta_good", this._responseSelected.bind(this, 100000));
         }
         this._myResponseVisible = false;
+        this._myLastResponseVisible = false;
         this._myWin = false;
         this._myStarted = true;
         this._myFSM.perform("start");
@@ -147,20 +149,34 @@ export class SirDialogComponent extends Component {
         if (!this._isDialogVisible()) {
             fsm.perform("hide");
         } else {
-            if (this._myResponseVisible) {
-                this._myOption1Button.setPreventClick(false);
-                this._myOption2Button.setPreventClick(false);
+            let hideOverride = false;
+            if (this._myLastResponseVisible != this._myResponseVisible) {
+                if (this._myResponseVisible && (this._myOption1Button.isVisible() || this._myOption2Button.isVisible())) {
+                    hideOverride = true;
+                } else {
+                    this._myLastResponseVisible = this._myResponseVisible;
+                    this._mySpawnButtonDelayTimer.reset();
+                }
+            }
 
+            if (this._myResponseVisible && !hideOverride) {
                 if (!this._myOption1Button.isVisible()) {
-                    this._myOption1Button.show();
-                    this._mySpawnButtonDelayTimer.start();
+                    if (!this._myOption1Button.isReallyVisible() && !this._myOption2Button.isReallyVisible() && this._myOption1Button.isHiddenTimerDone() && this._myOption2Button.isHiddenTimerDone()) {
+                        this._myOption1Button.setPreventClick(false);
+                        this._myOption1Button.show();
+                        this._mySpawnButtonDelayTimer.reset();
+                    }
                 } else if (!this._myOption2Button.isVisible()) {
-                    if (this._mySpawnButtonDelayTimer.isRunning()) {
-                        this._mySpawnButtonDelayTimer.update(dt);
-                        if (this._mySpawnButtonDelayTimer.isDone()) {
+                    if (!this._mySpawnButtonDelayTimer.isStarted()) {
+                        this._mySpawnButtonDelayTimer.start();
+                    }
+
+                    this._mySpawnButtonDelayTimer.update(dt);
+                    if (this._mySpawnButtonDelayTimer.isDone()) {
+                        if (!this._myOption2Button.isReallyVisible() && this._myOption2Button.isHiddenTimerDone()) {
+                            this._myOption2Button.setPreventClick(false);
                             this._myOption2Button.show();
                         }
-
                     }
                 }
             } else {
@@ -168,22 +184,23 @@ export class SirDialogComponent extends Component {
                 this._myOption2Button.setPreventClick(true);
 
                 if (this._myOption1Button.isVisible()) {
-                    if (this._mySpawnButtonDelayTimer.isRunning()) {
-                        this._mySpawnButtonDelayTimer.update(dt);
-                        if (this._mySpawnButtonDelayTimer.isDone()) {
-                            this._myOption1Button.hide();
-                            this._mySpawnButtonDelayTimer.start();
-                        }
-                    } else {
+                    if (!this._mySpawnButtonDelayTimer.isStarted()) {
                         this._mySpawnButtonDelayTimer.start();
                     }
-                } else if (this._myOption2Button.isVisible()) {
-                    if (this._mySpawnButtonDelayTimer.isRunning()) {
-                        this._mySpawnButtonDelayTimer.update(dt);
-                        if (this._mySpawnButtonDelayTimer.isDone()) {
-                            this._myOption2Button.hide();
-                        }
 
+                    this._mySpawnButtonDelayTimer.update(dt);
+                    if (this._mySpawnButtonDelayTimer.isDone()) {
+                        this._myOption1Button.hide();
+                        this._mySpawnButtonDelayTimer.reset();
+                    }
+                } else if (this._myOption2Button.isVisible()) {
+                    if (!this._mySpawnButtonDelayTimer.isStarted()) {
+                        this._mySpawnButtonDelayTimer.start();
+                    }
+
+                    this._mySpawnButtonDelayTimer.update(dt);
+                    if (this._mySpawnButtonDelayTimer.isDone()) {
+                        this._myOption2Button.hide();
                     }
                 }
             }
@@ -230,11 +247,6 @@ export class SirDialogComponent extends Component {
         this._myOption1Button.startButton();
         this._myOption2Button.startButton();
 
-        if (this._myResponseVisible) {
-            this._myOption1Button.show();
-            this._myOption2Button.show();
-        }
-
         this._mySpawnButtonDelayTimer.reset();
 
         GameGlobals.myButtonHand.setSpeedMultiplier(this._myHandSpeedMultiplierOnShow);
@@ -245,6 +257,9 @@ export class SirDialogComponent extends Component {
 
         this._myOption1Button.unregisterClickEventListener(this);
         this._myOption2Button.unregisterClickEventListener(this);
+
+        this._myOption1Button.setPreventClick(true);
+        this._myOption2Button.setPreventClick(true);
 
         this._myUnspawnTimer.start();
 
@@ -273,6 +288,7 @@ export class SirDialogComponent extends Component {
         this._mySpawnButtonDelayTimer.reset();
 
         this._myResponseVisible = false;
+        this._myLastResponseVisible = false;
     }
 
     _isDialogVisible() {
@@ -349,5 +365,10 @@ export class SirDialogComponent extends Component {
 
     _setResponseVisibility(visible) {
         this._myResponseVisible = visible;
+
+        if (!visible) {
+            this._myOption1Button.setPreventClick(true);
+            this._myOption2Button.setPreventClick(true);
+        }
     }
 }

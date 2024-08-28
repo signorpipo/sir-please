@@ -1,4 +1,4 @@
-import { Component, Emitter, PhysXComponent, Property } from "@wonderlandengine/api";
+import { Component, Emitter, PhysXComponent, Property, TextComponent } from "@wonderlandengine/api";
 import { CursorTarget } from "@wonderlandengine/components";
 import { BrowserUtils, EasingFunction, FSM, Globals, InputSourceType, InputUtils, PhysicsCollisionCollector, Timer, vec3_create, XRUtils } from "../../pp";
 import { AnalyticsUtils } from "../analytics_utils";
@@ -50,6 +50,8 @@ export class SirDialogButtonComponent extends Component {
 
         this._myClickEmitter = new Emitter();
 
+        this._myOptionText = this.object.pp_getObjectByName("Option Text").pp_getComponent(TextComponent);
+
         this._myPhysX = this.object.pp_getComponent(PhysXComponent);
         this._myCollisionsCollector = new PhysicsCollisionCollector(this._myPhysX, true);
 
@@ -63,10 +65,18 @@ export class SirDialogButtonComponent extends Component {
 
         this._myClickAudioPlayer = Globals.getAudioManager().createAudioPlayer("click");
 
+        this._myHiddenTimer = new Timer(0.2);
+
+        this._myNextText = "";
+
         this._stop();
 
         this._myAvoidClickTimer = new Timer(0.5);
         XRUtils.registerSessionStartEndEventListeners(this, this._onXRSessionStart.bind(this), this._onXRSessionEnd.bind(this), true, false);
+    }
+
+    setNextText(text) {
+        this._myNextText = text;
     }
 
     update(dt) {
@@ -99,6 +109,10 @@ export class SirDialogButtonComponent extends Component {
         if (GameGlobals.myPlayerLocomotion != null && GameGlobals.myPlayerLocomotion._myPlayerHeadManager.isSynced()) {
             this._myAvoidClickTimer.update(dt);
         }
+
+        if (this._myFSM.isInState("hidden") || this._myFSM.isInState("idle")) {
+            this._myHiddenTimer.update(dt);
+        }
     }
 
     setPreventClick(preventClick) {
@@ -114,6 +128,8 @@ export class SirDialogButtonComponent extends Component {
     }
 
     startButton() {
+        this._myPreventClick = true;
+
         this._myFSM.perform("start");
     }
 
@@ -129,6 +145,10 @@ export class SirDialogButtonComponent extends Component {
 
     isReallyVisible() {
         return this._myFSM.isInState("pop_in") || this._myFSM.isInState("visible") || this._myFSM.isInState("pop_out");
+    }
+
+    isHiddenTimerDone() {
+        return this._myHiddenTimer.isDone();
     }
 
     _popInUpdate(dt, fsm) {
@@ -174,6 +194,10 @@ export class SirDialogButtonComponent extends Component {
         this._myButton.pp_setScale(Math.PP_EPSILON * 100);
 
         this._myButton.pp_setActive(true);
+
+        this._myHiddenTimer.start();
+
+        this._myOptionText.text = this._myNextText;
     }
 
     _popOut(fsm) {
