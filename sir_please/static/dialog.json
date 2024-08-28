@@ -708,7 +708,7 @@
         "am_jeff": {
             "autoAdvanceAfter": 1,
             "jump": "ded",
-            "text": "Stop lying to me!__\nI've had enough!"
+            "text": "Stop lying to me![e:bad]__\nI've had enough!"
         },
         "bad_memory": {
             "autoAdvanceAfter": 1,
@@ -722,12 +722,30 @@
         },
         "bad_memory_2": {
             "event": "good",
+            "text": "I will ask you a few questions that\nonly Jeff would know.",
+            "responses": [
+                {
+                    "text": "That's boring",
+                    "jump": "boring"
+                },
+                {
+                    "text": "Sounds good",
+                    "jump": "question_one"
+                }
+            ]
+        },
+        "boring": {
             "autoAdvanceAfter": 1,
-            "jump": "question_one",
-            "text": "I will ask you a few questions that\nonly Jeff would know."
+            "jump": "ded",
+            "text": "You are boring![e:bad]__\nI've had enough!"
         },
         "question_one": {
-            "text": "Question one:__\nWhat is my favorite color?_",
+            "autoAdvanceAfter": 1,
+            "jump": "question_one_1",
+            "text": "Fine,_ but let's make it quick.__\nI've stuff to do."
+        },
+        "question_one_1": {
+            "text": "First question:__\nWhat is my favorite color?_",
             "responses": [
                 {
                     "text": "Yellow",
@@ -751,7 +769,13 @@
             "text": "I'm impressed_._._.__\nNo one aside from Jeff knows this."
         },
         "question_two": {
-            "text": "Question two:\nHow old am I?_",
+            "event": "good",
+            "autoAdvanceAfter": 1,
+            "jump": "question_two_1",
+            "text": "However,_ this does not prove\nanything yet."
+        },
+        "question_two_1": {
+            "text": "Second question:\nHow old am I?_",
             "responses": [
                 {
                     "text": "76",
@@ -775,7 +799,13 @@
             "text": "Yeah,_ that is_._._._ my age_._._._\nYou are totally right."
         },
         "question_three": {
-            "text": "Last question:\nWhat's the name of my best friend?_",
+            "event": "good",
+            "autoAdvanceAfter": 1,
+            "jump": "question_three_1",
+            "text": "But I'm sure you will not be able\nto answer my last question,_\nthe most important one."
+        },
+        "question_three_1": {
+            "text": "What is the name of my best friend?_",
             "responses": [
                 {
                     "text": "Jeff",
@@ -794,9 +824,15 @@
         },
         "good_three": {
             "event": "good",
+            "autoAdvanceAfter": 1,
+            "jump": "good_three_1",
+            "text": "_._._."
+        },
+        "good_three_1": {
+            "event": "good",
             "autoAdvanceAfter": 2,
             "jump": "end",
-            "text": "So you are Jeff_._._.__\n[e:good]I'm sorry for doubting you."
+            "text": "So,_ you really are Jeff_._._.__\n[e:good]I'm sorry for doubting you."
         },
         "end": {
             "event": "insta_good",
