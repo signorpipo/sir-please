@@ -350,7 +350,7 @@
             "text": "Oh![e:good]__ A party![e:good]__\nI love parties!"
         },
         "party_2": {
-            "text": "But which party did we meet at?_",
+            "text": "But,_ which party did we meet at?_",
             "responses": [
                 {
                     "text": "The one in\nthe mountains",
@@ -693,7 +693,7 @@
         },
         "not_jeff": {
             "event": "bad",
-            "text": "I knew you we're lying!\nBut how do you even know that name?_",
+            "text": "I knew you we're lying!\nBut,_ how do you even know that name?_",
             "responses": [
                 {
                     "text": "We are in\na time loop!",
@@ -713,7 +713,7 @@
         "bad_memory": {
             "autoAdvanceAfter": 1,
             "jump": "bad_memory_1",
-            "text": "Hmmmmm_._._.__\n[e:good]My memory is not what it used to."
+            "text": "Hmmmmm_._._.__\n[e:good]My memory is not what it used to be."
         },
         "bad_memory_1": {
             "autoAdvanceAfter": 1,
@@ -912,7 +912,7 @@
             "text": "Oh![e:good]__ A party![e:good]__\nI love parties!"
         },
         "party_2": {
-            "text": "But which party did we meet at?_",
+            "text": "But,_ which party did we meet at?_",
             "responses": [
                 {
                     "text": "The one in\nthe mountains",
@@ -1199,7 +1199,8 @@
         },
         "ded_end": {},
         "win": {
-            "event": "loop_four_end"
+            "event": "loop_four_end",
+            "instaText": "Anyway, I have to go now.\nSee you soon, Jeff.\nLet's do it again tomorrow."
         }
     }
 }

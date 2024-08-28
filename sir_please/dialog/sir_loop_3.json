@@ -61,7 +61,7 @@
         "text": "Oh![e:good]__ A party![e:good]__\nI love parties!"
     },
     "party_2": {
-        "text": "But which party did we meet at?_",
+        "text": "But,_ which party did we meet at?_",
         "responses": [
             {
                 "text": "The one in\nthe mountains",

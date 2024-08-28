@@ -68,6 +68,11 @@ export class DialogController extends Component {
         this.timer = 0.0;
         this.currentText = this.dialogPrefix;
         this.text.getComponent('text').text = this.currentText;
+
+        if (this.currentStateJSON.instaText != null) {
+            this.currentText += this.currentStateJSON.instaText
+            this.text.getComponent('text').text = this.currentText;
+        }
     }
 
     resume() {
@@ -283,6 +288,10 @@ export class DialogController extends Component {
         this.reset();
         this.currentStateJSON = this.playingDialog[jump];
         this.currentState = jump;
+        if (this.currentStateJSON.instaText != null) {
+            this.currentText += this.currentStateJSON.instaText
+            this.text.getComponent('text').text = this.currentText;
+        }
         this.handleEvent();
     }
 

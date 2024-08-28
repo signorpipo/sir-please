@@ -114,7 +114,8 @@ export class SirDialogComponent extends Component {
 
     _popInUpdate(dt, fsm) {
         if (this._myDialogController.currentStateJSON != null && this._myDialogController.currentStateJSON["text"] == null) {
-            this._myTextSpeech.pp_setActive(false);
+            //this._myTextSpeech.pp_setActive(false);
+            this._myTextSpeech.pp_setActive(true);
         } else {
             this._myTextSpeech.pp_setActive(true);
         }
@@ -141,7 +142,8 @@ export class SirDialogComponent extends Component {
 
     _visibleUpdate(dt, fsm) {
         if (this._myDialogController.currentStateJSON != null && this._myDialogController.currentStateJSON["text"] == null) {
-            this._myTextSpeech.pp_setActive(false);
+            //this._myTextSpeech.pp_setActive(false);
+            this._myTextSpeech.pp_setActive(true);
         } else {
             this._myTextSpeech.pp_setActive(true);
         }
@@ -209,7 +211,8 @@ export class SirDialogComponent extends Component {
 
     _popOutUpdate(dt, fsm) {
         if (this._myDialogController.currentStateJSON != null && this._myDialogController.currentStateJSON["text"] == null) {
-            this._myTextSpeech.pp_setActive(false);
+            // this._myTextSpeech.pp_setActive(false);
+            this._myTextSpeech.pp_setActive(true);
         } else {
             this._myTextSpeech.pp_setActive(true);
         }
