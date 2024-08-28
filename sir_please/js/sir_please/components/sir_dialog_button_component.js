@@ -268,6 +268,7 @@ export class SirDialogButtonComponent extends Component {
     }
 
     _onXRSessionStart() {
+        this._myIgnoreCollisionCounter = 8;
         this._myAvoidClickTimer.start();
     }
 
