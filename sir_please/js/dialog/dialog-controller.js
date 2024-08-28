@@ -208,6 +208,7 @@ export class DialogController extends Component {
             }
 
             if (this.textReadPos >= desiredText.length) {
+                this.timer = 0.0;
                 this.setupResponses();
             }
         } else {
