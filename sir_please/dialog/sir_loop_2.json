@@ -38,7 +38,7 @@
                 "jump": "you_sure"
             },
             {
-                "text": "But what if\nI am right?",
+                "text": "But, what if\nI'm right?",
                 "jump": "right"
             }
         ]
@@ -161,7 +161,7 @@
     "cant_prove_2": {
         "autoAdvanceAfter": 1.5,
         "jump": "cant_prove_explain",
-        "text": "E[e:good]ither way,_ if you are really from\nthe future_._._.[e:good]__ then you can go back\nin time again and gather proof."
+        "text": "E[e:good]ither way,_ if you really are from\nthe future_._._.[e:good]__ then you can go back\nin time again and gather proof."
     },
     "cant_prove_explain": {
         "autoAdvanceAfter": 2,

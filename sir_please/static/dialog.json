@@ -71,7 +71,7 @@
             "text": "Glad we agree on something._",
             "responses": [
                 {
-                    "text": "So who\nare you?",
+                    "text": "So, who\nare you?",
                     "jump": "sir_name"
                 },
                 {
@@ -144,7 +144,7 @@
                     "jump": "you_sure"
                 },
                 {
-                    "text": "But what if\nI am right?",
+                    "text": "But, what if\nI'm right?",
                     "jump": "right"
                 }
             ]
@@ -267,7 +267,7 @@
         "cant_prove_2": {
             "autoAdvanceAfter": 1.5,
             "jump": "cant_prove_explain",
-            "text": "E[e:good]ither way,_ if you are really from\nthe future_._._.[e:good]__ then you can go back\nin time again and gather proof."
+            "text": "E[e:good]ither way,_ if you really are from\nthe future_._._.[e:good]__ then you can go back\nin time again and gather proof."
         },
         "cant_prove_explain": {
             "autoAdvanceAfter": 2,
@@ -415,7 +415,7 @@
             "text": "Well,[e:good]_ there was Jeff.__\nThe only person who ever cared\nabout me[e:loop_three_end]."
         },
         "no_friends_2": {
-            "autoAdvanceAfter": 1,
+            "autoAdvanceAfter": 2,
             "jump": "no_friends_3",
             "text": "But we parted ways."
         },
@@ -453,10 +453,10 @@
         "I_am_bully": {
             "autoAdvanceAfter": 1,
             "jump": "ded",
-            "text": "Well,_ then I certainly don't trust\nyou!"
+            "text": "Well,_ then I certainly don't trust you!"
         },
         "world_at_stake": {
-            "text": "How so?__",
+            "text": "How so?_",
             "responses": [
                 {
                     "text": "The planet\nwill explode!",
@@ -494,7 +494,7 @@
                     "jump": "you_sure"
                 },
                 {
-                    "text": "But what if\nI am right?",
+                    "text": "But, what if\nI'm right?",
                     "jump": "right"
                 }
             ]
@@ -617,7 +617,7 @@
         "cant_prove_2": {
             "autoAdvanceAfter": 1.5,
             "jump": "cant_prove_explain",
-            "text": "E[e:good]ither way,_ if you are really from\nthe future_._._.[e:good]__ then you can go back\nin time again and gather proof."
+            "text": "E[e:good]ither way,_ if you really are from\nthe future_._._.[e:good]__ then you can go back\nin time again and gather proof."
         },
         "cant_prove_explain": {
             "autoAdvanceAfter": 2,
@@ -668,7 +668,7 @@
             "text": "What?__\n[e:bad]You can't be Jeff!_",
             "responses": [
                 {
-                    "text": "Why not",
+                    "text": "Why not?",
                     "jump": "why_not_jeff"
                 },
                 {
@@ -742,10 +742,10 @@
         "question_one": {
             "autoAdvanceAfter": 1,
             "jump": "question_one_1",
-            "text": "Fine,_ but let's make it quick.__\nI've stuff to do."
+            "text": "Fine,_ but let's make it quick.__\nI've got stuff to do."
         },
         "question_one_1": {
-            "text": "First question:__\nWhat is my favorite color?_",
+            "text": "First question:_\nWhat is my favorite color?_",
             "responses": [
                 {
                     "text": "Yellow",
@@ -775,7 +775,7 @@
             "text": "However,_ this does not prove\nanything yet."
         },
         "question_two_1": {
-            "text": "Second question:\nHow old am I?_",
+            "text": "Second question:_\nHow old am I?_",
             "responses": [
                 {
                     "text": "76",
@@ -805,7 +805,7 @@
             "text": "But I'm sure you will not be able\nto answer my last question,_\nthe most important one."
         },
         "question_three_1": {
-            "text": "What is the name of my best friend?_",
+            "text": "Who is my best friend?_",
             "responses": [
                 {
                     "text": "Jeff",
@@ -843,7 +843,7 @@
         "end_1": {
             "autoAdvanceAfter": 2,
             "jump": "end_2",
-            "text": "I also feel like I need to tell you\nthat this is the end of the game."
+            "text": "I also feel the need to tell you\nthat this is the end of the game."
         },
         "end_2": {
             "autoAdvanceAfter": 2,
@@ -871,7 +871,7 @@
                     "jump": "win"
                 },
                 {
-                    "text": "For sure",
+                    "text": "For sure!",
                     "jump": "win"
                 }
             ]
@@ -977,7 +977,7 @@
             "text": "Well,[e:good]_ there was Jeff.__\nThe only person who ever cared\nabout me."
         },
         "no_friends_2": {
-            "autoAdvanceAfter": 1,
+            "autoAdvanceAfter": 2,
             "jump": "no_friends_3",
             "text": "But we parted ways."
         },
@@ -1015,10 +1015,10 @@
         "I_am_bully": {
             "autoAdvanceAfter": 1,
             "jump": "ded",
-            "text": "Well,_ then I certainly don't trust\nyou!"
+            "text": "Well,_ then I certainly don't trust you!"
         },
         "world_at_stake": {
-            "text": "How so?__",
+            "text": "How so?_",
             "responses": [
                 {
                     "text": "The planet\nwill explode!",
@@ -1056,7 +1056,7 @@
                     "jump": "you_sure"
                 },
                 {
-                    "text": "But what if\nI am right?",
+                    "text": "But, what if\nI'm right?",
                     "jump": "right"
                 }
             ]
@@ -1179,7 +1179,7 @@
         "cant_prove_2": {
             "autoAdvanceAfter": 1.5,
             "jump": "cant_prove_explain",
-            "text": "E[e:good]ither way,_ if you are really from\nthe future_._._.[e:good]__ then you can go back\nin time again and gather proof."
+            "text": "E[e:good]ither way,_ if you really are from\nthe future_._._.[e:good]__ then you can go back\nin time again and gather proof."
         },
         "cant_prove_explain": {
             "autoAdvanceAfter": 2,

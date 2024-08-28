@@ -70,7 +70,7 @@
         "text": "Glad we agree on something._",
         "responses": [
             {
-                "text": "So who\nare you?",
+                "text": "So, who\nare you?",
                 "jump": "sir_name"
             },
             {
