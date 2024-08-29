@@ -6,6 +6,12 @@ export class SirRoomState {
         this._myPlayerSpawn = GameGlobals.mySirRoom.pp_getObjectByName("Player Spawn");
         this._myPlayerSpawnHand = GameGlobals.mySirRoom.pp_getObjectByName("Player Spawn Hand");
 
+        this._mySir = GameGlobals.mySirRoom.pp_getObjectByName("Sir");
+        this._mySirBody = GameGlobals.mySirRoom.pp_getObjectByName("Body");
+        this._mySirBodyInitialTransform = this._mySirBody.pp_getTransformQuat();
+        this._mySirExtras = GameGlobals.mySirRoom.pp_getObjectByName("Extras");
+        this._mySirExtrasInitialTransform = this._mySirExtras.pp_getTransformQuat();
+
         this._myParentFSM = null;
 
         this._myLastLeftHandType = null;
@@ -76,6 +82,9 @@ export class SirRoomState {
     _startGame() {
         GameGlobals.myBlackFader.fadeOut(true);
         GameGlobals.myPlayerLocomotion.setIdle(false);
+
+        this._mySirBody.pp_setTransformQuat(this._mySirBodyInitialTransform);
+        this._mySirExtras.pp_setTransformQuat(this._mySirExtrasInitialTransform);
 
         let playerStartPosition = this._myPlayerSpawn.pp_getPosition();
         let rotationQuat = this._myPlayerSpawn.pp_getRotationQuat();
