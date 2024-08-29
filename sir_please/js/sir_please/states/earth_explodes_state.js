@@ -43,6 +43,11 @@ export class EarthExplodesState {
     start(fsm) {
         this._myParentFSM = fsm;
 
+        if (GameGlobals.myGameCompleted) {
+            GameGlobals.myGameCompleted = false;
+            AnalyticsUtils.sendEventOnce("earth_explode_after_end", false);
+        }
+
         GameGlobals.myHideHands.hide();
         GameGlobals.myBlackFader.fadeIn(true);
         GameGlobals.myPlayerLocomotion.setIdle(true);
@@ -76,10 +81,6 @@ export class EarthExplodesState {
             } else {
                 AnalyticsUtils.sendEventOnce("earth_explode_flat_desktop");
             }
-        }
-
-        if (GameGlobals.myGameCompleted) {
-            AnalyticsUtils.sendEventOnce("earth_explode_after_end", false);
         }
     }
 
