@@ -91,14 +91,25 @@ export class StarsDomeComponent extends Component {
         let distance2 = worldPosition.vec3_distance(object2Position);
 
         if (distance1 > this._myAvoidObject1Distance && distance2 > this._myAvoidObject2Distance) {
-            let randomStar = Math.pp_randomPick(this._myStars.pp_getChildren()).pp_clone();
-            randomStar.pp_setParent(this.object, false);
-            randomStar.pp_resetTransformLocal();
-            randomStar.pp_setPositionLocal(starDirection);
-            randomStar.pp_setRotationLocal(vec3_create(Math.pp_random(-180, 180), Math.pp_random(-180, 180), Math.pp_random(-180, 180)));
-            randomStar.pp_setScaleLocal(Math.pp_random(this._myMinScale, this._myMaxScale));
+            let isBetweeenObjects = false;
 
-            this._mySpawnedStars.push(randomStar);
+            let differenceWorld = worldPosition.vec3_sub(object1Position);
+            let differenceObject1 = object2Position.vec3_sub(object1Position);
+            let verticalDifference = differenceWorld.vec3_removeComponentAlongAxis(differenceObject1.vec3_normalize());
+            if (differenceWorld.vec3_length() <= differenceObject1.vec3_length() && verticalDifference.vec3_length() < this._myAvoidObject1.pp_getScale()[0] * 1.1) {
+                isBetweeenObjects = true;
+            }
+
+            if (!isBetweeenObjects) {
+                let randomStar = Math.pp_randomPick(this._myStars.pp_getChildren()).pp_clone();
+                randomStar.pp_setParent(this.object, false);
+                randomStar.pp_resetTransformLocal();
+                randomStar.pp_setPositionLocal(starDirection);
+                randomStar.pp_setRotationLocal(vec3_create(Math.pp_random(-180, 180), Math.pp_random(-180, 180), Math.pp_random(-180, 180)));
+                randomStar.pp_setScaleLocal(Math.pp_random(this._myMinScale, this._myMaxScale));
+
+                this._mySpawnedStars.push(randomStar);
+            }
         }
     }
 }
