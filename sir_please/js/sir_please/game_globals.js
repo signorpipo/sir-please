@@ -31,5 +31,7 @@ export let GameGlobals = {
 
     myGameCompleted: false,
 
-    myDebugDialogs: false
+    myDebugDialogs: false,
+
+    myTrackedHandTeleported: false
 };

@@ -104,6 +104,8 @@ export class SirRoomState {
     }
 
     _gameUpdate(dt, fsm) {
+        GameGlobals.myTrackedHandTeleported = false;
+
         if (GameGlobals.myPlayerLocomotion._myPlayerHeadManager.isSynced()) {
             let currentLeftHandType = InputUtils.getInputSourceTypeByHandedness(Handedness.LEFT);
             if (currentLeftHandType != this._myLastLeftHandType && currentLeftHandType == InputSourceType.TRACKED_HAND) {
@@ -112,6 +114,7 @@ export class SirRoomState {
                 let rotationQuat = this._myPlayerSpawnHand.pp_getRotationQuat();
                 GameGlobals.myPlayerTransformManager.teleportAndReset(playerStartPosition, rotationQuat);
                 Globals.getPlayerObjects().myCameraNonXR.pp_setUp(GameGlobals.myUp);
+                GameGlobals.myTrackedHandTeleported = true;
             }
 
             this._myLastLeftHandType = currentLeftHandType;

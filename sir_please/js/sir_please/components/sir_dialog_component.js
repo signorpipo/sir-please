@@ -1,6 +1,6 @@
 import { Component, Property } from "@wonderlandengine/api";
 import { DialogController } from "../../dialog/dialog-controller";
-import { EasingFunction, FSM, Timer, vec3_create } from "../../pp";
+import { EasingFunction, FSM, Timer, vec3_create, XRUtils } from "../../pp";
 import { GameGlobals } from "../game_globals";
 import { SirDialogButtonComponent } from "./sir_dialog_button_component";
 
@@ -64,15 +64,21 @@ export class SirDialogComponent extends Component {
         this._myOption2Button = this._myOption2.pp_getComponent(SirDialogButtonComponent);
 
         this._mySpawnButtonDelayTimer = new Timer(0.4, false);
+        this._myVisibleTimer = new Timer(0.5, false);
 
         this._myWin = false;
         this._myResponseVisible = false;
         this._myLastResponseVisible = false;
 
         this._myFirstStart = true;
+        this._myEnterSessionCounter = 0;
+
+        XRUtils.registerSessionStartEndEventListeners(this, this._onXRSessionStart.bind(this), this._onXRSessionEnd.bind(this), true, false);
     }
 
     update(dt) {
+        this._myEnterSessionCounter--;
+
         if (this._myStarted) {
             this._myFSM.update(dt);
         }
@@ -98,6 +104,7 @@ export class SirDialogComponent extends Component {
         this._myLastResponseVisible = false;
         this._myWin = false;
         this._myStarted = true;
+
         this._myFSM.perform("start");
     }
 
@@ -107,7 +114,15 @@ export class SirDialogComponent extends Component {
     }
 
     _hiddenUpdate(dt, fsm) {
-        if (this._isDialogVisible()) {
+        if (GameGlobals.myTrackedHandTeleported) {
+            if (this._myEnterSessionCounter > 0) {
+                this._myVisibleTimer.start(1);
+            } else {
+                this._myVisibleTimer.start(0.5);
+            }
+        }
+
+        if (this._isDialogVisible(dt)) {
             fsm.perform("show");
         }
     }
@@ -148,7 +163,7 @@ export class SirDialogComponent extends Component {
             this._myTextSpeech.pp_setActive(true);
         }
 
-        if (!this._isDialogVisible()) {
+        if (!this._isDialogVisible(dt)) {
             fsm.perform("hide");
         } else {
             let hideOverride = false;
@@ -238,6 +253,8 @@ export class SirDialogComponent extends Component {
         this._myOption1Button.startButton();
         this._myOption2Button.startButton();
         this._mySpawnButtonDelayTimer.reset();
+
+        this._myVisibleTimer.start(0.5);
     }
 
     _popIn(fsm) {
@@ -294,9 +311,14 @@ export class SirDialogComponent extends Component {
         this._myLastResponseVisible = false;
     }
 
-    _isDialogVisible() {
+    _isDialogVisible(dt) {
         if (GameGlobals.myBlackFader.isFading()) {
             return false;
+        } else {
+            this._myVisibleTimer.update(dt);
+            if (!this._myVisibleTimer.isDone()) {
+                return false;
+            }
         }
 
         if (this._myDialogController.currentStateJSON != null && this._myDialogController.currentStateJSON["text"] == null &&
@@ -374,4 +396,12 @@ export class SirDialogComponent extends Component {
             this._myOption2Button.setPreventClick(true);
         }
     }
+
+    _onXRSessionStart() {
+        if (!GameGlobals.myBlackFader.isFading()) {
+            this._myEnterSessionCounter = 10;
+        }
+    }
+
+    _onXRSessionEnd() { }
 }
