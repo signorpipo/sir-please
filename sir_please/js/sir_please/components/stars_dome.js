@@ -41,7 +41,13 @@ export class StarsDomeComponent extends Component {
             rotationAxis.vec3_normalize(rotationAxis);
 
             for (let j = 0; j < cloves; j++) {
-                if (this._mySpawnedStars.length < maxCount) {
+                let verticalAngle = verticalDirection.vec3_angle(upDirection);
+                let addStar = true;
+                if (verticalAngle < 15 || verticalAngle > 165) {
+                    addStar = Math.pp_randomInt(0, 5) == 0;
+                }
+
+                if (addStar && this._mySpawnedStars.length < maxCount) {
                     let distance = Math.random() * (maxDistance - minDistance) + minDistance;
                     let extraAxisRotation = (Math.random() * 2 - 1) * (maxExtraRotation - minExtraRotation) + minExtraRotation;
                     let extraUpRotation = (Math.random() * 2 - 1) * (maxExtraRotation - minExtraRotation) + minExtraRotation;
@@ -57,7 +63,13 @@ export class StarsDomeComponent extends Component {
 
                 verticalDirection.vec3_rotateAxisRadians(angleForClove / 2, rotationAxis, verticalDirection);
 
-                if (this._mySpawnedStars.length < maxCount) {
+                verticalAngle = verticalDirection.vec3_angle(upDirection);
+                addStar = true;
+                if (verticalAngle < 15 || verticalAngle > 165) {
+                    addStar = Math.pp_randomInt(0, 5) == 0;
+                }
+
+                if (addStar && this._mySpawnedStars.length < maxCount) {
                     let distance = Math.random() * (maxDistance - minDistance) + minDistance;
                     let extraAxisRotation = (Math.random() * 2 - 1) * (maxExtraRotation - minExtraRotation) + minExtraRotation;
                     let extraUpRotation = (Math.random() * 2 - 1) * (maxExtraRotation - minExtraRotation) + minExtraRotation;
