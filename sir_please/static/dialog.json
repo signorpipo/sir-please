@@ -438,7 +438,7 @@
             "text": "Because I don't want to.__\nNow you are annoying me."
         },
         "talk_about_bullies": {
-            "text": "Perhaps_._.[e:good]_.[e:good]__\nbut why should I trust you?",
+            "text": "Perhaps_._.[e:good]_.[e:good]__\nbut why should I trust you?_",
             "responses": [
                 {
                     "text": "I was your\nbully",
@@ -722,7 +722,7 @@
         },
         "bad_memory_2": {
             "event": "good",
-            "text": "I will ask you a few questions that\nonly Jeff would know.",
+            "text": "I will ask you a few questions that\nonly Jeff would know._",
             "responses": [
                 {
                     "text": "That's boring",
@@ -851,7 +851,7 @@
             "text": "And that Robin and Pipo\nwant to thank you for playing."
         },
         "end_3": {
-            "text": "What a weird thing to say,\ndon't you think?",
+            "text": "What a weird thing to say,\ndon't you think?_",
             "responses": [
                 {
                     "text": "Yeah...",
@@ -864,7 +864,7 @@
             ]
         },
         "end_4": {
-            "text": "Anyway,_ I have to go now.__\nSee you soon,_ Jeff.__\nLet's do it again tomorrow.",
+            "text": "Anyway,_ I have to go now.__\nSee you soon,_ Jeff.__\nLet's do it again tomorrow._",
             "responses": [
                 {
                     "text": "See you",
@@ -1000,7 +1000,7 @@
             "text": "Because I don't want to.__\nNow you are annoying me."
         },
         "talk_about_bullies": {
-            "text": "Perhaps_._.[e:good]_.[e:good]__\nbut why should I trust you?",
+            "text": "Perhaps_._.[e:good]_.[e:good]__\nbut why should I trust you?_",
             "responses": [
                 {
                     "text": "I was your\nbully",
