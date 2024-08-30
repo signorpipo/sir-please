@@ -1,4 +1,4 @@
-import { FSM, MathUtils, Timer, TimerState, vec3_create } from "../../pp";
+import { EasingFunction, FSM, Globals, MathUtils, Timer, TimerState, vec3_create } from "../../pp";
 import { GameGlobals } from "../game_globals";
 
 export class WinState {
@@ -34,6 +34,11 @@ export class WinState {
         this._myAccelerationTimer = new Timer(10);
         this._myMaxParticleTimer = new Timer(10);
 
+        this._myPulseWaitTimer = new Timer(0.2);
+        this._myToMaxPulseTimer = new Timer(10);
+        this._myKeepMaxPulseTimer = new Timer(1);
+        this._myFadePulseTimer = new Timer(2);
+
         this._myCurrentAcceleration = 0;
 
         this._myCurrentSpeed = 0;
@@ -62,6 +67,11 @@ export class WinState {
         this._myMaxParticleTimer.start();
         this._myCurrentSpeed = 0;
         this._myCurrentAcceleration = 0;
+
+        this._myPulseWaitTimer.start();
+        this._myToMaxPulseTimer.reset();
+        this._myKeepMaxPulseTimer.reset();
+        this._myFadePulseTimer.reset();
     }
 
     _stopWin() {
@@ -95,6 +105,36 @@ export class WinState {
                 GameGlobals.myHandParticlesSpawner.spawn(GameGlobals.myButtonHand.object.pp_getPosition());
 
                 this._mySpawnParticlesTimer.start(MathUtils.interpolate(1, 0.01, this._myMaxParticleTimer.getPercentage(), easeTimer));
+            }
+
+            let maxIntensity = 0.8;
+            if (this._myPulseWaitTimer.isRunning()) {
+                this._myPulseWaitTimer.update(dt);
+                if (this._myPulseWaitTimer.isDone()) {
+                    this._myToMaxPulseTimer.start();
+                }
+            } else if (this._myToMaxPulseTimer.isRunning()) {
+                this._myToMaxPulseTimer.update(dt);
+                let pulseIntensity = MathUtils.interpolate(0.01, maxIntensity, this._myToMaxPulseTimer.getPercentage(), EasingFunction.easeIn);
+                Globals.getLeftGamepad().pulse(pulseIntensity, 0);
+                Globals.getRightGamepad().pulse(pulseIntensity, 0);
+
+                if (this._myToMaxPulseTimer.isDone()) {
+                    this._myKeepMaxPulseTimer.start();
+                }
+            } else if (this._myKeepMaxPulseTimer.isRunning()) {
+                this._myKeepMaxPulseTimer.update(dt);
+                Globals.getLeftGamepad().pulse(maxIntensity, 0);
+                Globals.getRightGamepad().pulse(maxIntensity, 0);
+
+                if (this._myKeepMaxPulseTimer.isDone()) {
+                    this._myFadePulseTimer.start();
+                }
+            } else if (this._myFadePulseTimer.isRunning()) {
+                this._myFadePulseTimer.update(dt);
+                let pulseIntensity = MathUtils.interpolate(maxIntensity, 0, this._myFadePulseTimer.getPercentage(), EasingFunction.easeOut);
+                Globals.getLeftGamepad().pulse(pulseIntensity, 0);
+                Globals.getRightGamepad().pulse(pulseIntensity, 0);
             }
         }
     }
