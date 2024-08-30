@@ -84,6 +84,10 @@ export class SirDialogComponent extends Component {
         }
     }
 
+    isHidden() {
+        return this._myFSM.isInState("hidden") || this._myFSM.isInState("idle");
+    }
+
     startSirDialog() {
         if (this._myFirstStart) {
             this._myFirstStart = false;

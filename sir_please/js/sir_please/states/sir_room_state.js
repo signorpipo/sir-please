@@ -1,5 +1,6 @@
 import { FSM, GamepadButtonID, Globals, Handedness, InputSourceType, InputUtils, MathUtils, TimerState, XRUtils } from "../../pp";
 import { GameGlobals } from "../game_globals";
+import { WinState } from "./win_state";
 
 export class SirRoomState {
     constructor() {
@@ -25,18 +26,18 @@ export class SirRoomState {
         this._myFSM.addState("idle");
         this._myFSM.addState("game", this._gameUpdate.bind(this));
         this._myFSM.addState("win_wait", new TimerState(1, "end"));
-        this._myFSM.addState("true_win", this._trueWinUpdate.bind(this));
+        this._myFSM.addState("real_win", new WinState(this._trackedHandTeleportUpdate.bind(this), this._mySirBody, this._mySirExtras));
 
         this._myFSM.addTransition("init", "idle", "start");
         this._myFSM.addTransition("idle", "game", "start", this._startGame.bind(this));
         this._myFSM.addTransition("game", "win_wait", "win");
         this._myFSM.addTransition("win_wait", "idle", "end", this._win.bind(this));
-        this._myFSM.addTransition("game", "true_win", "true_win");
+        this._myFSM.addTransition("game", "real_win", "real_win");
 
         this._myFSM.addTransition("idle", "idle", "skip");
         this._myFSM.addTransition("game", "idle", "skip");
         this._myFSM.addTransition("win_wait", "idle", "skip");
-        this._myFSM.addTransition("true_win", "idle", "skip");
+        this._myFSM.addTransition("real_win", "idle", "skip");
 
         this._myFSM.init("init");
         this._myFSM.perform("start");
@@ -129,12 +130,8 @@ export class SirRoomState {
         }
 
         if (GameGlobals.myGameCompleted) {
-            this._myFSM.perform("true_win");
+            this._myFSM.perform("real_win");
         }
-    }
-
-    _trueWinUpdate(dt, fsm) {
-        this._trackedHandTeleportUpdate();
     }
 
     _trackedHandTeleportUpdate() {
