@@ -43,6 +43,7 @@ export class SirRoomState {
         this._myFSM.perform("start");
 
         this._mySetButtonHeightDirty = false;
+        this._myViewResetDirtyCounter = 0;
         this._myFirstEnterVR = true;
         XRUtils.registerSessionStartEndEventListeners(this, this._onXRSessionStart.bind(this), this._onXRSessionEnd.bind(this), true, false);
     }
@@ -66,8 +67,6 @@ export class SirRoomState {
         GameGlobals.mySirDialog.stopSirDialog();
 
         this._myFSM.perform("skip");
-
-        this._myLastLeftHandType = null;
     }
 
 
@@ -75,7 +74,6 @@ export class SirRoomState {
         if (GameGlobals.myPlayerLocomotion._myPlayerHeadManager.isSynced()) {
             if (this._mySetButtonHeightDirty) {
                 this._mySetButtonHeightDirty = false;
-
                 this._setButtonHeight();
             }
         }
@@ -84,16 +82,29 @@ export class SirRoomState {
     }
 
     _startGame() {
+        GameGlobals.myTrackedHandTeleported = false;
+        this._myViewResetDirtyCounter = 0;
+        this._mySetButtonHeightDirty = false;
+        this._myLastLeftHandType = null;
+
         GameGlobals.myBlackFader.fadeOut(true);
         GameGlobals.myPlayerLocomotion.setIdle(false);
 
         this._mySirBody.pp_setTransformQuat(this._mySirBodyInitialTransform);
         this._mySirExtras.pp_setTransformQuat(this._mySirExtrasInitialTransform);
 
-        let playerStartPosition = this._myPlayerSpawn.pp_getPosition();
-        let rotationQuat = this._myPlayerSpawn.pp_getRotationQuat();
-        GameGlobals.myPlayerTransformManager.teleportAndReset(playerStartPosition, rotationQuat);
-        Globals.getPlayerObjects().myCameraNonXR.pp_setUp(GameGlobals.myUp);
+        let currentLeftHandType = InputUtils.getInputSourceTypeByHandedness(Handedness.LEFT);
+        if (currentLeftHandType == InputSourceType.TRACKED_HAND) {
+            let playerStartPosition = this._myPlayerSpawnHand.pp_getPosition();
+            let rotationQuat = this._myPlayerSpawnHand.pp_getRotationQuat();
+            GameGlobals.myPlayerTransformManager.teleportAndReset(playerStartPosition, rotationQuat);
+            Globals.getPlayerObjects().myCameraNonXR.pp_setUp(GameGlobals.myUp);
+        } else {
+            let playerStartPosition = this._myPlayerSpawn.pp_getPosition();
+            let rotationQuat = this._myPlayerSpawn.pp_getRotationQuat();
+            GameGlobals.myPlayerTransformManager.teleportAndReset(playerStartPosition, rotationQuat);
+            Globals.getPlayerObjects().myCameraNonXR.pp_setUp(GameGlobals.myUp);
+        }
 
         GameGlobals.myBlackFader.fadeIn();
         GameGlobals.myHideHands.show();
@@ -118,6 +129,35 @@ export class SirRoomState {
 
     _gameUpdate(dt, fsm) {
         this._trackedHandTeleportUpdate();
+
+        if (GameGlobals.myPlayerLocomotion._myPlayerHeadManager.isSynced()) {
+            if (this._myViewResetDirtyCounter > 0) {
+                this._myViewResetDirtyCounter--;
+                if (this._myViewResetDirtyCounter == 0) {
+                    this._myViewResetDirty = false;
+                    let currentLeftHandType = InputUtils.getInputSourceTypeByHandedness(Handedness.LEFT);
+                    if (currentLeftHandType == InputSourceType.TRACKED_HAND) {
+                        let playerStartPosition = this._myPlayerSpawnHand.pp_getPosition();
+                        let rotationQuat = this._myPlayerSpawnHand.pp_getRotationQuat();
+                        GameGlobals.myPlayerTransformManager.teleportAndReset(playerStartPosition, rotationQuat);
+                        Globals.getPlayerObjects().myCameraNonXR.pp_setUp(GameGlobals.myUp);
+                        GameGlobals.myTrackedHandTeleported = true;
+
+                        this._myLastLeftHandType = currentLeftHandType;
+                    } else if (!GameGlobals.mySirDialog.isHidden()) {
+                        let playerStartPosition = this._myPlayerSpawnHand.pp_getPosition();
+                        let rotationQuat = this._myPlayerSpawnHand.pp_getRotationQuat();
+                        GameGlobals.myPlayerTransformManager.teleportAndReset(playerStartPosition, rotationQuat);
+                        Globals.getPlayerObjects().myCameraNonXR.pp_setUp(GameGlobals.myUp);
+                    } else {
+                        let playerStartPosition = this._myPlayerSpawn.pp_getPosition();
+                        let rotationQuat = this._myPlayerSpawn.pp_getRotationQuat();
+                        GameGlobals.myPlayerTransformManager.teleportAndReset(playerStartPosition, rotationQuat);
+                        Globals.getPlayerObjects().myCameraNonXR.pp_setUp(GameGlobals.myUp);
+                    }
+                }
+            }
+        }
 
         if (GameGlobals.myDebugEnabled && Globals.getLeftGamepad().getButtonInfo(GamepadButtonID.TOP_BUTTON).isPressStart(2)) {
             this._myParentFSM.perform("lose");
@@ -173,11 +213,19 @@ export class SirRoomState {
         this._mySetButtonHeightDirty = true;
 
         let referenceSpace = XRUtils.getReferenceSpace();
-        referenceSpace.addEventListener("reset", () => { this._mySetButtonHeightDirty = true; });
+        referenceSpace.addEventListener("reset", this._onViewReset.bind(this));
     }
 
     _onXRSessionEnd() {
         this._mySetButtonHeightDirty = false;
         this._setButtonHeight();
+    }
+
+    _onViewReset() {
+        this._mySetButtonHeightDirty = true;
+
+        if (this._myFSM.isInState("game")) {
+            this._myViewResetDirtyCounter = 3;
+        }
     }
 }
