@@ -105,7 +105,7 @@ export class WinState {
             this._myMaxParticleTimer.update(dt);
 
             if (this._myAccelerationTimer.getPercentage() == 1) {
-                this._myCurrentAcceleration += 3 * dt;
+                this._myCurrentAcceleration += 1 * dt;
             }
 
             this._myCurrentSpeed += this._myCurrentAcceleration * dt;

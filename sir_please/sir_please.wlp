@@ -113,7 +113,10 @@
             "parent": "72",
             "components": [
                 {
-                    "type": "view"
+                    "type": "view",
+                    "view": {
+                        "far": 800.0
+                    }
                 },
                 {
                     "type": "mouse-look"
@@ -155,7 +158,10 @@
             "parent": "22",
             "components": [
                 {
-                    "type": "view"
+                    "type": "view",
+                    "view": {
+                        "far": 800.0
+                    }
                 },
                 {
                     "type": "input",
@@ -170,7 +176,10 @@
             "parent": "22",
             "components": [
                 {
-                    "type": "view"
+                    "type": "view",
+                    "view": {
+                        "far": 800.0
+                    }
                 },
                 {
                     "type": "input",
@@ -3410,7 +3419,8 @@
                         "_myScaleMultiplier": 0.0099999,
                         "_myGravity": 0.0000999,
                         "_myMinAmount": 1,
-                        "_myMaxAmount": 1
+                        "_myMaxAmount": 1,
+                        "_myInitialPool": 100
                     }
                 }
             ]

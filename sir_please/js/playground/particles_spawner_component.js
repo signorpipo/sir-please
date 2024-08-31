@@ -12,7 +12,8 @@ export class ParticlesSpawnerComponent extends Component {
         _myScaleMultiplier: Property.float(1),
         _myHorizontalSpeedMultiplier: Property.float(1),
         _myVerticalSpeedMultiplier: Property.float(1),
-        _myGravity: Property.float(9.81)
+        _myGravity: Property.float(9.81),
+        _myInitialPool: Property.int(10)
     };
 
     start() {
@@ -21,7 +22,7 @@ export class ParticlesSpawnerComponent extends Component {
         this._myObjectPoolsManager = new ObjectPoolsManager();
         let poolParams = new ObjectPoolParams();
 
-        poolParams.myInitialPoolSize = 10;
+        poolParams.myInitialPoolSize = this._myInitialPool;
         poolParams.myAmountToAddWhenEmpty = 1;
         poolParams.myPercentageToAddWhenEmpty = 1;
 
