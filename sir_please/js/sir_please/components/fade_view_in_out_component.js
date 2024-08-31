@@ -7,7 +7,7 @@ export class FadeViewInOutComponent extends Component {
         _myColor: Property.string("0, 0, 0"),
         _myTimeToFadeIn: Property.float(0),
         _myTimeToFadeOut: Property.float(0),
-        _myScaleMultiplier: Property.float(1)
+        _myScaleMultiplier: Property.float(10)
     };
 
     start() {

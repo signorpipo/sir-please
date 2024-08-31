@@ -139,9 +139,9 @@ export class CleanedPlayerLocomotion {
 
             params.myObscureObject = null;
             params.myObscureMaterial = null;
-            params.myObscureRadius = 0.1;
+            params.myObscureRadius = 0.5;
 
-            params.myObscureFadeOutSeconds = 0.25;
+            params.myObscureFadeOutSeconds = 0.1;
             params.myObscureFadeInSeconds = 0.25;
 
             params.myObscureFadeEasingFunction = EasingFunction.linear;
@@ -153,7 +153,7 @@ export class CleanedPlayerLocomotion {
             params.myDistanceToStartObscureWhenFar = 0.75;
 
             params.myRelativeDistanceToMaxObscureWhenBodyColliding = 0.5;
-            params.myRelativeDistanceToMaxObscureWhenHeadColliding = 0.1;
+            params.myRelativeDistanceToMaxObscureWhenHeadColliding = 0.01;
             params.myRelativeDistanceToMaxObscureWhenFloating = 0.5;
             params.myRelativeDistanceToMaxObscureWhenFar = 0.5;
 
