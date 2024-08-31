@@ -32,7 +32,8 @@ export class WinState {
 
         this._mySpawnParticlesTimer = new Timer(0);
         this._myAccelerationTimer = new Timer(10);
-        this._myMaxParticleTimer = new Timer(10);
+        this._mySecondAccelerationTimer = new Timer(2);
+        this._myMaxParticleTimer = new Timer(9);
 
         this._myPulseWaitTimer = new Timer(0.2);
         this._myToMaxPulseTimer = new Timer(10);
@@ -45,7 +46,7 @@ export class WinState {
         this._myTakeOffSpeed = 0.075;
 
         this._myMaxAudioTimer = new Timer(0);
-        this._mySyncAudioWithParticlesTimer = new Timer(5);
+        this._mySyncAudioWithParticlesTimer = new Timer(4.5);
         this._myAccelerateAudioPlayer = Globals.getAudioManager().createAudioPlayer("accelerate");
 
         let sounds = [];
@@ -81,6 +82,7 @@ export class WinState {
         this._myMaxAudioTimer.start(0);
         this._mySyncAudioWithParticlesTimer.start();
         this._myAccelerationTimer.start();
+        this._mySecondAccelerationTimer.start();
         this._myMaxParticleTimer.start();
         this._myCurrentSpeed = 0;
         this._myCurrentAcceleration = 0;
@@ -104,8 +106,9 @@ export class WinState {
             this._myAccelerationTimer.update(dt);
             this._myMaxParticleTimer.update(dt);
 
-            if (this._myAccelerationTimer.getPercentage() == 1) {
-                this._myCurrentAcceleration += 1 * dt;
+            if (this._myAccelerationTimer.isDone()) {
+                this._mySecondAccelerationTimer.update(dt);
+                this._myCurrentAcceleration += MathUtils.interpolate(2, 10, this._mySecondAccelerationTimer.getPercentage(), EasingFunction.linear) * dt;
             }
 
             this._myCurrentSpeed += this._myCurrentAcceleration * dt;
