@@ -45,6 +45,7 @@ export class WinState {
         this._myTakeOffSpeed = 0.075;
 
         this._myMaxAudioTimer = new Timer(0);
+        this._mySyncAudioWithParticlesTimer = new Timer(5);
         this._myAccelerateAudioPlayer = Globals.getAudioManager().createAudioPlayer("accelerate");
 
         let sounds = [];
@@ -78,6 +79,7 @@ export class WinState {
 
         this._mySpawnParticlesTimer.start(0);
         this._myMaxAudioTimer.start(0);
+        this._mySyncAudioWithParticlesTimer.start();
         this._myAccelerationTimer.start();
         this._myMaxParticleTimer.start();
         this._myCurrentSpeed = 0;
@@ -103,7 +105,7 @@ export class WinState {
             this._myMaxParticleTimer.update(dt);
 
             if (this._myAccelerationTimer.getPercentage() == 1) {
-                this._myCurrentAcceleration += 1 * dt;
+                this._myCurrentAcceleration += 3 * dt;
             }
 
             this._myCurrentSpeed += this._myCurrentAcceleration * dt;
@@ -114,17 +116,23 @@ export class WinState {
             this._mySirExtras.pp_translate(vec3_create(0, this._myCurrentSpeed * dt, 0));
 
             this._myMaxAudioTimer.update(dt);
+            this._mySyncAudioWithParticlesTimer.update(dt);
             this._mySpawnParticlesTimer.update(dt);
+
+            let particlesSpawned = false;
             if (this._mySpawnParticlesTimer.isDone()) {
                 GameGlobals.myHandParticlesSpawner._myScaleMultiplier = 0.010 * Math.pp_mapToRange(this._myMaxParticleTimer.getPercentage(), 0, 1, 0.75, 1.5);
                 GameGlobals.myHandParticlesSpawner._myVerticalSpeedMultiplier = -1 * Math.pp_mapToRange(this._myMaxParticleTimer.getPercentage(), 0, 1, 0.5, 1.25);
                 GameGlobals.myHandParticlesSpawner.spawn(GameGlobals.myButtonHand.object.pp_getPosition());
 
                 this._mySpawnParticlesTimer.start(MathUtils.interpolate(1, 0.01, this._myMaxParticleTimer.getPercentage(), easeTimer));
+                particlesSpawned = true;
+            }
 
+            if (particlesSpawned || this._mySyncAudioWithParticlesTimer.isDone()) {
                 if (this._mySirBody.pp_getPosition()[1] < 200) {
                     if (this._myMaxAudioTimer.isDone()) {
-                        this._myMaxAudioTimer.start(MathUtils.interpolate(0.5, 0.05, this._myMaxParticleTimer.getPercentage(), easeTimer));
+                        this._myMaxAudioTimer.start(MathUtils.interpolate(0.6, 0.075, this._myMaxParticleTimer.getPercentage(), easeSound));
 
                         this._myAccelerateAudioPlayer.setPosition(GameGlobals.myButtonHand.object.pp_getPosition());
                         this._myAccelerateAudioPlayer.play();
@@ -177,4 +185,9 @@ function easeInExpo(x) {
 
 function easeTimer(x) {
     return 1 - (1 - x) * (1 - x);
+}
+
+function easeSound(x) {
+    return Math.sin((x * Math.PI) / 2);
+
 }
