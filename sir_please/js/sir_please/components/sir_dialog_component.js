@@ -262,7 +262,7 @@ export class SirDialogComponent extends Component {
         this._myOption2Button.startButton();
         this._mySpawnButtonDelayTimer.reset();
 
-        this._myVisibleTimer.start(0.5);
+        this._myVisibleTimer.start(0.25);
     }
 
     _popIn(fsm) {
