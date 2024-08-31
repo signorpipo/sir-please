@@ -54,6 +54,9 @@
                 },
                 {
                     "type": "pp-show-xr-buttons"
+                },
+                {
+                    "type": "fixed-foveation"
                 }
             ]
         },
@@ -115,7 +118,8 @@
                 {
                     "type": "view",
                     "view": {
-                        "far": 800.0
+                        "far": 400.0,
+                        "near": 0.1
                     }
                 },
                 {
@@ -160,7 +164,8 @@
                 {
                     "type": "view",
                     "view": {
-                        "far": 800.0
+                        "far": 400.0,
+                        "near": 0.1
                     }
                 },
                 {
@@ -178,7 +183,8 @@
                 {
                     "type": "view",
                     "view": {
-                        "far": 800.0
+                        "far": 400.0,
+                        "near": 0.1
                     }
                 },
                 {
