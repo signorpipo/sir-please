@@ -344,7 +344,9 @@
         "event": "very_uber_bad",
         "autoAdvanceAfter": 1,
         "jump": "ded_end",
-        "text": "Bye"
+        "text": "Bye."
     },
-    "ded_end": {}
+    "ded_end": {
+        "instaText": "Bye."
+    }
 }

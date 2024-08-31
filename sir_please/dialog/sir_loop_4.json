@@ -556,9 +556,11 @@
         "event": "very_uber_bad",
         "autoAdvanceAfter": 1,
         "jump": "ded_end",
-        "text": "Bye"
+        "text": "Bye."
     },
-    "ded_end": {},
+    "ded_end": {
+        "instaText": "Bye."
+    },
     "win": {
         "event": "loop_four_end",
         "instaText": "Anyway, I have to go now.\nSee you soon, Jeff.\nLet's do it again tomorrow."
