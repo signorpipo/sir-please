@@ -117,10 +117,7 @@
             "components": [
                 {
                     "type": "view",
-                    "view": {
-                        "far": 400.0,
-                        "near": 0.1
-                    }
+                    "view": {}
                 },
                 {
                     "type": "mouse-look"
@@ -163,10 +160,7 @@
             "components": [
                 {
                     "type": "view",
-                    "view": {
-                        "far": 400.0,
-                        "near": 0.1
-                    }
+                    "view": {}
                 },
                 {
                     "type": "input",
@@ -182,10 +176,7 @@
             "components": [
                 {
                     "type": "view",
-                    "view": {
-                        "far": 400.0,
-                        "near": 0.1
-                    }
+                    "view": {}
                 },
                 {
                     "type": "input",

@@ -1,3 +1,4 @@
+import { ViewComponent } from "@wonderlandengine/api";
 import { EasingFunction, FSM, Globals, MathUtils, Timer, TimerState, vec3_create } from "../../pp";
 import { GameGlobals } from "../game_globals";
 
@@ -59,6 +60,9 @@ export class WinState {
         for (let sound of sounds) {
             sound._ended = true;
         }
+
+        this._myViewComponents = [Globals.getPlayerObjects().myEyeLeft.pp_getComponent(ViewComponent), Globals.getPlayerObjects().myEyeRight.pp_getComponent(ViewComponent), Globals.getPlayerObjects().myCameraNonXR.pp_getComponent(ViewComponent)];
+        this._myFarUpdated = false;
     }
 
     start(fsm) {
@@ -91,13 +95,29 @@ export class WinState {
         this._myToMaxPulseTimer.reset();
         this._myKeepMaxPulseTimer.reset();
         this._myFadePulseTimer.reset();
+
+        this._myFarUpdated = false;
     }
 
     _stopWin() {
         this._myAccelerateAudioPlayer.stop();
+
+        for (let viewComponent of this._myViewComponents) {
+            viewComponent.far = 100;
+        }
     }
 
     _flyUpdate(dt, fsm) {
+        if (!this._myFarUpdated) {
+            if (this._mySirBody.pp_getPosition()[1] > 10) {
+                this._myFarUpdated = true;
+
+                for (let viewComponent of this._myViewComponents) {
+                    viewComponent.far = 800;
+                }
+            }
+        }
+
         if (this._mySirBody.pp_getPosition()[1] < 2000) {
             if (this._myAccelerationTimer.getPercentage() < 1) {
                 this._myCurrentAcceleration = MathUtils.interpolate(0.001, 2, this._myAccelerationTimer.getPercentage(), easeInExpo);
