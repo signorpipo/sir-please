@@ -122,7 +122,11 @@ export class SirDialogComponent extends Component {
             if (this._myEnterSessionCounter > 0) {
                 this._myVisibleTimer.start(1);
             } else {
-                this._myVisibleTimer.start(0.5);
+                if (GameGlobals.myBlackFader.isFading()) {
+                    this._myVisibleTimer.start(0.5);
+                } else {
+                    this._myVisibleTimer.start(0.75);
+                }
             }
         }
 
