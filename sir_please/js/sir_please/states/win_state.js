@@ -43,6 +43,20 @@ export class WinState {
 
         this._myCurrentSpeed = 0;
         this._myTakeOffSpeed = 0.075;
+
+        this._myMaxAudioTimer = new Timer(0);
+        this._myAccelerateAudioPlayer = Globals.getAudioManager().createAudioPlayer("accelerate");
+
+        let sounds = [];
+        for (let i = 0; i < this._myAccelerateAudioPlayer._myAudio._pool; i++) {
+            let sound = this._myAccelerateAudioPlayer._myAudio._inactiveSound();
+            sound._ended = false;
+            sounds.push(sound);
+        }
+
+        for (let sound of sounds) {
+            sound._ended = true;
+        }
     }
 
     start(fsm) {
@@ -63,6 +77,7 @@ export class WinState {
         GameGlobals.myButtonHand.stopButtonHand();
 
         this._mySpawnParticlesTimer.start(0);
+        this._myMaxAudioTimer.start(0);
         this._myAccelerationTimer.start();
         this._myMaxParticleTimer.start();
         this._myCurrentSpeed = 0;
@@ -75,7 +90,7 @@ export class WinState {
     }
 
     _stopWin() {
-
+        this._myAccelerateAudioPlayer.stop();
     }
 
     _flyUpdate(dt, fsm) {
@@ -98,6 +113,7 @@ export class WinState {
             this._mySirBody.pp_translate(vec3_create(0, this._myCurrentSpeed * dt, 0));
             this._mySirExtras.pp_translate(vec3_create(0, this._myCurrentSpeed * dt, 0));
 
+            this._myMaxAudioTimer.update(dt);
             this._mySpawnParticlesTimer.update(dt);
             if (this._mySpawnParticlesTimer.isDone()) {
                 GameGlobals.myHandParticlesSpawner._myScaleMultiplier = 0.010 * Math.pp_mapToRange(this._myMaxParticleTimer.getPercentage(), 0, 1, 0.75, 1.5);
@@ -105,6 +121,15 @@ export class WinState {
                 GameGlobals.myHandParticlesSpawner.spawn(GameGlobals.myButtonHand.object.pp_getPosition());
 
                 this._mySpawnParticlesTimer.start(MathUtils.interpolate(1, 0.01, this._myMaxParticleTimer.getPercentage(), easeTimer));
+
+                if (this._mySirBody.pp_getPosition()[1] < 200) {
+                    if (this._myMaxAudioTimer.isDone()) {
+                        this._myMaxAudioTimer.start(MathUtils.interpolate(0.5, 0.05, this._myMaxParticleTimer.getPercentage(), easeTimer));
+
+                        this._myAccelerateAudioPlayer.setPosition(GameGlobals.myButtonHand.object.pp_getPosition());
+                        this._myAccelerateAudioPlayer.play();
+                    }
+                }
             }
 
             let maxIntensity = 0.8;

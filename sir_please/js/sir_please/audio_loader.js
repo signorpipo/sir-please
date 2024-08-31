@@ -52,5 +52,14 @@ export class AudioLoader {
             audioSetup.myPool = 20;
             manager.addAudioSetup("blip", audioSetup);
         }
+
+        {
+            let audioSetup = new AudioSetup("assets/audio/sfx/pp/collision.mp3");
+            audioSetup.myRate = 0.75;
+            audioSetup.myVolume = 1;
+            audioSetup.myReferenceDistance = 5;
+            audioSetup.myPool = 60;
+            manager.addAudioSetup("accelerate", audioSetup);
+        }
     }
 }
