@@ -15381,381 +15381,6 @@ __publicField(WasdControlsComponent, "Properties", {
   headObject: { type: Type.Object }
 });
 
-// js/dialog/dialog-manager.js
-var DialogManager = class extends Component {
-  init() {
-    fetch("./dialog.json").then((response) => {
-      return response.json();
-    }).then((json) => {
-      this.dialogs = json;
-    });
-    this.events = /* @__PURE__ */ new Map();
-    this.sounds = /* @__PURE__ */ new Map();
-  }
-  /**
-   * Get a dialog json object by name
-   * @param name Name of the dialog to get
-   */
-  getDialog(name) {
-    return this.dialogs[name];
-  }
-  /**
-   * Start a dialog on a dialog controller
-   * @param dialogController Controller to play
-   */
-  play(dialogController) {
-    if (this.playingDialog)
-      return;
-    this.playingDialog = dialogController;
-    dialogController.play();
-  }
-  /**
-   * Triggered when a dialog comes to an end
-   * Internal function, pls no touch
-   * @param dialogController Controller that ended
-   */
-  onEnd(dialogController) {
-    if (this.playingDialog != dialogController)
-      return;
-    this.playingDialog = null;
-  }
-  /**
-   * Stop the current dialog which resets it
-   */
-  stop() {
-    if (!this.playingDialog)
-      return;
-    this.playingDialog.stop();
-    this.playingDialog = null;
-  }
-  /**
-   * Pause the current dialog
-   * This also resets the text animator
-   */
-  pause() {
-    if (!this.playingDialog)
-      return;
-    this.playingDialog.pause();
-  }
-  /**
-   * Resume the current dialog
-   */
-  resume() {
-    if (!this.playingDialog)
-      return;
-    this.playingDialog.resume();
-  }
-  /**
-   * Advance the current dialog with a response
-   * @param choiceIndex Index of the response to advance with, provide -1 if there are no responses
-   */
-  advance(choiceIndex) {
-    if (!this.playingDialog)
-      return;
-    this.playingDialog.advance(choiceIndex);
-  }
-  /**
-   * Wether the dialog is waiting for a response or timer
-   */
-  isWaitingForResponse() {
-    if (!this.playingDialog)
-      return false;
-    return this.playingDialog.isWaitingForResponse();
-  }
-  /**
-   * Wether a dialog is currently playing
-   */
-  isPlaying() {
-    return this.playingDialog != void 0;
-  }
-  /**
-   * Add a listener for a dialog event
-   */
-  addEventListener(name, callback) {
-    if (!this.events.has(name)) {
-      this.events.set(name, new Emitter());
-    }
-    this.events.get(name).add(callback);
-  }
-  /**
-   * Dispatch a dialog event
-   * @param name Name of the event to dispatch
-   */
-  dispatchEvent(name) {
-    if (!this.events.has(name))
-      return;
-    const emitter = this.events.get(name);
-    emitter.notify();
-  }
-  addSound(name, path) {
-    this.sounds.set(name, path);
-  }
-  triggerSound(name, source) {
-    if (!this.sounds.has(name)) {
-      console.error("No sound by name " + name + " exists");
-      return;
-    }
-    var sound = this.sounds.get(name);
-    source.onSound(sound);
-  }
-  triggerAnimation(name) {
-  }
-};
-__publicField(DialogManager, "TypeName", "dialog-manager");
-
-// js/dialog/dialog-controller.js
-var DialogController = class extends Component {
-  init() {
-    this.reset();
-    this.responseTexts = new Array();
-    this.responseTexts.push(this.responseOneText.getComponent("text"));
-    this.responseTexts.push(this.responseTwoText.getComponent("text"));
-    this.charSounds = new Array();
-    if (this.charSoundOne != "")
-      this.charSounds.push(this.charSoundOne);
-    if (this.charSoundTwo != "")
-      this.charSounds.push(this.charSoundTwo);
-    if (this.charSoundThree != "")
-      this.charSounds.push(this.charSoundThree);
-    this.onHideResponses = new Emitter();
-    this.onSetupResponses = new Emitter();
-    this.onCharacterPrinted = new Emitter();
-    this.textReadPosReached = 0;
-  }
-  start() {
-    this.hideResponses();
-  }
-  play() {
-    if (this.currentStateJSON)
-      return;
-    this.reset();
-    this.playingDialog = this.dialogManager.getComponent(DialogManager).getDialog(this.dialog);
-    this.currentState = "starting";
-  }
-  stop() {
-    this.reset();
-  }
-  pause() {
-    if (this.paused)
-      return;
-    this.hideResponses();
-    this.paused = true;
-    this.textReadPos = 0;
-    this.timer = 0;
-    this.currentText = this.dialogPrefix;
-    this.text.getComponent("text").text = this.currentText;
-  }
-  resume() {
-    if (!this.paused)
-      return;
-    this.paused = false;
-  }
-  isWaitingForResponse() {
-    if (!this.currentStateJSON)
-      return false;
-    var desiredText = this.currentStateJSON["text"];
-    return desiredText != null && this.textReadPos >= desiredText.length;
-  }
-  reset() {
-    this.paused = false;
-    this.currentText = this.dialogPrefix;
-    this.currentState = "";
-    this.currentStateJSON = null;
-    this.textReadPos = 0;
-    this.textReadPosReached = 0;
-    this.timer = 0;
-    this.charSoundCounter = 1;
-    this.text.getComponent("text").text = this.currentText;
-  }
-  update(dt) {
-    if (this.currentState == "" || this.paused)
-      return;
-    if (this.currentState == "starting") {
-      this.reset();
-      this.currentStateJSON = this.playingDialog["entry"];
-      this.currentState = "entry";
-      this.handleEvent();
-    }
-    var desiredText = this.currentStateJSON["text"];
-    if (desiredText != null && this.textReadPos < desiredText.length) {
-      const char = desiredText[this.textReadPos];
-      if (char == "[") {
-        var firstBracketIndex = this.textReadPos;
-        var secondBracketIndex = -1;
-        while (true) {
-          ++this.textReadPos;
-          if (this.textReadPos >= desiredText.length) {
-            console.error("Missing ']' in dialog sub event");
-            if (this.textReadPos > this.textReadPosReached) {
-              this.textReadPosReached = this.textReadPos;
-            }
-            return;
-          }
-          var nextChar = desiredText[this.textReadPos];
-          if (nextChar == "]") {
-            secondBracketIndex = this.textReadPos;
-            ++this.textReadPos;
-            break;
-          }
-        }
-        const eventData = desiredText.substring(firstBracketIndex + 1, secondBracketIndex);
-        const tokens = eventData.split(":", 2);
-        if (tokens.length < 2) {
-          console.error("Expected type and name for dialog sub event");
-          if (this.textReadPos > this.textReadPosReached) {
-            this.textReadPosReached = this.textReadPos;
-          }
-          return;
-        }
-        const type = tokens[0];
-        const name = tokens[1];
-        switch (type) {
-          case "s": {
-            this.dialogManager.getComponent(DialogManager).triggerSound(name, this.audioSource.getComponent(this.audioSourceCompnent));
-            break;
-          }
-          case "a": {
-            this.dialogManager.getComponent(DialogManager).triggerAnimation(name);
-            break;
-          }
-          case "e": {
-            if (this.textReadPos > this.textReadPosReached) {
-              this.dialogManager.getComponent(DialogManager).dispatchEvent(name);
-            }
-            break;
-          }
-        }
-        if (this.textReadPos > this.textReadPosReached) {
-          this.textReadPosReached = this.textReadPos;
-        }
-        return;
-      }
-      const delayMultiplier = this.textReadPos < this.textReadPosReached ? 2 : 1;
-      const ignore = char == "_";
-      const delay = char == "_" ? this.blankDelay / delayMultiplier : this.charDelay / delayMultiplier;
-      this.timer += dt;
-      this.charSoundTimer += dt;
-      if (this.timer < delay) {
-        return;
-      }
-      this.timer -= delay;
-      if (!ignore) {
-        this.currentText += char;
-        this.characterPrinted(char);
-      } else {
-        this.charSoundCounter = 1;
-      }
-      ++this.textReadPos;
-      if (this.textReadPos > this.textReadPosReached) {
-        this.textReadPosReached = this.textReadPos;
-      }
-      if (this.textReadPos >= desiredText.length) {
-        this.setupResponses();
-      }
-    } else {
-      var autoAdvanceTime = this.currentStateJSON["autoAdvanceAfter"];
-      if (autoAdvanceTime) {
-        this.timer += dt;
-        if (this.timer < autoAdvanceTime)
-          return;
-        this.timer -= autoAdvanceTime;
-        this.advance(-1);
-      }
-    }
-    this.text.getComponent("text").text = this.currentText;
-  }
-  advance(choiceIndex) {
-    if (this.paused) {
-      console.error("Cannot advance a paused dialog!");
-      return;
-    }
-    if (!this.currentStateJSON)
-      return;
-    this.hideResponses();
-    var responses = this.currentStateJSON["responses"];
-    var jump = responses ? null : this.currentStateJSON["jump"];
-    if (!jump && responses && choiceIndex != -1) {
-      var response = responses[choiceIndex];
-      if (!response) {
-        console.error("Cannot advance with invalid response!");
-        return;
-      }
-      jump = response["jump"];
-    }
-    if (!jump && responses) {
-      console.error("Cannot advance current dialog without response!");
-      return;
-    }
-    if (!jump && jump != "") {
-      var keys = Object.keys(this.playingDialog);
-      var index = keys.indexOf(this.currentState);
-      this.reset();
-      if (index + 1 >= keys.length) {
-        this.dialogManager.getComponent(DialogManager).onEnd(this);
-        return;
-      }
-      this.currentState = keys[index + 1];
-      this.currentStateJSON = this.playingDialog[this.currentState];
-      this.handleEvent();
-      return;
-    }
-    this.reset();
-    this.currentStateJSON = this.playingDialog[jump];
-    this.currentState = jump;
-    this.handleEvent();
-  }
-  hideResponses() {
-    this.onHideResponses.notify();
-    for (var i = 0; i < this.responseTexts.length; ++i) {
-    }
-  }
-  setupResponses() {
-    var responses = this.currentStateJSON["responses"];
-    if (!responses)
-      return;
-    this.onSetupResponses.notify();
-    for (var i = 0; i < responses.length; ++i) {
-      var response = responses[i]["text"];
-      this.responseTexts[i].text = response;
-    }
-  }
-  handleEvent() {
-    const event = this.currentStateJSON["event"];
-    if (!event)
-      return;
-    this.dialogManager.getComponent(DialogManager).dispatchEvent(event);
-  }
-  characterPrinted(char) {
-    this.onCharacterPrinted.notify(char);
-    if (this.charSounds.length == 0)
-      return;
-    const randomSound = Math.floor(Math.random() * this.charSounds.length);
-    --this.charSoundCounter;
-    if (this.charSoundCounter > 0)
-      return;
-    this.dialogManager.getComponent(DialogManager).triggerSound(this.charSounds[randomSound], this.audioSource.getComponent(this.audioSourceCompnent));
-    this.charSoundCounter = this.charSoundSkips;
-  }
-};
-__publicField(DialogController, "TypeName", "dialog-controller");
-/* Properties that are configurable in the editor */
-__publicField(DialogController, "Properties", {
-  dialogManager: Property.object(),
-  text: Property.object(),
-  responseOneText: Property.object(),
-  responseTwoText: Property.object(),
-  dialog: Property.string(""),
-  charDelay: Property.float(0.025),
-  blankDelay: Property.float(0.5),
-  audioSource: Property.object(),
-  audioSourceCompnent: Property.string(),
-  dialogPrefix: Property.string("> "),
-  charSoundOne: Property.string(""),
-  charSoundTwo: Property.string(""),
-  charSoundThree: Property.string(""),
-  charSoundSkips: Property.int(3)
-});
-
 // js/pp/index.js
 var pp_exports = {};
 __export(pp_exports, {
@@ -43066,7 +42691,6 @@ PlayerHeadManager.prototype._blurEndResync = function() {
         currentHeadForward = this._myCurrentHead.pp_getForward(currentHeadForward);
         rotationToPerform = currentHeadForward.vec3_rotationToPivotedQuat(recoverHeadForward, playerUp, rotationToPerform);
         if (this._myParams.myBlurEndResyncRotation) {
-          this.rotateFeetQuat(rotationToPerform);
         }
         this._myBlurRecoverHeadTransform = null;
       }
@@ -43724,7 +43348,9 @@ var GameGlobals = {
   myHandParticlesSpawner: null,
   myDebugEnabled: false,
   mySkipIntro: false,
-  myGameCompleted: false
+  myGameCompleted: false,
+  myDebugDialogs: false,
+  myTrackedHandTeleported: false
 };
 
 // js/pp/gameplay/experimental/locomotion/legacy/locomotion/teleport/player_locomotion_teleport_detection_visualizer.js
@@ -46875,8 +46501,8 @@ var CleanedPlayerLocomotion = class {
       params2.myPlayerTransformManager = this._myPlayerTransformManager;
       params2.myObscureObject = null;
       params2.myObscureMaterial = null;
-      params2.myObscureRadius = 0.1;
-      params2.myObscureFadeOutSeconds = 0.25;
+      params2.myObscureRadius = 0.5;
+      params2.myObscureFadeOutSeconds = 0.1;
       params2.myObscureFadeInSeconds = 0.25;
       params2.myObscureFadeEasingFunction = EasingFunction.linear;
       params2.myObscureLevelRelativeDistanceEasingFunction = EasingFunction.linear;
@@ -46885,7 +46511,7 @@ var CleanedPlayerLocomotion = class {
       params2.myDistanceToStartObscureWhenFloating = 0.75;
       params2.myDistanceToStartObscureWhenFar = 0.75;
       params2.myRelativeDistanceToMaxObscureWhenBodyColliding = 0.5;
-      params2.myRelativeDistanceToMaxObscureWhenHeadColliding = 0.1;
+      params2.myRelativeDistanceToMaxObscureWhenHeadColliding = 0.01;
       params2.myRelativeDistanceToMaxObscureWhenFloating = 0.5;
       params2.myRelativeDistanceToMaxObscureWhenFar = 0.5;
       this._myPlayerObscureManager = new PlayerObscureManager(params2);
@@ -56892,235 +56518,6 @@ __publicField(EasyTransformComponent, "Properties", {
   // Edit all scale values together
 });
 
-// js/playground/particle_component.js
-var ParticleComponent = class extends Component {
-  init() {
-    this._myOnDoneCallback = null;
-    this._myScaleMultiplier = 1;
-    this._myHorizontalSpeedMultiplier = 1;
-    this._myVerticalSpeedMultiplier = 1;
-    this._myGravity = 0;
-  }
-  start() {
-    let randomScale = Math.pp_random(0.5, 1) * this._myScaleMultiplier;
-    this._myTargetScale = vec3_create2(randomScale, randomScale, randomScale);
-    this.object.pp_setScale(Math.PP_EPSILON);
-    this.object.pp_rotate(vec3_create2(Math.pp_random(-180, 180), Math.pp_random(-180, 180), Math.pp_random(-180, 180)));
-    this._mySpawnTimer = new Timer(Math.pp_random(0.1, 0.2));
-    this._myLifeTimer = new Timer(Math.pp_random(0.35, 0.7), false);
-    this._myUnspawnTimer = new Timer(Math.pp_random(0.1, 0.2), false);
-    this._myHorizontalSpeedDirection = vec3_create2(0, 0, 1).vec3_rotateAxis(Math.pp_random(-180, 180), vec3_create2(0, 1, 0));
-    this._myHorizontalSpeed = this._myHorizontalSpeedDirection.vec3_scale(Math.pp_random(0.5, 1) * this._myHorizontalSpeedMultiplier);
-    let verticalSign = 1;
-    let minVerticalValue = 0.5;
-    if (this._myGravity == 0) {
-      verticalSign = Math.pp_randomSign();
-      minVerticalValue = 0;
-    }
-    this._myVerticalSpeed = vec3_create2(0, verticalSign, 0).vec3_scale(Math.pp_random(minVerticalValue, 1) * this._myVerticalSpeedMultiplier);
-  }
-  update(dt) {
-    if (this._mySpawnTimer.isRunning()) {
-      this._mySpawnTimer.update(dt);
-      this.object.pp_setScale(this._myTargetScale.vec3_scale(EasingFunction.easeOut(this._mySpawnTimer.getPercentage())));
-      if (this._mySpawnTimer.isDone()) {
-        this._myLifeTimer.start();
-      }
-    }
-    if (this._myLifeTimer.isRunning()) {
-      this._myLifeTimer.update(dt);
-      if (this._myLifeTimer.isDone()) {
-        this._myUnspawnTimer.start();
-      }
-    }
-    if (this._myUnspawnTimer.isRunning()) {
-      this._myUnspawnTimer.update(dt);
-      this.object.pp_setScale(this._myTargetScale.vec3_scale(EasingFunction.easeOut(1 - this._myUnspawnTimer.getPercentage())));
-      if (this._myUnspawnTimer.isDone()) {
-        if (this._myOnDoneCallback != null) {
-          this._myOnDoneCallback();
-        }
-      }
-    }
-    this.object.pp_translate(this._myHorizontalSpeed.vec3_scale(dt));
-    this.object.pp_translate(this._myVerticalSpeed.vec3_scale(dt));
-    if (this._myGravity != 0) {
-      this._myVerticalSpeed = this._myVerticalSpeed.vec3_sub(vec3_create2(0, 1, 0).vec3_scale(this._myGravity * dt), this._myVerticalSpeed);
-    }
-  }
-  setHorizontalSpeedMultiplier(speedMultiplier) {
-    this._myHorizontalSpeedMultiplier = speedMultiplier;
-  }
-  setVerticalSpeedMultiplier(speedMultiplier) {
-    this._myVerticalSpeedMultiplier = speedMultiplier;
-  }
-  setGravity(gravity) {
-    this._myGravity = gravity;
-  }
-  setScaleMultiplier(scaleMultiplier) {
-    this._myScaleMultiplier = scaleMultiplier;
-  }
-  onDone(onDoneCallback) {
-    this._myOnDoneCallback = onDoneCallback;
-  }
-  onDeactivate() {
-    this._myOnDoneCallback = null;
-  }
-  onActivate() {
-    this.start();
-  }
-  pp_clone(targetObject) {
-    let clonedComponent = ComponentUtils.cloneDefault(this, targetObject);
-    return clonedComponent;
-  }
-};
-__publicField(ParticleComponent, "TypeName", "particle");
-__publicField(ParticleComponent, "Properties", {});
-
-// js/playground/particles_spawner_component.js
-var ParticlesSpawnerComponent = class extends Component {
-  start() {
-    this._myParticles = this._myParticlesContainer.pp_getChildren();
-    this._myObjectPoolsManager = new ObjectPoolsManager();
-    let poolParams = new ObjectPoolParams();
-    poolParams.myInitialPoolSize = 10;
-    poolParams.myAmountToAddWhenEmpty = 1;
-    poolParams.myPercentageToAddWhenEmpty = 1;
-    poolParams.myOptimizeObjectsAllocation = true;
-    let cloneParams = new CloneParams();
-    cloneParams.myComponentsToInclude.push(MeshComponent2.TypeName);
-    for (let i = 0; i < this._myParticles.length; i++) {
-      let particle = this._myParticles[i].pp_clone(cloneParams);
-      particle.pp_addComponent(ParticleComponent);
-      particle.pp_setActive(false);
-      particle.pp_setParent(Globals.getSceneObjects(this.engine).myParticles);
-      this._myObjectPoolsManager.addPool(i, particle, poolParams);
-    }
-  }
-  spawn(position) {
-    let amount = Math.pp_randomInt(this._myMinAmount, this._myMaxAmount);
-    for (let i = 0; i < amount; i++) {
-      let particle = this._myObjectPoolsManager.get(Math.pp_randomInt(0, this._myParticles.length - 1));
-      let particleComponent = particle.pp_getComponent(ParticleComponent);
-      particleComponent.onDone(this.onParticleDone.bind(this, particle));
-      particleComponent.setScaleMultiplier(this._myScaleMultiplier);
-      particleComponent.setHorizontalSpeedMultiplier(this._myHorizontalSpeedMultiplier);
-      particleComponent.setVerticalSpeedMultiplier(this._myVerticalSpeedMultiplier);
-      particleComponent.setGravity(this._myGravity);
-      particle.pp_setPosition(position.vec3_add(particleComponent._myHorizontalSpeedDirection.vec3_normalize().vec3_scale(Math.pp_random(0, this._myRadius))));
-      particle.pp_setActive(true);
-    }
-  }
-  onParticleDone(particle) {
-    this._myObjectPoolsManager.release(particle);
-  }
-};
-__publicField(ParticlesSpawnerComponent, "TypeName", "particles-spawner");
-__publicField(ParticlesSpawnerComponent, "Properties", {
-  _myParticlesContainer: Property.object(),
-  _myRadius: Property.float(0.25),
-  _myMinAmount: Property.int(15),
-  _myMaxAmount: Property.int(30),
-  _myScaleMultiplier: Property.float(1),
-  _myHorizontalSpeedMultiplier: Property.float(1),
-  _myVerticalSpeedMultiplier: Property.float(1),
-  _myGravity: Property.float(9.81)
-});
-
-// js/sir_please/components/button_hand_component.js
-var ButtonHandComponent = class extends Component {
-  start() {
-    this._myStarted = false;
-    this._myInitialTransform = this.object.pp_getTransformQuat();
-    this._myCurrentSpeed = this._mySpeed;
-    this._mySpeedMultiplier = 1;
-    this._myHandStopEmitter = new Emitter();
-    this._myTranslateVector = vec3_create2(0);
-    this._mySpawnParticlesTimer = new Timer(0);
-  }
-  update(dt) {
-    if (this._myStarted && this._myCurrentSpeed > 0) {
-      this.object.pp_translateObject(this._myTranslateVector.vec3_set(this._myCurrentSpeed * this._mySpeedMultiplier * dt, 0, 0));
-      this._mySpawnParticlesTimer.update(dt);
-      if (this._mySpawnParticlesTimer.isDone()) {
-        let normalizedSpeed = this._myCurrentSpeed * this._mySpeedMultiplier / this._mySpeed;
-        GameGlobals.myHandParticlesSpawner._myScaleMultiplier = 0.01 * Math.pp_mapToRange(normalizedSpeed, 0.5, 1.5, 0.75, 1.25);
-        GameGlobals.myHandParticlesSpawner._myVerticalSpeedMultiplier = 1 * Math.pp_mapToRange(normalizedSpeed, 0.5, 1.5, 0.5, 1);
-        GameGlobals.myHandParticlesSpawner.spawn(this.object.pp_getPosition());
-        this._mySpawnParticlesTimer.start(1 / normalizedSpeed / 40);
-      }
-    }
-  }
-  setSpeed(speed) {
-    this._myCurrentSpeed = speed;
-  }
-  getSpeed() {
-    return this._myCurrentSpeed;
-  }
-  setSpeedMultiplier(speedMultiplier) {
-    this._mySpeedMultiplier = speedMultiplier;
-  }
-  multiplySpeed(multiplier) {
-    if (multiplier > 0) {
-      this._myCurrentSpeed += this._mySpeed * multiplier;
-    } else {
-      this._myCurrentSpeed *= -multiplier;
-    }
-    this._myCurrentSpeed = Math.max(this._myCurrentSpeed, 5e-3);
-  }
-  stopSpeed() {
-    this._myCurrentSpeed = 0;
-  }
-  startButtonHand() {
-    this._myStarted = true;
-    this._myCurrentSpeed = this._mySpeed;
-    this._mySpeedMultiplier = 1;
-    this._mySpawnParticlesTimer.start(0);
-    this.object.pp_setTransformQuat(this._myInitialTransform);
-  }
-  stopButtonHand() {
-    this._myStarted = false;
-  }
-  registerHandStopEventListener(id, listener) {
-    this._myHandStopEmitter.add(listener, { id });
-  }
-  unregisterHandStopEventListener(id) {
-    this._myHandStopEmitter.remove(id);
-  }
-};
-__publicField(ButtonHandComponent, "TypeName", "button-hand");
-__publicField(ButtonHandComponent, "Properties", {
-  _mySpeed: Property.float(1),
-  _myMinSpeedToStop: Property.float(0.01)
-});
-
-// js/sir_please/components/dialog-sound.js
-var DialogSound = class extends Component {
-  init() {
-    this.audioPlayers = /* @__PURE__ */ new Map();
-  }
-  start() {
-    this.dialogManager.getComponent(DialogManager).addSound("alert", "alert");
-    this.dialogManager.getComponent(DialogManager).addSound("blip", "blip");
-  }
-  onSound(path) {
-    if (!this.audioPlayers.has(path) || !this.audioPlayers.get(path)) {
-      this.audioPlayers.set(path, Globals.getAudioManager().createAudioPlayer(path));
-    }
-    var player = this.audioPlayers.get(path);
-    player.setPosition(this.object.pp_getPosition());
-    player.play();
-  }
-};
-__publicField(DialogSound, "TypeName", "dialog-sound");
-/* Properties that are configurable in the editor */
-__publicField(DialogSound, "Properties", {
-  dialogManager: Property.object(1)
-});
-/* Add other component types here that your component may
- * create. They will be registered with this component */
-__publicField(DialogSound, "Dependencies", []);
-
 // js/sir_please/analytics_utils.js
 var _myAnalyticsEnabled = true;
 var _mySendDataCallback = window.gtag;
@@ -57263,6 +56660,873 @@ __publicField(SetHandednessComponent, "Properties", {
   _myHandedness: Property.enum(["Left", "Right"], "Left")
 });
 
+// js/sir_please/components/sir_dialog_button_component.js
+var SirDialogButtonComponent = class extends Component {
+  start() {
+    this._myStarted = false;
+    this._myFSM = new FSM();
+    this._myFSM.addState("init");
+    this._myFSM.addState("idle");
+    this._myFSM.addState("hidden");
+    this._myFSM.addState("pop_in", this._popInUpdate.bind(this));
+    this._myFSM.addState("visible");
+    this._myFSM.addState("pop_out", this._popOutUpdate.bind(this));
+    this._myFSM.addTransition("init", "idle", "start");
+    this._myFSM.addTransition("idle", "hidden", "start", this._start.bind(this));
+    this._myFSM.addTransition("hidden", "pop_in", "show", this._popIn.bind(this));
+    this._myFSM.addTransition("pop_in", "visible", "end");
+    this._myFSM.addTransition("pop_in", "pop_out", "hide", this._popOut.bind(this));
+    this._myFSM.addTransition("visible", "pop_out", "hide", this._popOut.bind(this));
+    this._myFSM.addTransition("pop_out", "hidden", "end");
+    this._myFSM.addTransition("idle", "idle", "stop");
+    this._myFSM.addTransition("hidden", "idle", "stop", this._stop.bind(this));
+    this._myFSM.addTransition("pop_in", "idle", "stop", this._stop.bind(this));
+    this._myFSM.addTransition("visible", "idle", "stop", this._stop.bind(this));
+    this._myFSM.addTransition("pop_out", "idle", "stop", this._stop.bind(this));
+    this._myFSM.init("init");
+    this._myFSM.perform("start");
+    this._mySpawnTimer = new Timer(0.2, false);
+    this._myUnspawnTimer = new Timer(0.2, false);
+    this._myTargetScale = vec3_create2(1);
+    this._myClickEmitter = new Emitter();
+    this._myOptionText = this.object.pp_getObjectByName("Option Text").pp_getComponent(TextComponent2);
+    this._myPhysX = this.object.pp_getComponent(PhysXComponent);
+    this._myCollisionsCollector = new PhysicsCollisionCollector(this._myPhysX, true);
+    this._myCursorTarget = this.object.pp_getComponent(CursorTarget);
+    this._myCursorTarget.onUpWithDown.add(this.clickButton.bind(this, true, null));
+    this._myPreventClick = true;
+    this._myIgnoreCollisionCounter = 8;
+    this._myVisualUnpressTimer = new Timer(0.1);
+    this._myVisualUnpressTimer.end();
+    this._myClickAudioPlayer = Globals.getAudioManager().createAudioPlayer("click");
+    this._myHiddenTimer = new Timer(0.2);
+    this._myNextText = "";
+    this._stop();
+    this._myAvoidClickTimer = new Timer(0.5);
+    XRUtils.registerSessionStartEndEventListeners(this, this._onXRSessionStart.bind(this), this._onXRSessionEnd.bind(this), true, false);
+  }
+  setNextText(text) {
+    this._myNextText = text;
+  }
+  update(dt) {
+    this._myFSM.update(dt);
+    this._myCollisionsCollector.update(dt);
+    this._myVisualUnpressTimer.update(dt);
+    if (!this._myPreventClick && (this._myFSM.isInState("pop_in") || this._myFSM.isInState("visible"))) {
+      if (this._myIgnoreCollisionCounter == 0) {
+        if (this._myCollisionsCollector.getCollisionsStart().length > 0) {
+          let physx = this._myCollisionsCollector.getCollisionsStart()[0];
+          let handedness = physx.pp_getComponent(SetHandednessComponent);
+          if (handedness != null) {
+            Globals.getGamepad(handedness.getHandedness()).pulse(0.2, 0.2);
+            this.clickButton(false, handedness.getHandedness());
+          } else {
+            this.clickButton();
+          }
+        }
+      } else {
+        this._myIgnoreCollisionCounter--;
+      }
+    }
+    if (this._myCollisionsCollector.getCollisions().length == 0 && this._myVisualUnpressTimer.isDone()) {
+      this._myButtonVisual.pp_resetPositionLocal();
+      this._myText.pp_resetPositionLocal();
+    }
+    if (GameGlobals.myPlayerLocomotion != null && GameGlobals.myPlayerLocomotion._myPlayerHeadManager.isSynced()) {
+      this._myAvoidClickTimer.update(dt);
+    }
+    if (this._myFSM.isInState("hidden") || this._myFSM.isInState("idle")) {
+      this._myHiddenTimer.update(dt);
+    }
+  }
+  setPreventClick(preventClick) {
+    this._myPreventClick = preventClick;
+  }
+  show() {
+    this._myFSM.perform("show");
+  }
+  hide() {
+    this._myFSM.perform("hide");
+  }
+  startButton() {
+    this._myPreventClick = true;
+    this._myFSM.perform("start");
+  }
+  stopButton() {
+    this._myPreventClick = true;
+    this._myFSM.perform("stop");
+  }
+  isVisible() {
+    return this._myFSM.isInState("pop_in") || this._myFSM.isInState("visible");
+  }
+  isReallyVisible() {
+    return this._myFSM.isInState("pop_in") || this._myFSM.isInState("visible") || this._myFSM.isInState("pop_out");
+  }
+  isHiddenTimerDone() {
+    return this._myHiddenTimer.isDone();
+  }
+  _popInUpdate(dt, fsm) {
+    if (this._mySpawnTimer.isRunning()) {
+      this._mySpawnTimer.update(dt);
+      this._myButton.pp_setScale(this._myTargetScale.vec3_scale(Math.max(EasingFunction.easeOut(this._mySpawnTimer.getPercentage()), Math.PP_EPSILON * 100)));
+      if (this._mySpawnTimer.isDone()) {
+        fsm.perform("end");
+      }
+    }
+  }
+  _popOutUpdate(dt, fsm) {
+    if (this._myUnspawnTimer.isRunning()) {
+      this._myUnspawnTimer.update(dt);
+      this._myButton.pp_setScale(this._myTargetScale.vec3_scale(Math.max(EasingFunction.easeOut(1 - this._myUnspawnTimer.getPercentage()), Math.PP_EPSILON * 100)));
+      if (this._myUnspawnTimer.isDone()) {
+        this._myButton.pp_setActive(false);
+        fsm.perform("end");
+      }
+    }
+  }
+  _start(fsm) {
+    this._myButton.pp_setActive(false);
+    this._myButtonVisual.pp_resetPositionLocal();
+    this._myText.pp_resetPositionLocal();
+  }
+  _popIn(fsm) {
+    this._myButtonVisual.pp_resetPositionLocal();
+    this._myText.pp_resetPositionLocal();
+    this._myIgnoreCollisionCounter = 8;
+    this._mySpawnTimer.start();
+    this._myButton.pp_setScale(Math.PP_EPSILON * 100);
+    this._myButton.pp_setActive(true);
+    this._myHiddenTimer.start();
+    this._myOptionText.text = this._myNextText;
+  }
+  _popOut(fsm) {
+    this._myUnspawnTimer.start();
+    this._myButton.pp_setScale(1);
+  }
+  _stop(fsm) {
+    this._mySpawnTimer.reset();
+    this._myUnspawnTimer.reset();
+    this._myButton.pp_setActive(false);
+  }
+  registerClickEventListener(id, listener) {
+    this._myClickEmitter.add(listener, { id });
+  }
+  unregisterClickEventListener(id) {
+    this._myClickEmitter.remove(id);
+  }
+  clickButton(cursorClick = false, handedness = null) {
+    if (this._myAvoidClickTimer.isRunning())
+      return;
+    if (!this._myPreventClick && (this._myFSM.isInState("pop_in") || this._myFSM.isInState("visible"))) {
+      this._myClickEmitter.notify();
+      GameGlobals.myButtonParticlesSpawner.spawn(this.object.pp_getPosition());
+      this._myButtonVisual.pp_setPositionLocal(vec3_create2(0, -0.01, 0));
+      this._myText.pp_setPositionLocal(vec3_create2(0, -0.01, 0));
+      if (cursorClick) {
+        this._myVisualUnpressTimer.start();
+      }
+      if (this._myClickAudioPlayer == null) {
+        this._myClickAudioPlayer = Globals.getAudioManager().createAudioPlayer("click");
+      }
+      if (this._myClickAudioPlayer != null) {
+        this._myClickAudioPlayer.setPosition(this.object.pp_getPosition());
+        this._myClickAudioPlayer.play();
+      }
+      AnalyticsUtils.sendEventOnce("option_button_pressed", false);
+      if (XRUtils.isSessionActive()) {
+        AnalyticsUtils.sendEventOnce("option_button_pressed_vr");
+        if (handedness != null) {
+          if (InputUtils.getInputSourceTypeByHandedness(handedness) == InputSourceType.TRACKED_HAND) {
+            AnalyticsUtils.sendEventOnce("option_button_pressed_vr_hand");
+          } else {
+            AnalyticsUtils.sendEventOnce("option_button_pressed_vr_gamepad");
+          }
+        }
+      } else {
+        AnalyticsUtils.sendEventOnce("option_button_pressed_flat");
+        if (BrowserUtils.isMobile()) {
+          AnalyticsUtils.sendEventOnce("option_button_pressed_flat_mobile");
+        } else {
+          AnalyticsUtils.sendEventOnce("option_button_pressed_flat_desktop");
+        }
+      }
+    }
+  }
+  _onXRSessionStart() {
+    this._myIgnoreCollisionCounter = 8;
+    this._myAvoidClickTimer.start();
+  }
+  _onXRSessionEnd() {
+  }
+};
+__publicField(SirDialogButtonComponent, "TypeName", "sir-dialog-button");
+__publicField(SirDialogButtonComponent, "Properties", {
+  _myButton: Property.object(),
+  _myButtonVisual: Property.object(),
+  _myText: Property.object()
+});
+
+// js/dialog/dialog-manager.js
+var DialogManager = class extends Component {
+  init() {
+    fetch("./dialog.json").then((response) => {
+      return response.json();
+    }).then((json) => {
+      this.dialogs = json;
+    });
+    this.events = /* @__PURE__ */ new Map();
+    this.sounds = /* @__PURE__ */ new Map();
+  }
+  /**
+   * Get a dialog json object by name
+   * @param name Name of the dialog to get
+   */
+  getDialog(name) {
+    return this.dialogs[name];
+  }
+  /**
+   * Start a dialog on a dialog controller
+   * @param dialogController Controller to play
+   */
+  play(dialogController) {
+    if (this.playingDialog)
+      return;
+    this.playingDialog = dialogController;
+    dialogController.play();
+  }
+  /**
+   * Triggered when a dialog comes to an end
+   * Internal function, pls no touch
+   * @param dialogController Controller that ended
+   */
+  onEnd(dialogController) {
+    if (this.playingDialog != dialogController)
+      return;
+    this.playingDialog = null;
+  }
+  /**
+   * Stop the current dialog which resets it
+   */
+  stop() {
+    if (!this.playingDialog)
+      return;
+    this.playingDialog.stop();
+    this.playingDialog = null;
+  }
+  /**
+   * Pause the current dialog
+   * This also resets the text animator
+   */
+  pause() {
+    if (!this.playingDialog)
+      return;
+    this.playingDialog.pause();
+  }
+  /**
+   * Resume the current dialog
+   */
+  resume() {
+    if (!this.playingDialog)
+      return;
+    this.playingDialog.resume();
+  }
+  /**
+   * Advance the current dialog with a response
+   * @param choiceIndex Index of the response to advance with, provide -1 if there are no responses
+   */
+  advance(choiceIndex) {
+    if (!this.playingDialog)
+      return;
+    this.playingDialog.advance(choiceIndex);
+  }
+  /**
+   * Wether the dialog is waiting for a response or timer
+   */
+  isWaitingForResponse() {
+    if (!this.playingDialog)
+      return false;
+    return this.playingDialog.isWaitingForResponse();
+  }
+  /**
+   * Wether a dialog is currently playing
+   */
+  isPlaying() {
+    return this.playingDialog != void 0;
+  }
+  /**
+   * Add a listener for a dialog event
+   */
+  addEventListener(name, callback) {
+    if (!this.events.has(name)) {
+      this.events.set(name, new Emitter());
+    }
+    this.events.get(name).add(callback);
+  }
+  /**
+   * Dispatch a dialog event
+   * @param name Name of the event to dispatch
+   */
+  dispatchEvent(name) {
+    if (!this.events.has(name))
+      return;
+    const emitter = this.events.get(name);
+    emitter.notify();
+  }
+  addSound(name, path) {
+    this.sounds.set(name, path);
+  }
+  triggerSound(name, source) {
+    if (!this.sounds.has(name)) {
+      console.error("No sound by name " + name + " exists");
+      return;
+    }
+    var sound = this.sounds.get(name);
+    source.onSound(sound);
+  }
+  triggerAnimation(name) {
+  }
+};
+__publicField(DialogManager, "TypeName", "dialog-manager");
+
+// js/dialog/dialog-controller.js
+var DialogController = class extends Component {
+  init() {
+    this.reset();
+    this.responseTexts = new Array();
+    this.responseTexts.push(this.responseOneText.getComponent(SirDialogButtonComponent));
+    this.responseTexts.push(this.responseTwoText.getComponent(SirDialogButtonComponent));
+    this.charSounds = new Array();
+    if (this.charSoundOne != "")
+      this.charSounds.push(this.charSoundOne);
+    if (this.charSoundTwo != "")
+      this.charSounds.push(this.charSoundTwo);
+    if (this.charSoundThree != "")
+      this.charSounds.push(this.charSoundThree);
+    this.onHideResponses = new Emitter();
+    this.onSetupResponses = new Emitter();
+    this.onCharacterPrinted = new Emitter();
+    this.textReadPosReached = 0;
+  }
+  start() {
+    this.hideResponses();
+  }
+  play() {
+    if (this.currentStateJSON)
+      return;
+    this.reset();
+    this.playingDialog = this.dialogManager.getComponent(DialogManager).getDialog(this.dialog);
+    this.currentState = "starting";
+  }
+  stop() {
+    this.reset();
+  }
+  pause() {
+    if (this.paused)
+      return;
+    this.hideResponses();
+    this.paused = true;
+    this.textReadPos = 0;
+    this.timer = 0;
+    this.currentText = this.dialogPrefix;
+    this.text.getComponent("text").text = this.currentText;
+    if (this.currentStateJSON.instaText != null) {
+      this.currentText += this.currentStateJSON.instaText;
+      this.text.getComponent("text").text = this.currentText;
+    }
+  }
+  resume() {
+    if (!this.paused)
+      return;
+    this.paused = false;
+  }
+  isWaitingForResponse() {
+    if (!this.currentStateJSON)
+      return false;
+    var desiredText = this.currentStateJSON["text"];
+    return desiredText != null && this.textReadPos >= desiredText.length;
+  }
+  reset() {
+    this.paused = false;
+    this.currentText = this.dialogPrefix;
+    this.currentState = "";
+    this.currentStateJSON = null;
+    this.textReadPos = 0;
+    this.textReadPosReached = 0;
+    this.timer = 0;
+    this.charSoundCounter = 1;
+    this.text.getComponent("text").text = this.currentText;
+  }
+  update(dt) {
+    if (this.currentState == "" || this.paused)
+      return;
+    if (this.currentState == "starting") {
+      this.reset();
+      this.currentStateJSON = this.playingDialog["entry"];
+      this.currentState = "entry";
+      this.handleEvent();
+    }
+    var desiredText = this.currentStateJSON["text"];
+    if (desiredText != null && this.textReadPos < desiredText.length) {
+      const char = desiredText[this.textReadPos];
+      if (char == "[") {
+        var firstBracketIndex = this.textReadPos;
+        var secondBracketIndex = -1;
+        while (true) {
+          ++this.textReadPos;
+          if (this.textReadPos >= desiredText.length) {
+            console.error("Missing ']' in dialog sub event");
+            if (this.textReadPos > this.textReadPosReached) {
+              this.textReadPosReached = this.textReadPos;
+            }
+            return;
+          }
+          var nextChar = desiredText[this.textReadPos];
+          if (nextChar == "]") {
+            secondBracketIndex = this.textReadPos;
+            ++this.textReadPos;
+            break;
+          }
+        }
+        const eventData = desiredText.substring(firstBracketIndex + 1, secondBracketIndex);
+        const tokens = eventData.split(":", 2);
+        if (tokens.length < 2) {
+          console.error("Expected type and name for dialog sub event");
+          if (this.textReadPos > this.textReadPosReached) {
+            this.textReadPosReached = this.textReadPos;
+          }
+          return;
+        }
+        const type = tokens[0];
+        const name = tokens[1];
+        switch (type) {
+          case "s": {
+            this.dialogManager.getComponent(DialogManager).triggerSound(name, this.audioSource.getComponent(this.audioSourceCompnent));
+            break;
+          }
+          case "a": {
+            this.dialogManager.getComponent(DialogManager).triggerAnimation(name);
+            break;
+          }
+          case "e": {
+            if (this.textReadPos > this.textReadPosReached) {
+              this.dialogManager.getComponent(DialogManager).dispatchEvent(name);
+            }
+            break;
+          }
+        }
+        if (this.textReadPos > this.textReadPosReached) {
+          this.textReadPosReached = this.textReadPos;
+        }
+        return;
+      }
+      const delayMultiplier = this.textReadPos < this.textReadPosReached ? 2 : 1;
+      const ignore = char == "_";
+      const delay = char == "_" ? this.blankDelay / delayMultiplier : this.charDelay / delayMultiplier;
+      this.timer += dt;
+      this.charSoundTimer += dt;
+      if (this.timer < delay) {
+        return;
+      }
+      this.timer -= delay;
+      if (!ignore) {
+        this.currentText += char;
+        this.characterPrinted(char);
+      } else {
+        this.charSoundCounter = 1;
+      }
+      ++this.textReadPos;
+      if (this.textReadPos > this.textReadPosReached) {
+        this.textReadPosReached = this.textReadPos;
+      }
+      if (this.textReadPos >= desiredText.length) {
+        this.timer = 0;
+        this.setupResponses();
+      }
+    } else {
+      var autoAdvanceTime = this.currentStateJSON["autoAdvanceAfter"];
+      if (autoAdvanceTime) {
+        this.timer += dt;
+        if (this.timer < autoAdvanceTime)
+          return;
+        this.timer -= autoAdvanceTime;
+        this.advance(-1);
+      }
+    }
+    this.text.getComponent("text").text = this.currentText;
+  }
+  advance(choiceIndex) {
+    if (this.paused) {
+      console.error("Cannot advance a paused dialog!");
+      return;
+    }
+    if (!this.currentStateJSON)
+      return;
+    this.hideResponses();
+    if (GameGlobals.myDebugEnabled && GameGlobals.myDebugDialogs) {
+      var keys = Object.keys(this.playingDialog);
+      var index = keys.indexOf(this.currentState);
+      this.reset();
+      if (index + 1 >= keys.length) {
+        this.dialogManager.getComponent(DialogManager).onEnd(this);
+        return;
+      }
+      this.currentState = keys[index + 1];
+      this.currentStateJSON = this.playingDialog[this.currentState];
+      this.handleEvent();
+      return;
+    } else {
+      var responses = this.currentStateJSON["responses"];
+      var jump = responses ? null : this.currentStateJSON["jump"];
+      if (!jump && responses && choiceIndex != -1) {
+        var response = responses[choiceIndex];
+        if (!response) {
+          console.error("Cannot advance with invalid response!");
+          return;
+        }
+        jump = response["jump"];
+      }
+      if (!jump && responses) {
+        console.error("Cannot advance current dialog without response!");
+        return;
+      }
+      if (!jump && jump != "") {
+        var keys = Object.keys(this.playingDialog);
+        var index = keys.indexOf(this.currentState);
+        this.reset();
+        if (index + 1 >= keys.length) {
+          this.dialogManager.getComponent(DialogManager).onEnd(this);
+          return;
+        }
+        this.currentState = keys[index + 1];
+        this.currentStateJSON = this.playingDialog[this.currentState];
+        this.handleEvent();
+        return;
+      }
+    }
+    this.reset();
+    this.currentStateJSON = this.playingDialog[jump];
+    this.currentState = jump;
+    if (this.currentStateJSON.instaText != null) {
+      this.currentText += this.currentStateJSON.instaText;
+      this.text.getComponent("text").text = this.currentText;
+    }
+    this.handleEvent();
+  }
+  hideResponses() {
+    this.onHideResponses.notify();
+    for (var i = 0; i < this.responseTexts.length; ++i) {
+    }
+  }
+  setupResponses() {
+    var responses = this.currentStateJSON["responses"];
+    if (!responses)
+      return;
+    this.onSetupResponses.notify();
+    for (var i = 0; i < responses.length; ++i) {
+      var response = responses[i]["text"];
+      this.responseTexts[i].setNextText(response);
+    }
+  }
+  handleEvent() {
+    const event = this.currentStateJSON["event"];
+    if (!event)
+      return;
+    this.dialogManager.getComponent(DialogManager).dispatchEvent(event);
+  }
+  characterPrinted(char) {
+    this.onCharacterPrinted.notify(char);
+    if (this.charSounds.length == 0)
+      return;
+    const randomSound = Math.floor(Math.random() * this.charSounds.length);
+    --this.charSoundCounter;
+    if (this.charSoundCounter > 0)
+      return;
+    this.dialogManager.getComponent(DialogManager).triggerSound(this.charSounds[randomSound], this.audioSource.getComponent(this.audioSourceCompnent));
+    this.charSoundCounter = this.charSoundSkips;
+  }
+};
+__publicField(DialogController, "TypeName", "dialog-controller");
+/* Properties that are configurable in the editor */
+__publicField(DialogController, "Properties", {
+  dialogManager: Property.object(),
+  text: Property.object(),
+  responseOneText: Property.object(),
+  responseTwoText: Property.object(),
+  dialog: Property.string(""),
+  charDelay: Property.float(0.025),
+  blankDelay: Property.float(0.5),
+  audioSource: Property.object(),
+  audioSourceCompnent: Property.string(),
+  dialogPrefix: Property.string("> "),
+  charSoundOne: Property.string(""),
+  charSoundTwo: Property.string(""),
+  charSoundThree: Property.string(""),
+  charSoundSkips: Property.int(3)
+});
+
+// js/playground/particle_component.js
+var ParticleComponent = class extends Component {
+  init() {
+    this._myOnDoneCallback = null;
+    this._myScaleMultiplier = 1;
+    this._myHorizontalSpeedMultiplier = 1;
+    this._myVerticalSpeedMultiplier = 1;
+    this._myGravity = 0;
+  }
+  start() {
+    let randomScale = Math.pp_random(0.5, 1) * this._myScaleMultiplier;
+    this._myTargetScale = vec3_create2(randomScale, randomScale, randomScale);
+    this.object.pp_setScale(Math.PP_EPSILON);
+    this.object.pp_rotate(vec3_create2(Math.pp_random(-180, 180), Math.pp_random(-180, 180), Math.pp_random(-180, 180)));
+    this._mySpawnTimer = new Timer(Math.pp_random(0.1, 0.2));
+    this._myLifeTimer = new Timer(Math.pp_random(0.35, 0.7), false);
+    this._myUnspawnTimer = new Timer(Math.pp_random(0.1, 0.2), false);
+    this._myHorizontalSpeedDirection = vec3_create2(0, 0, 1).vec3_rotateAxis(Math.pp_random(-180, 180), vec3_create2(0, 1, 0));
+    this._myHorizontalSpeed = this._myHorizontalSpeedDirection.vec3_scale(Math.pp_random(0.5, 1) * this._myHorizontalSpeedMultiplier);
+    let verticalSign = 1;
+    let minVerticalValue = 0.5;
+    if (this._myGravity == 0) {
+      verticalSign = Math.pp_randomSign();
+      minVerticalValue = 0;
+    }
+    this._myVerticalSpeed = vec3_create2(0, verticalSign, 0).vec3_scale(Math.pp_random(minVerticalValue, 1) * this._myVerticalSpeedMultiplier);
+  }
+  update(dt) {
+    if (this._mySpawnTimer.isRunning()) {
+      this._mySpawnTimer.update(dt);
+      this.object.pp_setScale(this._myTargetScale.vec3_scale(EasingFunction.easeOut(this._mySpawnTimer.getPercentage())));
+      if (this._mySpawnTimer.isDone()) {
+        this._myLifeTimer.start();
+      }
+    }
+    if (this._myLifeTimer.isRunning()) {
+      this._myLifeTimer.update(dt);
+      if (this._myLifeTimer.isDone()) {
+        this._myUnspawnTimer.start();
+      }
+    }
+    if (this._myUnspawnTimer.isRunning()) {
+      this._myUnspawnTimer.update(dt);
+      this.object.pp_setScale(this._myTargetScale.vec3_scale(EasingFunction.easeOut(1 - this._myUnspawnTimer.getPercentage())));
+      if (this._myUnspawnTimer.isDone()) {
+        if (this._myOnDoneCallback != null) {
+          this._myOnDoneCallback();
+        }
+      }
+    }
+    this.object.pp_translate(this._myHorizontalSpeed.vec3_scale(dt));
+    this.object.pp_translate(this._myVerticalSpeed.vec3_scale(dt));
+    if (this._myGravity != 0) {
+      this._myVerticalSpeed = this._myVerticalSpeed.vec3_sub(vec3_create2(0, 1, 0).vec3_scale(this._myGravity * dt), this._myVerticalSpeed);
+    }
+  }
+  setHorizontalSpeedMultiplier(speedMultiplier) {
+    this._myHorizontalSpeedMultiplier = speedMultiplier;
+  }
+  setVerticalSpeedMultiplier(speedMultiplier) {
+    this._myVerticalSpeedMultiplier = speedMultiplier;
+  }
+  setGravity(gravity) {
+    this._myGravity = gravity;
+  }
+  setScaleMultiplier(scaleMultiplier) {
+    this._myScaleMultiplier = scaleMultiplier;
+  }
+  onDone(onDoneCallback) {
+    this._myOnDoneCallback = onDoneCallback;
+  }
+  onDeactivate() {
+    this._myOnDoneCallback = null;
+  }
+  onActivate() {
+    this.start();
+  }
+  pp_clone(targetObject) {
+    let clonedComponent = ComponentUtils.cloneDefault(this, targetObject);
+    return clonedComponent;
+  }
+};
+__publicField(ParticleComponent, "TypeName", "particle");
+__publicField(ParticleComponent, "Properties", {});
+
+// js/playground/particles_spawner_component.js
+var ParticlesSpawnerComponent = class extends Component {
+  start() {
+    this._myParticles = this._myParticlesContainer.pp_getChildren();
+    this._myObjectPoolsManager = new ObjectPoolsManager();
+    let poolParams = new ObjectPoolParams();
+    poolParams.myInitialPoolSize = this._myInitialPool;
+    poolParams.myAmountToAddWhenEmpty = 1;
+    poolParams.myPercentageToAddWhenEmpty = 1;
+    poolParams.myOptimizeObjectsAllocation = true;
+    let cloneParams = new CloneParams();
+    cloneParams.myComponentsToInclude.push(MeshComponent2.TypeName);
+    for (let i = 0; i < this._myParticles.length; i++) {
+      let particle = this._myParticles[i].pp_clone(cloneParams);
+      particle.pp_addComponent(ParticleComponent);
+      particle.pp_setActive(false);
+      particle.pp_setParent(Globals.getSceneObjects(this.engine).myParticles);
+      this._myObjectPoolsManager.addPool(i, particle, poolParams);
+    }
+  }
+  spawn(position) {
+    let amount = Math.pp_randomInt(this._myMinAmount, this._myMaxAmount);
+    for (let i = 0; i < amount; i++) {
+      let particle = this._myObjectPoolsManager.get(Math.pp_randomInt(0, this._myParticles.length - 1));
+      let particleComponent = particle.pp_getComponent(ParticleComponent);
+      particleComponent.onDone(this.onParticleDone.bind(this, particle));
+      particleComponent.setScaleMultiplier(this._myScaleMultiplier);
+      particleComponent.setHorizontalSpeedMultiplier(this._myHorizontalSpeedMultiplier);
+      particleComponent.setVerticalSpeedMultiplier(this._myVerticalSpeedMultiplier);
+      particleComponent.setGravity(this._myGravity);
+      particle.pp_setPosition(position.vec3_add(particleComponent._myHorizontalSpeedDirection.vec3_normalize().vec3_scale(Math.pp_random(0, this._myRadius))));
+      particle.pp_setActive(true);
+    }
+  }
+  hide() {
+    this._myObjectPoolsManager.releaseAll();
+  }
+  onParticleDone(particle) {
+    this._myObjectPoolsManager.release(particle);
+  }
+};
+__publicField(ParticlesSpawnerComponent, "TypeName", "particles-spawner");
+__publicField(ParticlesSpawnerComponent, "Properties", {
+  _myParticlesContainer: Property.object(),
+  _myRadius: Property.float(0.25),
+  _myMinAmount: Property.int(15),
+  _myMaxAmount: Property.int(30),
+  _myScaleMultiplier: Property.float(1),
+  _myHorizontalSpeedMultiplier: Property.float(1),
+  _myVerticalSpeedMultiplier: Property.float(1),
+  _myGravity: Property.float(9.81),
+  _myInitialPool: Property.int(10)
+});
+
+// js/sir_please/components/button_hand_component.js
+var ButtonHandComponent = class extends Component {
+  start() {
+    this._myStarted = false;
+    this._myInitialTransform = this.object.pp_getTransformQuat();
+    this._myCurrentSpeed = this._mySpeed;
+    this._mySpeedMultiplier = 1;
+    this._myHandStopEmitter = new Emitter();
+    this._myTranslateVector = vec3_create2(0);
+    this._mySpawnParticlesTimer = new Timer(0);
+  }
+  update(dt) {
+    if (this._myStarted && this._myCurrentSpeed > 0) {
+      if (!GameGlobals.myDebugEnabled || !GameGlobals.myDebugDialogs) {
+        this.object.pp_translateObject(this._myTranslateVector.vec3_set(this._myCurrentSpeed * this._mySpeedMultiplier * dt, 0, 0));
+      }
+      this._mySpawnParticlesTimer.update(dt);
+      if (this._mySpawnParticlesTimer.isDone()) {
+        let normalizedSpeed = this._myCurrentSpeed * this._mySpeedMultiplier / this._mySpeed;
+        GameGlobals.myHandParticlesSpawner._myScaleMultiplier = 0.01 * Math.pp_mapToRange(normalizedSpeed, 0.5, 1.5, 0.75, 1.25);
+        GameGlobals.myHandParticlesSpawner._myVerticalSpeedMultiplier = 1 * Math.pp_mapToRange(normalizedSpeed, 0.5, 1.5, 0.5, 1);
+        GameGlobals.myHandParticlesSpawner.spawn(this.object.pp_getPosition());
+        this._mySpawnParticlesTimer.start(1 / normalizedSpeed / 40);
+      }
+    }
+  }
+  setSpeed(speed) {
+    this._myCurrentSpeed = speed;
+  }
+  getSpeed() {
+    return this._myCurrentSpeed;
+  }
+  setSpeedMultiplier(speedMultiplier) {
+    this._mySpeedMultiplier = speedMultiplier;
+  }
+  multiplySpeed(multiplier) {
+    if (multiplier > 0) {
+      this._myCurrentSpeed += this._mySpeed * multiplier;
+    } else {
+      this._myCurrentSpeed *= -multiplier;
+    }
+    this._myCurrentSpeed = Math.max(this._myCurrentSpeed, 5e-3);
+  }
+  stopSpeed() {
+    this._myCurrentSpeed = 0;
+  }
+  isMoving() {
+    return this._myStarted && this._myCurrentSpeed != 0;
+  }
+  startButtonHand() {
+    this._myStarted = true;
+    this._myCurrentSpeed = this._mySpeed;
+    this._mySpeedMultiplier = 1;
+    this._mySpawnParticlesTimer.start(0);
+    this.object.pp_setTransformQuat(this._myInitialTransform);
+  }
+  stopButtonHand() {
+    this._myStarted = false;
+  }
+  resetButtonHand() {
+    this.object.pp_setTransformQuat(this._myInitialTransform);
+    GameGlobals.myHandParticlesSpawner.hide();
+  }
+  registerHandStopEventListener(id, listener) {
+    this._myHandStopEmitter.add(listener, { id });
+  }
+  unregisterHandStopEventListener(id) {
+    this._myHandStopEmitter.remove(id);
+  }
+};
+__publicField(ButtonHandComponent, "TypeName", "button-hand");
+__publicField(ButtonHandComponent, "Properties", {
+  _mySpeed: Property.float(1),
+  _myMinSpeedToStop: Property.float(0.01)
+});
+
+// js/sir_please/components/dialog-sound.js
+var DialogSound = class extends Component {
+  init() {
+    this.audioPlayers = /* @__PURE__ */ new Map();
+    this.firstUpdate = true;
+  }
+  start() {
+    this.dialogManager.getComponent(DialogManager).addSound("alert", "alert");
+    this.dialogManager.getComponent(DialogManager).addSound("blip", "blip");
+  }
+  update(dt) {
+    if (GameGlobals.myStarted) {
+      if (this.firstUpdate) {
+        this.firstUpdate = false;
+        let blipPlayer = Globals.getAudioManager().createAudioPlayer("blip");
+        let sounds = [];
+        for (let i = 0; i < blipPlayer._myAudio._pool; i++) {
+          let sound = blipPlayer._myAudio._inactiveSound();
+          sound._ended = false;
+          sounds.push(sound);
+        }
+        for (let sound of sounds) {
+          sound._ended = true;
+        }
+        this.audioPlayers.set("blip", blipPlayer);
+      }
+    }
+  }
+  onSound(path) {
+    if (!GameGlobals.myStarted || this.firstUpdate)
+      return;
+    if (!this.audioPlayers.has(path) || !this.audioPlayers.get(path)) {
+      this.audioPlayers.set(path, Globals.getAudioManager().createAudioPlayer(path));
+    }
+    var player = this.audioPlayers.get(path);
+    player.setPosition(this.object.pp_getPosition());
+    player.play();
+  }
+};
+__publicField(DialogSound, "TypeName", "dialog-sound");
+/* Properties that are configurable in the editor */
+__publicField(DialogSound, "Properties", {
+  dialogManager: Property.object(1)
+});
+/* Add other component types here that your component may
+ * create. They will be registered with this component */
+__publicField(DialogSound, "Dependencies", []);
+
 // js/sir_please/components/explode_button_component.js
 var ExplodeButtonComponent = class extends Component {
   start() {
@@ -57270,8 +57534,10 @@ var ExplodeButtonComponent = class extends Component {
     this._myPhysX = this.object.pp_getComponent(PhysXComponent);
     this._myCollisionsCollector = new PhysicsCollisionCollector(this._myPhysX, true);
     this._myCursorTarget = this.object.pp_getComponent(CursorTarget);
-    this._myCursorTarget.onUpWithDown.add(this.clickButton.bind(this, true));
+    this._myCursorTarget.onUpWithDown.add(this.clickButton.bind(this, true, null));
     this._myActive = false;
+    this._myIgnoreCollisionCounter = 8;
+    XRUtils.registerSessionStartEndEventListeners(this, this._onXRSessionStart.bind(this), this._onXRSessionEnd.bind(this), true, false);
   }
   update(dt) {
     if (!this._myActive)
@@ -57281,10 +57547,18 @@ var ExplodeButtonComponent = class extends Component {
       let physx = this._myCollisionsCollector.getCollisionsStart()[0];
       let handedness = physx.pp_getComponent(SetHandednessComponent);
       if (handedness != null) {
-        this.clickButton(true, handedness.getHandedness());
+        if (this._myIgnoreCollisionCounter == 0) {
+          this.clickButton(true, handedness.getHandedness());
+        }
       } else {
-        this.clickButton(false);
+        let buttonHand = physx.pp_getComponent(ButtonHandComponent);
+        if (buttonHand == null || buttonHand.isMoving()) {
+          this.clickButton(false);
+        }
       }
+    }
+    if (this._myIgnoreCollisionCounter > 0) {
+      this._myIgnoreCollisionCounter--;
     }
     if (GameGlobals.myButtonHand != null && GameGlobals.myButtonHand.object.pp_getPosition()[1] < this.object.pp_getPosition()[1]) {
       this.clickButton(false);
@@ -57292,6 +57566,10 @@ var ExplodeButtonComponent = class extends Component {
   }
   setActive(active2) {
     this._myActive = active2;
+    this._myIgnoreCollisionCounter = 8;
+  }
+  ignoreCollision() {
+    this._myIgnoreCollisionCounter = 8;
   }
   registerClickEventListener(id, listener) {
     this._myClickEmitter.add(listener, { id });
@@ -57330,6 +57608,16 @@ var ExplodeButtonComponent = class extends Component {
         }
       }
     }
+  }
+  _onXRSessionStart() {
+    this._myIgnoreCollisionCounter = 8;
+    let referenceSpace = XRUtils.getReferenceSpace();
+    referenceSpace.addEventListener("reset", this._onViewReset.bind(this));
+  }
+  _onXRSessionEnd() {
+  }
+  _onViewReset() {
+    this._myIgnoreCollisionCounter = 8;
   }
 };
 __publicField(ExplodeButtonComponent, "TypeName", "explode-button");
@@ -57415,7 +57703,7 @@ __publicField(FadeViewInOutComponent, "Properties", {
   _myColor: Property.string("0, 0, 0"),
   _myTimeToFadeIn: Property.float(0),
   _myTimeToFadeOut: Property.float(0),
-  _myScaleMultiplier: Property.float(1)
+  _myScaleMultiplier: Property.float(10)
 });
 
 // js/sir_please/components/hide_hands.js
@@ -57585,193 +57873,6 @@ var ShowXRButtonsComponent = class extends Component {
 };
 __publicField(ShowXRButtonsComponent, "TypeName", "pp-show-xr-buttons");
 
-// js/sir_please/components/sir_dialog_button_component.js
-var SirDialogButtonComponent = class extends Component {
-  start() {
-    this._myStarted = false;
-    this._myFSM = new FSM();
-    this._myFSM.addState("init");
-    this._myFSM.addState("idle");
-    this._myFSM.addState("hidden");
-    this._myFSM.addState("pop_in", this._popInUpdate.bind(this));
-    this._myFSM.addState("visible");
-    this._myFSM.addState("pop_out", this._popOutUpdate.bind(this));
-    this._myFSM.addTransition("init", "idle", "start");
-    this._myFSM.addTransition("idle", "hidden", "start", this._start.bind(this));
-    this._myFSM.addTransition("hidden", "pop_in", "show", this._popIn.bind(this));
-    this._myFSM.addTransition("pop_in", "visible", "end");
-    this._myFSM.addTransition("pop_in", "pop_out", "hide", this._popOut.bind(this));
-    this._myFSM.addTransition("visible", "pop_out", "hide", this._popOut.bind(this));
-    this._myFSM.addTransition("pop_out", "hidden", "end");
-    this._myFSM.addTransition("idle", "idle", "stop");
-    this._myFSM.addTransition("hidden", "idle", "stop", this._stop.bind(this));
-    this._myFSM.addTransition("pop_in", "idle", "stop", this._stop.bind(this));
-    this._myFSM.addTransition("visible", "idle", "stop", this._stop.bind(this));
-    this._myFSM.addTransition("pop_out", "idle", "stop", this._stop.bind(this));
-    this._myFSM.init("init");
-    this._myFSM.perform("start");
-    this._mySpawnTimer = new Timer(0.2, false);
-    this._myUnspawnTimer = new Timer(0.2, false);
-    this._myTargetScale = vec3_create2(1);
-    this._myClickEmitter = new Emitter();
-    this._myPhysX = this.object.pp_getComponent(PhysXComponent);
-    this._myCollisionsCollector = new PhysicsCollisionCollector(this._myPhysX, true);
-    this._myCursorTarget = this.object.pp_getComponent(CursorTarget);
-    this._myCursorTarget.onUpWithDown.add(this.clickButton.bind(this, true));
-    this._myPreventClick = true;
-    this._myIgnoreCollisionTimer = new Timer(0.1, false);
-    this._myVisualUnpressTimer = new Timer(0.1);
-    this._myVisualUnpressTimer.end();
-    this._myClickAudioPlayer = Globals.getAudioManager().createAudioPlayer("click");
-    this._stop();
-    this._myAvoidClickTimer = new Timer(0.5);
-    XRUtils.registerSessionStartEndEventListeners(this, this._onXRSessionStart.bind(this), this._onXRSessionEnd.bind(this), true, false);
-  }
-  update(dt) {
-    this._myFSM.update(dt);
-    this._myCollisionsCollector.update(dt);
-    this._myVisualUnpressTimer.update(dt);
-    if (!this._myPreventClick && (this._myFSM.isInState("pop_in") || this._myFSM.isInState("visible"))) {
-      this._myIgnoreCollisionTimer.update(dt);
-      if (this._myIgnoreCollisionTimer.isDone()) {
-        if (this._myCollisionsCollector.getCollisionsStart().length > 0) {
-          let physx = this._myCollisionsCollector.getCollisionsStart()[0];
-          let handedness = physx.pp_getComponent(SetHandednessComponent);
-          if (handedness != null) {
-            Globals.getGamepad(handedness.getHandedness()).pulse(0.2, 0.2);
-            this.clickButton(false, handedness.getHandedness());
-          } else {
-            this.clickButton();
-          }
-        }
-      }
-    }
-    if (this._myCollisionsCollector.getCollisions().length == 0 && this._myVisualUnpressTimer.isDone()) {
-      this._myButtonVisual.pp_resetPositionLocal();
-      this._myText.pp_resetPositionLocal();
-    }
-    this._myAvoidClickTimer.update(dt);
-  }
-  setPreventClick(preventClick) {
-    this._myPreventClick = preventClick;
-  }
-  show() {
-    this._myFSM.perform("show");
-  }
-  hide() {
-    this._myFSM.perform("hide");
-  }
-  startButton() {
-    this._myFSM.perform("start");
-  }
-  stopButton() {
-    this._myPreventClick = true;
-    this._myFSM.perform("stop");
-  }
-  isVisible() {
-    return this._myFSM.isInState("pop_in") || this._myFSM.isInState("visible");
-  }
-  isReallyVisible() {
-    return this._myFSM.isInState("pop_in") || this._myFSM.isInState("visible") || this._myFSM.isInState("pop_out");
-  }
-  _popInUpdate(dt, fsm) {
-    if (this._mySpawnTimer.isRunning()) {
-      this._mySpawnTimer.update(dt);
-      this._myButton.pp_setScale(this._myTargetScale.vec3_scale(Math.max(EasingFunction.easeOut(this._mySpawnTimer.getPercentage()), Math.PP_EPSILON * 100)));
-      if (this._mySpawnTimer.isDone()) {
-        fsm.perform("end");
-      }
-    }
-  }
-  _popOutUpdate(dt, fsm) {
-    if (this._myUnspawnTimer.isRunning()) {
-      this._myUnspawnTimer.update(dt);
-      this._myButton.pp_setScale(this._myTargetScale.vec3_scale(Math.max(EasingFunction.easeOut(1 - this._myUnspawnTimer.getPercentage()), Math.PP_EPSILON * 100)));
-      if (this._myUnspawnTimer.isDone()) {
-        this._myButton.pp_setActive(false);
-        fsm.perform("end");
-      }
-    }
-  }
-  _start(fsm) {
-    this._myButton.pp_setActive(false);
-    this._myButtonVisual.pp_resetPositionLocal();
-    this._myText.pp_resetPositionLocal();
-  }
-  _popIn(fsm) {
-    this._myButtonVisual.pp_resetPositionLocal();
-    this._myText.pp_resetPositionLocal();
-    this._myIgnoreCollisionTimer.start();
-    this._mySpawnTimer.start();
-    this._myButton.pp_setScale(Math.PP_EPSILON * 100);
-    this._myButton.pp_setActive(true);
-  }
-  _popOut(fsm) {
-    this._myUnspawnTimer.start();
-    this._myButton.pp_setScale(1);
-  }
-  _stop(fsm) {
-    this._mySpawnTimer.reset();
-    this._myUnspawnTimer.reset();
-    this._myButton.pp_setActive(false);
-  }
-  registerClickEventListener(id, listener) {
-    this._myClickEmitter.add(listener, { id });
-  }
-  unregisterClickEventListener(id) {
-    this._myClickEmitter.remove(id);
-  }
-  clickButton(cursorClick = false, handedness = null) {
-    if (this._myAvoidClickTimer.isRunning())
-      return;
-    if (!this._myPreventClick && (this._myFSM.isInState("pop_in") || this._myFSM.isInState("visible"))) {
-      this._myClickEmitter.notify();
-      GameGlobals.myButtonParticlesSpawner.spawn(this.object.pp_getPosition());
-      this._myButtonVisual.pp_setPositionLocal(vec3_create2(0, -0.01, 0));
-      this._myText.pp_setPositionLocal(vec3_create2(0, -0.01, 0));
-      if (cursorClick) {
-        this._myVisualUnpressTimer.start();
-      }
-      if (this._myClickAudioPlayer == null) {
-        this._myClickAudioPlayer = Globals.getAudioManager().createAudioPlayer("click");
-      }
-      if (this._myClickAudioPlayer != null) {
-        this._myClickAudioPlayer.setPosition(this.object.pp_getPosition());
-        this._myClickAudioPlayer.play();
-      }
-      AnalyticsUtils.sendEventOnce("option_button_pressed", false);
-      if (XRUtils.isSessionActive()) {
-        AnalyticsUtils.sendEventOnce("option_button_pressed_vr");
-        if (handedness != null) {
-          if (InputUtils.getInputSourceTypeByHandedness(handedness) == InputSourceType.TRACKED_HAND) {
-            AnalyticsUtils.sendEventOnce("option_button_pressed_vr_hand");
-          } else {
-            AnalyticsUtils.sendEventOnce("option_button_pressed_vr_gamepad");
-          }
-        }
-      } else {
-        AnalyticsUtils.sendEventOnce("option_button_pressed_flat");
-        if (BrowserUtils.isMobile()) {
-          AnalyticsUtils.sendEventOnce("option_button_pressed_flat_mobile");
-        } else {
-          AnalyticsUtils.sendEventOnce("option_button_pressed_flat_desktop");
-        }
-      }
-    }
-  }
-  _onXRSessionStart() {
-    this._myAvoidClickTimer.start();
-  }
-  _onXRSessionEnd() {
-  }
-};
-__publicField(SirDialogButtonComponent, "TypeName", "sir-dialog-button");
-__publicField(SirDialogButtonComponent, "Properties", {
-  _myButton: Property.object(),
-  _myButtonVisual: Property.object(),
-  _myText: Property.object()
-});
-
 // js/sir_please/components/sir_dialog_component.js
 var SirDialogComponent = class extends Component {
   start() {
@@ -57805,14 +57906,22 @@ var SirDialogComponent = class extends Component {
     this._myOption1Button = this._myOption1.pp_getComponent(SirDialogButtonComponent);
     this._myOption2Button = this._myOption2.pp_getComponent(SirDialogButtonComponent);
     this._mySpawnButtonDelayTimer = new Timer(0.4, false);
+    this._myVisibleTimer = new Timer(0.5, false);
     this._myWin = false;
     this._myResponseVisible = false;
+    this._myLastResponseVisible = false;
     this._myFirstStart = true;
+    this._myEnterSessionCounter = 0;
+    XRUtils.registerSessionStartEndEventListeners(this, this._onXRSessionStart.bind(this), this._onXRSessionEnd.bind(this), true, false);
   }
   update(dt) {
+    this._myEnterSessionCounter--;
     if (this._myStarted) {
       this._myFSM.update(dt);
     }
+  }
+  isHidden() {
+    return this._myFSM.isInState("hidden") || this._myFSM.isInState("idle");
   }
   startSirDialog() {
     if (this._myFirstStart) {
@@ -57829,6 +57938,7 @@ var SirDialogComponent = class extends Component {
       GameGlobals.myDialogManager.addEventListener("insta_good", this._responseSelected.bind(this, 1e5));
     }
     this._myResponseVisible = false;
+    this._myLastResponseVisible = false;
     this._myWin = false;
     this._myStarted = true;
     this._myFSM.perform("start");
@@ -57838,13 +57948,24 @@ var SirDialogComponent = class extends Component {
     this._myFSM.perform("stop");
   }
   _hiddenUpdate(dt, fsm) {
-    if (this._isDialogVisible()) {
+    if (GameGlobals.myTrackedHandTeleported) {
+      if (this._myEnterSessionCounter > 0) {
+        this._myVisibleTimer.start(1);
+      } else {
+        if (GameGlobals.myBlackFader.isFading()) {
+          this._myVisibleTimer.start(0.5);
+        } else {
+          this._myVisibleTimer.start(0.75);
+        }
+      }
+    }
+    if (this._isDialogVisible(dt)) {
       fsm.perform("show");
     }
   }
   _popInUpdate(dt, fsm) {
     if (this._myDialogController.currentStateJSON != null && this._myDialogController.currentStateJSON["text"] == null) {
-      this._myTextSpeech.pp_setActive(false);
+      this._myTextSpeech.pp_setActive(true);
     } else {
       this._myTextSpeech.pp_setActive(true);
     }
@@ -57865,23 +57986,37 @@ var SirDialogComponent = class extends Component {
   }
   _visibleUpdate(dt, fsm) {
     if (this._myDialogController.currentStateJSON != null && this._myDialogController.currentStateJSON["text"] == null) {
-      this._myTextSpeech.pp_setActive(false);
+      this._myTextSpeech.pp_setActive(true);
     } else {
       this._myTextSpeech.pp_setActive(true);
     }
-    if (!this._isDialogVisible()) {
+    if (!this._isDialogVisible(dt)) {
       fsm.perform("hide");
     } else {
-      if (this._myResponseVisible) {
-        this._myOption1Button.setPreventClick(false);
-        this._myOption2Button.setPreventClick(false);
+      let hideOverride = false;
+      if (this._myLastResponseVisible != this._myResponseVisible) {
+        if (this._myResponseVisible && (this._myOption1Button.isVisible() || this._myOption2Button.isVisible())) {
+          hideOverride = true;
+        } else {
+          this._myLastResponseVisible = this._myResponseVisible;
+          this._mySpawnButtonDelayTimer.reset();
+        }
+      }
+      if (this._myResponseVisible && !hideOverride) {
         if (!this._myOption1Button.isVisible()) {
-          this._myOption1Button.show();
-          this._mySpawnButtonDelayTimer.start();
+          if (!this._myOption1Button.isReallyVisible() && !this._myOption2Button.isReallyVisible() && this._myOption1Button.isHiddenTimerDone() && this._myOption2Button.isHiddenTimerDone()) {
+            this._myOption1Button.setPreventClick(false);
+            this._myOption1Button.show();
+            this._mySpawnButtonDelayTimer.reset();
+          }
         } else if (!this._myOption2Button.isVisible()) {
-          if (this._mySpawnButtonDelayTimer.isRunning()) {
-            this._mySpawnButtonDelayTimer.update(dt);
-            if (this._mySpawnButtonDelayTimer.isDone()) {
+          if (!this._mySpawnButtonDelayTimer.isStarted()) {
+            this._mySpawnButtonDelayTimer.start();
+          }
+          this._mySpawnButtonDelayTimer.update(dt);
+          if (this._mySpawnButtonDelayTimer.isDone()) {
+            if (!this._myOption2Button.isReallyVisible() && this._myOption2Button.isHiddenTimerDone()) {
+              this._myOption2Button.setPreventClick(false);
               this._myOption2Button.show();
             }
           }
@@ -57890,21 +58025,21 @@ var SirDialogComponent = class extends Component {
         this._myOption1Button.setPreventClick(true);
         this._myOption2Button.setPreventClick(true);
         if (this._myOption1Button.isVisible()) {
-          if (this._mySpawnButtonDelayTimer.isRunning()) {
-            this._mySpawnButtonDelayTimer.update(dt);
-            if (this._mySpawnButtonDelayTimer.isDone()) {
-              this._myOption1Button.hide();
-              this._mySpawnButtonDelayTimer.start();
-            }
-          } else {
+          if (!this._mySpawnButtonDelayTimer.isStarted()) {
             this._mySpawnButtonDelayTimer.start();
           }
+          this._mySpawnButtonDelayTimer.update(dt);
+          if (this._mySpawnButtonDelayTimer.isDone()) {
+            this._myOption1Button.hide();
+            this._mySpawnButtonDelayTimer.reset();
+          }
         } else if (this._myOption2Button.isVisible()) {
-          if (this._mySpawnButtonDelayTimer.isRunning()) {
-            this._mySpawnButtonDelayTimer.update(dt);
-            if (this._mySpawnButtonDelayTimer.isDone()) {
-              this._myOption2Button.hide();
-            }
+          if (!this._mySpawnButtonDelayTimer.isStarted()) {
+            this._mySpawnButtonDelayTimer.start();
+          }
+          this._mySpawnButtonDelayTimer.update(dt);
+          if (this._mySpawnButtonDelayTimer.isDone()) {
+            this._myOption2Button.hide();
           }
         }
       }
@@ -57912,7 +58047,7 @@ var SirDialogComponent = class extends Component {
   }
   _popOutUpdate(dt, fsm) {
     if (this._myDialogController.currentStateJSON != null && this._myDialogController.currentStateJSON["text"] == null) {
-      this._myTextSpeech.pp_setActive(false);
+      this._myTextSpeech.pp_setActive(true);
     } else {
       this._myTextSpeech.pp_setActive(true);
     }
@@ -57931,6 +58066,7 @@ var SirDialogComponent = class extends Component {
     this._myOption1Button.startButton();
     this._myOption2Button.startButton();
     this._mySpawnButtonDelayTimer.reset();
+    this._myVisibleTimer.start(0.25);
   }
   _popIn(fsm) {
     this._mySpawnTimer.start();
@@ -57938,10 +58074,6 @@ var SirDialogComponent = class extends Component {
     this._mySpeech.pp_setActive(true);
     this._myOption1Button.startButton();
     this._myOption2Button.startButton();
-    if (this._myResponseVisible) {
-      this._myOption1Button.show();
-      this._myOption2Button.show();
-    }
     this._mySpawnButtonDelayTimer.reset();
     GameGlobals.myButtonHand.setSpeedMultiplier(this._myHandSpeedMultiplierOnShow);
   }
@@ -57949,6 +58081,8 @@ var SirDialogComponent = class extends Component {
     GameGlobals.myButtonHand.setSpeedMultiplier(1);
     this._myOption1Button.unregisterClickEventListener(this);
     this._myOption2Button.unregisterClickEventListener(this);
+    this._myOption1Button.setPreventClick(true);
+    this._myOption2Button.setPreventClick(true);
     this._myUnspawnTimer.start();
     this._myDialog.pp_setScale(1);
   }
@@ -57967,10 +58101,16 @@ var SirDialogComponent = class extends Component {
     this._myOption2Button.stopButton();
     this._mySpawnButtonDelayTimer.reset();
     this._myResponseVisible = false;
+    this._myLastResponseVisible = false;
   }
-  _isDialogVisible() {
+  _isDialogVisible(dt) {
     if (GameGlobals.myBlackFader.isFading()) {
       return false;
+    } else {
+      this._myVisibleTimer.update(dt);
+      if (!this._myVisibleTimer.isDone()) {
+        return false;
+      }
     }
     if (this._myDialogController.currentStateJSON != null && this._myDialogController.currentStateJSON["text"] == null && !this._myOption1Button.isReallyVisible() && !this._myOption2Button.isReallyVisible()) {
       return false;
@@ -58023,6 +58163,17 @@ var SirDialogComponent = class extends Component {
   }
   _setResponseVisibility(visible) {
     this._myResponseVisible = visible;
+    if (!visible) {
+      this._myOption1Button.setPreventClick(true);
+      this._myOption2Button.setPreventClick(true);
+    }
+  }
+  _onXRSessionStart() {
+    if (!GameGlobals.myBlackFader.isFading()) {
+      this._myEnterSessionCounter = 10;
+    }
+  }
+  _onXRSessionEnd() {
   }
 };
 __publicField(SirDialogComponent, "TypeName", "sir-dialog");
@@ -58474,13 +58625,13 @@ var AudioLoader = class {
       let audioSetup = new AudioSetup("assets/audio/music/pp/playground_ambient.mp3");
       audioSetup.myLoop = true;
       audioSetup.mySpatial = false;
-      audioSetup.myVolume = 1;
+      audioSetup.myVolume = 0.6;
       manager.addAudioSetup("background_music", audioSetup);
     }
     {
       let audioSetup = new AudioSetup("assets/audio/sfx/pp/collision.mp3");
       audioSetup.myRate = 1;
-      audioSetup.myVolume = 1;
+      audioSetup.myVolume = 0.9;
       audioSetup.myReferenceDistance = 1e3;
       manager.addAudioSetup("click", audioSetup);
     }
@@ -58508,10 +58659,18 @@ var AudioLoader = class {
     {
       let audioSetup = new AudioSetup("assets/audio/sfx/blip.wav");
       audioSetup.myRate = 1;
-      audioSetup.myVolume = 0.2;
+      audioSetup.myVolume = 0.1;
       audioSetup.myReferenceDistance = 1e3;
       audioSetup.myPool = 20;
       manager.addAudioSetup("blip", audioSetup);
+    }
+    {
+      let audioSetup = new AudioSetup("assets/audio/sfx/accelerate.mp3");
+      audioSetup.myRate = 0.75;
+      audioSetup.myVolume = 1;
+      audioSetup.myReferenceDistance = 5;
+      audioSetup.myPool = 60;
+      manager.addAudioSetup("accelerate", audioSetup);
     }
   }
 };
@@ -58544,12 +58703,19 @@ var EarthExplodesState = class {
     this._myExplodeAudioPlayer = Globals.getAudioManager().createAudioPlayer("explode");
     this._myWondermelonTimer = new Timer(0.75, false);
     this._myWondermelonSeen = false;
+    this._myViewResetDirtyCounter = 0;
+    XRUtils.registerSessionStartEndEventListeners(this, this._onXRSessionStart.bind(this), this._onXRSessionEnd.bind(this), true, false);
   }
   start(fsm) {
     this._myParentFSM = fsm;
+    if (GameGlobals.myGameCompleted) {
+      GameGlobals.myGameCompleted = false;
+      AnalyticsUtils.sendEventOnce("earth_explode_after_end", false);
+    }
     GameGlobals.myHideHands.hide();
     GameGlobals.myBlackFader.fadeIn(true);
     GameGlobals.myPlayerLocomotion.setIdle(true);
+    this._myViewResetDirtyCounter = 0;
     let playerStartPosition = this._myPlayerSpawn.pp_getPosition();
     let rotationQuat = this._myPlayerSpawn.pp_getRotationQuat();
     GameGlobals.myPlayerTransformManager.teleportAndReset(playerStartPosition.vec3_sub(vec3_create2(0, GameGlobals.myPlayerTransformManager.getHeight(), 0)), rotationQuat);
@@ -58576,9 +58742,6 @@ var EarthExplodesState = class {
       } else {
         AnalyticsUtils.sendEventOnce("earth_explode_flat_desktop");
       }
-    }
-    if (GameGlobals.myGameCompleted) {
-      AnalyticsUtils.sendEventOnce("earth_explode_after_end", false);
     }
   }
   end(fsm) {
@@ -58611,6 +58774,17 @@ var EarthExplodesState = class {
       this._myWondermelonTimer.reset();
     }
     this._myFSM.update(dt);
+    if (GameGlobals.myPlayerLocomotion._myPlayerHeadManager.isSynced()) {
+      if (this._myViewResetDirtyCounter > 0) {
+        this._myViewResetDirtyCounter--;
+        if (this._myViewResetDirtyCounter == 0) {
+          let playerStartPosition = this._myPlayerSpawn.pp_getPosition();
+          let rotationQuat = this._myPlayerSpawn.pp_getRotationQuat();
+          GameGlobals.myPlayerTransformManager.teleportAndReset(playerStartPosition.vec3_sub(vec3_create2(0, GameGlobals.myPlayerTransformManager.getHeight(), 0)), rotationQuat);
+          Globals.getPlayerObjects().myCameraNonXR.pp_setUp(GameGlobals.myUp);
+        }
+      }
+    }
   }
   _fadeOutUpdate(dt, fsm) {
     if (!GameGlobals.myBlackFader.isFading()) {
@@ -58651,6 +58825,16 @@ var EarthExplodesState = class {
       return false;
     }
   }
+  _onXRSessionStart() {
+    let referenceSpace = XRUtils.getReferenceSpace();
+    referenceSpace.addEventListener("reset", this._onViewReset.bind(this));
+  }
+  _onXRSessionEnd() {
+    this._myViewResetDirtyCounter = 0;
+  }
+  _onViewReset() {
+    this._myViewResetDirtyCounter = 3;
+  }
 };
 
 // js/sir_please/states/loop_state.js
@@ -58685,7 +58869,6 @@ var Loop = class {
       }
     }
     AnalyticsUtils.sendEventOnce(this.dialogName + "_end");
-    this._myParentFSM.perform("skip");
     if (this.dialogName == "sir_loop_4") {
       GameGlobals.myGameCompleted = true;
     }
@@ -58722,29 +58905,215 @@ __publicField(LoopState, "Properties", {
   param: Property.float(1)
 });
 
+// js/sir_please/states/win_state.js
+var WinState = class {
+  constructor(trackedHandTeleportUpdate, sirBody, sirExtras) {
+    this._myTrackedHandTeleportUpdate = trackedHandTeleportUpdate;
+    this._mySirBody = sirBody;
+    this._mySirExtras = sirExtras;
+    this._myFSM = new FSM();
+    this._myFSM.addState("init");
+    this._myFSM.addState("idle");
+    this._myFSM.addState("wait_dialog_hidden", this._waitDialogHiddenUpdate.bind(this));
+    this._myFSM.addState("first_wait", new TimerState(1.5, "end"));
+    this._myFSM.addState("fly", this._flyUpdate.bind(this));
+    this._myFSM.addTransition("init", "idle", "start");
+    this._myFSM.addTransition("idle", "wait_dialog_hidden", "start", this._startWin.bind(this));
+    this._myFSM.addTransition("wait_dialog_hidden", "first_wait", "end");
+    this._myFSM.addTransition("first_wait", "fly", "end");
+    this._myFSM.addTransition("idle", "idle", "stop");
+    this._myFSM.addTransition("wait_dialog_hidden", "idle", "stop", this._stopWin.bind(this));
+    this._myFSM.addTransition("first_wait", "idle", "stop", this._stopWin.bind(this));
+    this._myFSM.addTransition("fly", "idle", "stop", this._stopWin.bind(this));
+    this._myFSM.init("init");
+    this._myFSM.perform("start");
+    this._mySpawnParticlesTimer = new Timer(0);
+    this._myAccelerationTimer = new Timer(10);
+    this._mySecondAccelerationTimer = new Timer(2);
+    this._myMaxParticleTimer = new Timer(9);
+    this._myToMaxPulseTimer = new Timer(10);
+    this._myKeepMaxPulseTimer = new Timer(1);
+    this._myFadePulseTimer = new Timer(2);
+    this._myFirstParticleSpawned = false;
+    this._myCurrentAcceleration = 0;
+    this._myCurrentSpeed = 0;
+    this._myTakeOffSpeed = 0.075;
+    this._myMaxAudioTimer = new Timer(0);
+    this._mySyncAudioWithParticlesTimer = new Timer(4.5);
+    this._myAccelerateAudioPlayer = Globals.getAudioManager().createAudioPlayer("accelerate");
+    let sounds = [];
+    for (let i = 0; i < this._myAccelerateAudioPlayer._myAudio._pool; i++) {
+      let sound = this._myAccelerateAudioPlayer._myAudio._inactiveSound();
+      sound._ended = false;
+      sounds.push(sound);
+    }
+    for (let sound of sounds) {
+      sound._ended = true;
+    }
+    this._myViewComponents = [Globals.getPlayerObjects().myEyeLeft.pp_getComponent(ViewComponent), Globals.getPlayerObjects().myEyeRight.pp_getComponent(ViewComponent), Globals.getPlayerObjects().myCameraNonXR.pp_getComponent(ViewComponent)];
+    this._myFarUpdated = false;
+    this._myFlySeen = false;
+  }
+  start(fsm) {
+    this._myFSM.perform("start");
+  }
+  end(fsm) {
+    this._myFSM.perform("stop");
+  }
+  update(dt, fsm) {
+    this._myTrackedHandTeleportUpdate();
+    this._myFSM.update(dt);
+  }
+  _startWin() {
+    GameGlobals.myButtonHand.stopButtonHand();
+    this._mySpawnParticlesTimer.start(0);
+    this._myMaxAudioTimer.start(0);
+    this._mySyncAudioWithParticlesTimer.start();
+    this._myAccelerationTimer.start();
+    this._mySecondAccelerationTimer.start();
+    this._myMaxParticleTimer.start();
+    this._myCurrentSpeed = 0;
+    this._myCurrentAcceleration = 0;
+    this._myToMaxPulseTimer.reset();
+    this._myKeepMaxPulseTimer.reset();
+    this._myFadePulseTimer.reset();
+    this._myFirstParticleSpawned = false;
+    this._myFarUpdated = false;
+    this._myFlySeen = false;
+  }
+  _stopWin() {
+    this._myAccelerateAudioPlayer.stop();
+    for (let viewComponent of this._myViewComponents) {
+      viewComponent.far = 100;
+    }
+  }
+  _flyUpdate(dt, fsm) {
+    if (!this._myFarUpdated) {
+      if (this._mySirBody.pp_getPosition()[1] > 10) {
+        this._myFarUpdated = true;
+        for (let viewComponent of this._myViewComponents) {
+          viewComponent.far = 800;
+        }
+      }
+    }
+    if (!this._myFlySeen) {
+      if (this._mySirBody.pp_getPosition()[1] > 100) {
+        this._myFlySeen = true;
+        AnalyticsUtils.sendEventOnce("win_fly_seen", false);
+      }
+    }
+    if (this._mySirBody.pp_getPosition()[1] < 2e3) {
+      if (this._myAccelerationTimer.getPercentage() < 1) {
+        this._myCurrentAcceleration = MathUtils2.interpolate(1e-3, 2, this._myAccelerationTimer.getPercentage(), easeInExpo);
+      }
+      this._myAccelerationTimer.update(dt);
+      this._myMaxParticleTimer.update(dt);
+      if (this._myAccelerationTimer.isDone()) {
+        this._mySecondAccelerationTimer.update(dt);
+        this._myCurrentAcceleration += MathUtils2.interpolate(2, 10, this._mySecondAccelerationTimer.getPercentage(), EasingFunction.linear) * dt;
+      }
+      this._myCurrentSpeed += this._myCurrentAcceleration * dt;
+      this._myCurrentSpeed = Math.min(this._myCurrentSpeed, 500);
+      GameGlobals.myButtonHand.object.pp_translate(vec3_create2(0, this._myCurrentSpeed * dt, 0));
+      this._mySirBody.pp_translate(vec3_create2(0, this._myCurrentSpeed * dt, 0));
+      this._mySirExtras.pp_translate(vec3_create2(0, this._myCurrentSpeed * dt, 0));
+      this._myMaxAudioTimer.update(dt);
+      this._mySyncAudioWithParticlesTimer.update(dt);
+      this._mySpawnParticlesTimer.update(dt);
+      let particlesSpawned = false;
+      if (this._mySpawnParticlesTimer.isDone()) {
+        GameGlobals.myHandParticlesSpawner._myScaleMultiplier = 0.01 * Math.pp_mapToRange(this._myMaxParticleTimer.getPercentage(), 0, 1, 0.75, 1.5);
+        GameGlobals.myHandParticlesSpawner._myVerticalSpeedMultiplier = -1 * Math.pp_mapToRange(this._myMaxParticleTimer.getPercentage(), 0, 1, 0.5, 1.25);
+        GameGlobals.myHandParticlesSpawner.spawn(GameGlobals.myButtonHand.object.pp_getPosition());
+        this._mySpawnParticlesTimer.start(MathUtils2.interpolate(1, 0.01, this._myMaxParticleTimer.getPercentage(), easeTimer));
+        particlesSpawned = true;
+      }
+      if (particlesSpawned || this._mySyncAudioWithParticlesTimer.isDone()) {
+        if (this._mySirBody.pp_getPosition()[1] < 200) {
+          if (this._myMaxAudioTimer.isDone()) {
+            this._myMaxAudioTimer.start(MathUtils2.interpolate(0.6, 0.075, this._myMaxParticleTimer.getPercentage(), easeSound));
+            this._myAccelerateAudioPlayer.setPosition(GameGlobals.myButtonHand.object.pp_getPosition());
+            this._myAccelerateAudioPlayer.play();
+          }
+        }
+      }
+      let maxIntensity = 0.8;
+      if (!this._myFirstParticleSpawned && particlesSpawned) {
+        this._myFirstParticleSpawned = true;
+        this._myToMaxPulseTimer.start();
+      } else if (this._myToMaxPulseTimer.isRunning()) {
+        this._myToMaxPulseTimer.update(dt);
+        let pulseIntensity = MathUtils2.interpolate(0.02, maxIntensity, this._myToMaxPulseTimer.getPercentage(), EasingFunction.easeIn);
+        Globals.getLeftGamepad().pulse(pulseIntensity, 0);
+        Globals.getRightGamepad().pulse(pulseIntensity, 0);
+        if (this._myToMaxPulseTimer.isDone()) {
+          this._myKeepMaxPulseTimer.start();
+        }
+      } else if (this._myKeepMaxPulseTimer.isRunning()) {
+        this._myKeepMaxPulseTimer.update(dt);
+        Globals.getLeftGamepad().pulse(maxIntensity, 0);
+        Globals.getRightGamepad().pulse(maxIntensity, 0);
+        if (this._myKeepMaxPulseTimer.isDone()) {
+          this._myFadePulseTimer.start();
+        }
+      } else if (this._myFadePulseTimer.isRunning()) {
+        this._myFadePulseTimer.update(dt);
+        let pulseIntensity = MathUtils2.interpolate(maxIntensity, 0, this._myFadePulseTimer.getPercentage(), EasingFunction.easeOut);
+        Globals.getLeftGamepad().pulse(pulseIntensity, 0);
+        Globals.getRightGamepad().pulse(pulseIntensity, 0);
+      }
+    }
+  }
+  _waitDialogHiddenUpdate(dt, fsm) {
+    if (GameGlobals.mySirDialog.isHidden()) {
+      this._myFSM.perform("end");
+    }
+  }
+};
+function easeInExpo(x) {
+  return x === 0 ? 0 : Math.pow(3.5, 10 * x - 10);
+}
+function easeTimer(x) {
+  return 1 - (1 - x) * (1 - x);
+}
+function easeSound(x) {
+  return Math.sin(x * Math.PI / 2);
+}
+
 // js/sir_please/states/sir_room_state.js
 var SirRoomState = class {
   constructor() {
     this._myPlayerSpawn = GameGlobals.mySirRoom.pp_getObjectByName("Player Spawn");
     this._myPlayerSpawnHand = GameGlobals.mySirRoom.pp_getObjectByName("Player Spawn Hand");
+    this._mySir = GameGlobals.mySirRoom.pp_getObjectByName("Sir");
+    this._mySirBody = GameGlobals.mySirRoom.pp_getObjectByName("Body");
+    this._mySirBodyInitialTransform = this._mySirBody.pp_getTransformQuat();
+    this._mySirExtras = GameGlobals.mySirRoom.pp_getObjectByName("Extras");
+    this._mySirExtrasInitialTransform = this._mySirExtras.pp_getTransformQuat();
     this._myParentFSM = null;
     this._myLastLeftHandType = null;
     this._myBackgroundMusicAudioPlayer = Globals.getAudioManager().createAudioPlayer("background_music");
+    this._myBackgroundMusicVolume = 0.6;
     this._myFSM = new FSM();
     this._myFSM.addState("init");
     this._myFSM.addState("idle");
     this._myFSM.addState("game", this._gameUpdate.bind(this));
     this._myFSM.addState("win_wait", new TimerState(1, "end"));
+    this._myFSM.addState("real_win", new WinState(this._trackedHandTeleportUpdate.bind(this), this._mySirBody, this._mySirExtras));
     this._myFSM.addTransition("init", "idle", "start");
     this._myFSM.addTransition("idle", "game", "start", this._startGame.bind(this));
     this._myFSM.addTransition("game", "win_wait", "win");
     this._myFSM.addTransition("win_wait", "idle", "end", this._win.bind(this));
+    this._myFSM.addTransition("game", "real_win", "real_win");
     this._myFSM.addTransition("idle", "idle", "skip");
     this._myFSM.addTransition("game", "idle", "skip");
     this._myFSM.addTransition("win_wait", "idle", "skip");
+    this._myFSM.addTransition("real_win", "idle", "skip");
     this._myFSM.init("init");
     this._myFSM.perform("start");
     this._mySetButtonHeightDirty = false;
+    this._myViewResetDirtyCounter = 0;
+    this._myFirstEnterVR = true;
     XRUtils.registerSessionStartEndEventListeners(this, this._onXRSessionStart.bind(this), this._onXRSessionEnd.bind(this), true, false);
   }
   start(fsm) {
@@ -58755,13 +59124,12 @@ var SirRoomState = class {
   }
   end(fsm) {
     if (this._myBackgroundMusicAudioPlayer != null) {
-      this._myBackgroundMusicAudioPlayer.fade(1, 0, 0.01);
+      this._myBackgroundMusicAudioPlayer.fade(this._myBackgroundMusicVolume, 0, 0.01);
     }
     GameGlobals.myExplodeButton.setActive(false);
     GameGlobals.myButtonHand.stopButtonHand();
     GameGlobals.mySirDialog.stopSirDialog();
     this._myFSM.perform("skip");
-    this._myLastLeftHandType = null;
   }
   update(dt, fsm) {
     if (GameGlobals.myPlayerLocomotion._myPlayerHeadManager.isSynced()) {
@@ -58773,19 +59141,34 @@ var SirRoomState = class {
     this._myFSM.update(dt);
   }
   _startGame() {
+    GameGlobals.myTrackedHandTeleported = false;
+    this._myViewResetDirtyCounter = 0;
+    this._mySetButtonHeightDirty = false;
+    this._myLastLeftHandType = null;
     GameGlobals.myBlackFader.fadeOut(true);
     GameGlobals.myPlayerLocomotion.setIdle(false);
-    let playerStartPosition = this._myPlayerSpawn.pp_getPosition();
-    let rotationQuat = this._myPlayerSpawn.pp_getRotationQuat();
-    GameGlobals.myPlayerTransformManager.teleportAndReset(playerStartPosition, rotationQuat);
-    Globals.getPlayerObjects().myCameraNonXR.pp_setUp(GameGlobals.myUp);
+    this._mySirBody.pp_setTransformQuat(this._mySirBodyInitialTransform);
+    this._mySirExtras.pp_setTransformQuat(this._mySirExtrasInitialTransform);
+    let currentLeftHandType = InputUtils.getInputSourceTypeByHandedness(Handedness.LEFT);
+    if (currentLeftHandType == InputSourceType.TRACKED_HAND) {
+      let playerStartPosition = this._myPlayerSpawnHand.pp_getPosition();
+      let rotationQuat = this._myPlayerSpawnHand.pp_getRotationQuat();
+      GameGlobals.myPlayerTransformManager.teleportAndReset(playerStartPosition, rotationQuat);
+      Globals.getPlayerObjects().myCameraNonXR.pp_setUp(GameGlobals.myUp);
+    } else {
+      let playerStartPosition = this._myPlayerSpawn.pp_getPosition();
+      let rotationQuat = this._myPlayerSpawn.pp_getRotationQuat();
+      GameGlobals.myPlayerTransformManager.teleportAndReset(playerStartPosition, rotationQuat);
+      Globals.getPlayerObjects().myCameraNonXR.pp_setUp(GameGlobals.myUp);
+    }
+    GameGlobals.myExplodeButton.ignoreCollision();
     GameGlobals.myBlackFader.fadeIn();
     GameGlobals.myHideHands.show();
     if (this._myBackgroundMusicAudioPlayer != null) {
       if (!this._myBackgroundMusicAudioPlayer.isPlaying()) {
         this._myBackgroundMusicAudioPlayer.play();
       }
-      this._myBackgroundMusicAudioPlayer.fade(0, 1, 1);
+      this._myBackgroundMusicAudioPlayer.fade(0, this._myBackgroundMusicVolume, 1);
     }
     GameGlobals.myButtonHand.startButtonHand();
     GameGlobals.mySirDialog.startSirDialog();
@@ -58795,16 +59178,7 @@ var SirRoomState = class {
     this._myParentFSM.perform("win");
   }
   _gameUpdate(dt, fsm) {
-    if (GameGlobals.myPlayerLocomotion._myPlayerHeadManager.isSynced()) {
-      let currentLeftHandType = InputUtils.getInputSourceTypeByHandedness(Handedness.LEFT);
-      if (currentLeftHandType != this._myLastLeftHandType && currentLeftHandType == InputSourceType.TRACKED_HAND) {
-        let playerStartPosition = this._myPlayerSpawnHand.pp_getPosition();
-        let rotationQuat = this._myPlayerSpawnHand.pp_getRotationQuat();
-        GameGlobals.myPlayerTransformManager.teleportAndReset(playerStartPosition, rotationQuat);
-        Globals.getPlayerObjects().myCameraNonXR.pp_setUp(GameGlobals.myUp);
-      }
-      this._myLastLeftHandType = currentLeftHandType;
-    }
+    this._trackedHandTeleportUpdate();
     if (GameGlobals.myDebugEnabled && Globals.getLeftGamepad().getButtonInfo(GamepadButtonID.TOP_BUTTON).isPressStart(2)) {
       this._myParentFSM.perform("lose");
     } else if (GameGlobals.myDebugEnabled && Globals.getLeftGamepad().getButtonInfo(GamepadButtonID.BOTTOM_BUTTON).isPressStart(2)) {
@@ -58812,6 +59186,51 @@ var SirRoomState = class {
     }
     if (GameGlobals.mySirDialog.isWin()) {
       this._myFSM.perform("win");
+    }
+    if (GameGlobals.myGameCompleted) {
+      this._myFSM.perform("real_win");
+    }
+  }
+  _trackedHandTeleportUpdate() {
+    GameGlobals.myTrackedHandTeleported = false;
+    if (GameGlobals.myPlayerLocomotion._myPlayerHeadManager.isSynced()) {
+      let currentLeftHandType = InputUtils.getInputSourceTypeByHandedness(Handedness.LEFT);
+      if (currentLeftHandType != this._myLastLeftHandType && currentLeftHandType == InputSourceType.TRACKED_HAND) {
+        let playerStartPosition = this._myPlayerSpawnHand.pp_getPosition();
+        let rotationQuat = this._myPlayerSpawnHand.pp_getRotationQuat();
+        GameGlobals.myPlayerTransformManager.teleportAndReset(playerStartPosition, rotationQuat);
+        Globals.getPlayerObjects().myCameraNonXR.pp_setUp(GameGlobals.myUp);
+        GameGlobals.myTrackedHandTeleported = true;
+        GameGlobals.myExplodeButton.ignoreCollision();
+      }
+      this._myLastLeftHandType = currentLeftHandType;
+    }
+    if (GameGlobals.myPlayerLocomotion._myPlayerHeadManager.isSynced()) {
+      if (this._myViewResetDirtyCounter > 0) {
+        this._myViewResetDirtyCounter--;
+        if (this._myViewResetDirtyCounter == 0) {
+          let currentLeftHandType = InputUtils.getInputSourceTypeByHandedness(Handedness.LEFT);
+          if (currentLeftHandType == InputSourceType.TRACKED_HAND) {
+            let playerStartPosition = this._myPlayerSpawnHand.pp_getPosition();
+            let rotationQuat = this._myPlayerSpawnHand.pp_getRotationQuat();
+            GameGlobals.myPlayerTransformManager.teleportAndReset(playerStartPosition, rotationQuat);
+            Globals.getPlayerObjects().myCameraNonXR.pp_setUp(GameGlobals.myUp);
+            GameGlobals.myTrackedHandTeleported = true;
+            this._myLastLeftHandType = currentLeftHandType;
+          } else if (!GameGlobals.mySirDialog.isHidden() || this._myFSM.isInState("real_win")) {
+            let playerStartPosition = this._myPlayerSpawnHand.pp_getPosition();
+            let rotationQuat = this._myPlayerSpawnHand.pp_getRotationQuat();
+            GameGlobals.myPlayerTransformManager.teleportAndReset(playerStartPosition, rotationQuat);
+            Globals.getPlayerObjects().myCameraNonXR.pp_setUp(GameGlobals.myUp);
+          } else {
+            let playerStartPosition = this._myPlayerSpawn.pp_getPosition();
+            let rotationQuat = this._myPlayerSpawn.pp_getRotationQuat();
+            GameGlobals.myPlayerTransformManager.teleportAndReset(playerStartPosition, rotationQuat);
+            Globals.getPlayerObjects().myCameraNonXR.pp_setUp(GameGlobals.myUp);
+          }
+          GameGlobals.myExplodeButton.ignoreCollision();
+        }
+      }
     }
   }
   _setButtonHeight() {
@@ -58823,15 +59242,25 @@ var SirRoomState = class {
     }
   }
   _onXRSessionStart() {
+    if (this._myFirstEnterVR) {
+      if (this._myFSM.isInState("game")) {
+        GameGlobals.myButtonHand.resetButtonHand();
+      }
+    }
+    this._myFirstEnterVR = false;
     this._mySetButtonHeightDirty = true;
     let referenceSpace = XRUtils.getReferenceSpace();
-    referenceSpace.addEventListener("reset", () => {
-      this._mySetButtonHeightDirty = true;
-    });
+    referenceSpace.addEventListener("reset", this._onViewReset.bind(this));
   }
   _onXRSessionEnd() {
     this._mySetButtonHeightDirty = false;
+    this._myViewResetDirtyCounter = 0;
     this._setButtonHeight();
+  }
+  _onViewReset() {
+    AnalyticsUtils.sendEventOnce("view_reset", false);
+    this._mySetButtonHeightDirty = true;
+    this._myViewResetDirtyCounter = 3;
   }
 };
 
@@ -58967,7 +59396,7 @@ var SirPleaseGatewayComponent = class extends Component {
     if (this._myStartCounter > 0) {
       this._myStartCounter--;
       if (this._myStartCounter == 0) {
-        let currentVersion = "0.9.0";
+        let currentVersion = "1.0.0";
         console.log("Game Version:", currentVersion);
         this._start();
       }
@@ -59017,7 +59446,12 @@ var StarsDomeComponent = class extends Component {
       horizontalDirection.vec3_cross(verticalDirection, rotationAxis);
       rotationAxis.vec3_normalize(rotationAxis);
       for (let j = 0; j < cloves; j++) {
-        if (this._mySpawnedStars.length < maxCount) {
+        let verticalAngle = verticalDirection.vec3_angle(upDirection);
+        let addStar = true;
+        if (verticalAngle < 15 || verticalAngle > 165) {
+          addStar = Math.pp_randomInt(0, 5) == 0;
+        }
+        if (addStar && this._mySpawnedStars.length < maxCount) {
           let distance5 = Math.random() * (maxDistance - minDistance) + minDistance;
           let extraAxisRotation = (Math.random() * 2 - 1) * (maxExtraRotation - minExtraRotation) + minExtraRotation;
           let extraUpRotation = (Math.random() * 2 - 1) * (maxExtraRotation - minExtraRotation) + minExtraRotation;
@@ -59028,7 +59462,12 @@ var StarsDomeComponent = class extends Component {
           this._addStar(starDirection);
         }
         verticalDirection.vec3_rotateAxisRadians(angleForClove / 2, rotationAxis, verticalDirection);
-        if (this._mySpawnedStars.length < maxCount) {
+        verticalAngle = verticalDirection.vec3_angle(upDirection);
+        addStar = true;
+        if (verticalAngle < 15 || verticalAngle > 165) {
+          addStar = Math.pp_randomInt(0, 5) == 0;
+        }
+        if (addStar && this._mySpawnedStars.length < maxCount) {
           let distance5 = Math.random() * (maxDistance - minDistance) + minDistance;
           let extraAxisRotation = (Math.random() * 2 - 1) * (maxExtraRotation - minExtraRotation) + minExtraRotation;
           let extraUpRotation = (Math.random() * 2 - 1) * (maxExtraRotation - minExtraRotation) + minExtraRotation;
@@ -59052,13 +59491,22 @@ var StarsDomeComponent = class extends Component {
     let distance1 = worldPosition.vec3_distance(object1Position);
     let distance22 = worldPosition.vec3_distance(object2Position);
     if (distance1 > this._myAvoidObject1Distance && distance22 > this._myAvoidObject2Distance) {
-      let randomStar = Math.pp_randomPick(this._myStars.pp_getChildren()).pp_clone();
-      randomStar.pp_setParent(this.object, false);
-      randomStar.pp_resetTransformLocal();
-      randomStar.pp_setPositionLocal(starDirection);
-      randomStar.pp_setRotationLocal(vec3_create2(Math.pp_random(-180, 180), Math.pp_random(-180, 180), Math.pp_random(-180, 180)));
-      randomStar.pp_setScaleLocal(Math.pp_random(this._myMinScale, this._myMaxScale));
-      this._mySpawnedStars.push(randomStar);
+      let isBetweeenObjects = false;
+      let differenceWorld = worldPosition.vec3_sub(object1Position);
+      let differenceObject1 = object2Position.vec3_sub(object1Position);
+      let verticalDifference = differenceWorld.vec3_removeComponentAlongAxis(differenceObject1.vec3_normalize());
+      if (differenceWorld.vec3_length() <= differenceObject1.vec3_length() && verticalDifference.vec3_length() < this._myAvoidObject1.pp_getScale()[0] * 1.1) {
+        isBetweeenObjects = true;
+      }
+      if (!isBetweeenObjects) {
+        let randomStar = Math.pp_randomPick(this._myStars.pp_getChildren()).pp_clone();
+        randomStar.pp_setParent(this.object, false);
+        randomStar.pp_resetTransformLocal();
+        randomStar.pp_setPositionLocal(starDirection);
+        randomStar.pp_setRotationLocal(vec3_create2(Math.pp_random(-180, 180), Math.pp_random(-180, 180), Math.pp_random(-180, 180)));
+        randomStar.pp_setScaleLocal(Math.pp_random(this._myMinScale, this._myMaxScale));
+        this._mySpawnedStars.push(randomStar);
+      }
     }
   }
 };

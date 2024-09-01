@@ -41,7 +41,7 @@ let _myAppName = "sir_please";
 // with other service workers, especially during the installation and activation phases
 //
 // It must be an incremental integer greater than 0
-let _myServiceWorkerVersion = 1;
+let _myServiceWorkerVersion = 2;
 
 
 
@@ -52,7 +52,7 @@ let _myServiceWorkerVersion = 1;
 // since u could get a mix of old (from the cache) and new (from the network) resources
 //
 // It must be an incremental integer greater than 0
-let _myCacheVersion = 1;
+let _myCacheVersion = 2;
 
 
 
@@ -97,6 +97,7 @@ let _myResourceURLsToPrecache = [
     "assets/audio/music/pp/playground_ambient.mp3",
     "assets/audio/sfx/alert.mp3",
     "assets/audio/sfx/blip.wav",
+    "assets/audio/sfx/accelerate.mp3",
     "assets/audio/sfx/pp/collision.mp3",
     "assets/audio/sfx/pp/grab.mp3",
     "450.png",
