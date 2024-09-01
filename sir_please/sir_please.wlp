@@ -54,9 +54,6 @@
                 },
                 {
                     "type": "pp-show-xr-buttons"
-                },
-                {
-                    "type": "fixed-foveation"
                 }
             ]
         },
