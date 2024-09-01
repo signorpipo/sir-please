@@ -183,7 +183,7 @@ export class WinState {
                 }
             } else if (this._myToMaxPulseTimer.isRunning()) {
                 this._myToMaxPulseTimer.update(dt);
-                let pulseIntensity = MathUtils.interpolate(0.01, maxIntensity, this._myToMaxPulseTimer.getPercentage(), EasingFunction.easeIn);
+                let pulseIntensity = MathUtils.interpolate(0.02, maxIntensity, this._myToMaxPulseTimer.getPercentage(), EasingFunction.easeIn);
                 Globals.getLeftGamepad().pulse(pulseIntensity, 0);
                 Globals.getRightGamepad().pulse(pulseIntensity, 0);
 
