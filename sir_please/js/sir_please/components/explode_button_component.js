@@ -50,6 +50,7 @@ export class ExplodeButtonComponent extends Component {
 
     setActive(active) {
         this._myActive = active;
+        this._myIgnoreCollisionCounter = 8;
     }
 
     registerClickEventListener(id, listener) {
