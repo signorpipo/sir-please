@@ -1,7 +1,7 @@
 {
-    "name": "sir_please_do_not_press_the_button",
-    "version": "0.9.0",
-    "author": "Robin & Pipo",
+    "name": "sir_please",
+    "version": "1.0.0",
+    "author": "robin x pipo",
     "description": "Why do you want to press it anyway?",
     "dependencies": {
         "@wonderlandengine/api": "^1.0.0",

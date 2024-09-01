@@ -72,7 +72,7 @@ export class SirPleaseGatewayComponent extends Component {
             this._myStartCounter--;
             if (this._myStartCounter == 0) {
 
-                let currentVersion = "0.9.0";
+                let currentVersion = "1.0.0";
                 console.log("Game Version:", currentVersion);
 
                 this._start();
