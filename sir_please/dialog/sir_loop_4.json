@@ -157,7 +157,7 @@
         "event": "good",
         "autoAdvanceAfter": 1,
         "jump": "question_three",
-        "text": "Yeah,_ that is_._._._ my age_._._._\nYou are totally right."
+        "text": "Yeah,_ that is_._._._ my age_._._._\nYou are absolutely right."
     },
     "question_three": {
         "event": "good",
@@ -212,7 +212,7 @@
         "text": "And that Robin and Pipo\nwant to thank you for playing."
     },
     "end_3": {
-        "text": "What a weird thing to say,\ndon't you think?_",
+        "text": "What a weird thing to say,_\ndon't you think?_",
         "responses": [
             {
                 "text": "Yeah...",
