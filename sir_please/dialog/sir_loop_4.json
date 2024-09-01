@@ -492,7 +492,7 @@
         "text": "Already happened_._._.__\n[e:good]What do you mean by that?_",
         "responses": [
             {
-                "text": "Idk",
+                "text": "idk",
                 "jump": "lying"
             },
             {
