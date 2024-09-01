@@ -3,6 +3,7 @@ import { CursorTarget } from "@wonderlandengine/components";
 import { BrowserUtils, Globals, InputSourceType, InputUtils, PhysicsCollisionCollector, XRUtils } from "../../pp";
 import { AnalyticsUtils } from "../analytics_utils";
 import { GameGlobals } from "../game_globals";
+import { ButtonHandComponent } from "./button_hand_component";
 import { SetHandednessComponent } from "./set_handedness_component";
 
 export class ExplodeButtonComponent extends Component {
@@ -37,7 +38,10 @@ export class ExplodeButtonComponent extends Component {
                     this.clickButton(true, handedness.getHandedness());
                 }
             } else {
-                this.clickButton(false);
+                let buttonHand = physx.pp_getComponent(ButtonHandComponent);
+                if (buttonHand == null || buttonHand.isMoving()) {
+                    this.clickButton(false);
+                }
             }
         }
 

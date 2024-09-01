@@ -68,6 +68,10 @@ export class ButtonHandComponent extends Component {
         this._myCurrentSpeed = 0;
     }
 
+    isMoving() {
+        return this._myStarted && this._myCurrentSpeed != 0;
+    }
+
     startButtonHand() {
         this._myStarted = true;
 
