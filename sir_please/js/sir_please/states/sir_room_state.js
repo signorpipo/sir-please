@@ -107,6 +107,8 @@ export class SirRoomState {
             Globals.getPlayerObjects().myCameraNonXR.pp_setUp(GameGlobals.myUp);
         }
 
+        GameGlobals.myExplodeButton.ignoreCollision();
+
         GameGlobals.myBlackFader.fadeIn();
         GameGlobals.myHideHands.show();
 
@@ -158,6 +160,8 @@ export class SirRoomState {
                 GameGlobals.myPlayerTransformManager.teleportAndReset(playerStartPosition, rotationQuat);
                 Globals.getPlayerObjects().myCameraNonXR.pp_setUp(GameGlobals.myUp);
                 GameGlobals.myTrackedHandTeleported = true;
+
+                GameGlobals.myExplodeButton.ignoreCollision();
             }
 
             this._myLastLeftHandType = currentLeftHandType;
@@ -187,6 +191,8 @@ export class SirRoomState {
                         GameGlobals.myPlayerTransformManager.teleportAndReset(playerStartPosition, rotationQuat);
                         Globals.getPlayerObjects().myCameraNonXR.pp_setUp(GameGlobals.myUp);
                     }
+
+                    GameGlobals.myExplodeButton.ignoreCollision();
                 }
             }
         }

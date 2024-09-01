@@ -29,17 +29,19 @@ export class ExplodeButtonComponent extends Component {
 
         this._myCollisionsCollector.update(dt);
 
-        if (this._myIgnoreCollisionCounter == 0) {
-            if (this._myCollisionsCollector.getCollisionsStart().length > 0 && !GameGlobals.myBlackFader.isFading()) {
-                let physx = this._myCollisionsCollector.getCollisionsStart()[0];
-                let handedness = physx.pp_getComponent(SetHandednessComponent);
-                if (handedness != null) {
+        if (this._myCollisionsCollector.getCollisionsStart().length > 0 && !GameGlobals.myBlackFader.isFading()) {
+            let physx = this._myCollisionsCollector.getCollisionsStart()[0];
+            let handedness = physx.pp_getComponent(SetHandednessComponent);
+            if (handedness != null) {
+                if (this._myIgnoreCollisionCounter == 0) {
                     this.clickButton(true, handedness.getHandedness());
-                } else {
-                    this.clickButton(false);
                 }
+            } else {
+                this.clickButton(false);
             }
-        } else {
+        }
+
+        if (this._myIgnoreCollisionCounter > 0) {
             this._myIgnoreCollisionCounter--;
         }
 
@@ -50,6 +52,10 @@ export class ExplodeButtonComponent extends Component {
 
     setActive(active) {
         this._myActive = active;
+        this._myIgnoreCollisionCounter = 8;
+    }
+
+    ignoreCollision() {
         this._myIgnoreCollisionCounter = 8;
     }
 
@@ -98,7 +104,14 @@ export class ExplodeButtonComponent extends Component {
 
     _onXRSessionStart() {
         this._myIgnoreCollisionCounter = 8;
+
+        let referenceSpace = XRUtils.getReferenceSpace();
+        referenceSpace.addEventListener("reset", this._onViewReset.bind(this));
     }
 
     _onXRSessionEnd() { }
+
+    _onViewReset() {
+        this._myIgnoreCollisionCounter = 8;
+    }
 }
