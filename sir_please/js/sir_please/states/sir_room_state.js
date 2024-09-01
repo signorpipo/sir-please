@@ -19,6 +19,7 @@ export class SirRoomState {
         this._myLastLeftHandType = null;
 
         this._myBackgroundMusicAudioPlayer = Globals.getAudioManager().createAudioPlayer("background_music");
+        this._myBackgroundMusicVolume = 0.6;
 
         this._myFSM = new FSM();
         //this._myFSM.setLogEnabled(true, "  Sir Room");
@@ -60,7 +61,7 @@ export class SirRoomState {
 
     end(fsm) {
         if (this._myBackgroundMusicAudioPlayer != null) {
-            this._myBackgroundMusicAudioPlayer.fade(1, 0, 0.01);
+            this._myBackgroundMusicAudioPlayer.fade(this._myBackgroundMusicVolume, 0, 0.01);
         }
 
         GameGlobals.myExplodeButton.setActive(false);
@@ -117,7 +118,7 @@ export class SirRoomState {
                 this._myBackgroundMusicAudioPlayer.play();
             }
 
-            this._myBackgroundMusicAudioPlayer.fade(0, 1, 1);
+            this._myBackgroundMusicAudioPlayer.fade(0, this._myBackgroundMusicVolume, 1);
         }
 
         GameGlobals.myButtonHand.startButtonHand();
