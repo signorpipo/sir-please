@@ -1,5 +1,6 @@
 import { ViewComponent } from "@wonderlandengine/api";
 import { EasingFunction, FSM, Globals, MathUtils, Timer, TimerState, vec3_create } from "../../pp";
+import { AnalyticsUtils } from "../analytics_utils";
 import { GameGlobals } from "../game_globals";
 
 export class WinState {
@@ -63,6 +64,8 @@ export class WinState {
 
         this._myViewComponents = [Globals.getPlayerObjects().myEyeLeft.pp_getComponent(ViewComponent), Globals.getPlayerObjects().myEyeRight.pp_getComponent(ViewComponent), Globals.getPlayerObjects().myCameraNonXR.pp_getComponent(ViewComponent)];
         this._myFarUpdated = false;
+
+        this._myFlySeen = false;
     }
 
     start(fsm) {
@@ -97,6 +100,7 @@ export class WinState {
         this._myFadePulseTimer.reset();
 
         this._myFarUpdated = false;
+        this._myFlySeen = false;
     }
 
     _stopWin() {
@@ -115,6 +119,14 @@ export class WinState {
                 for (let viewComponent of this._myViewComponents) {
                     viewComponent.far = 800;
                 }
+            }
+        }
+
+        if (!this._myFlySeen) {
+            if (this._mySirBody.pp_getPosition()[1] > 100) {
+                this._myFlySeen = true;
+
+                AnalyticsUtils.sendEventOnce("win_fly_seen", false);
             }
         }
 

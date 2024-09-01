@@ -1,4 +1,5 @@
 import { FSM, GamepadButtonID, Globals, Handedness, InputSourceType, InputUtils, MathUtils, TimerState, XRUtils } from "../../pp";
+import { AnalyticsUtils } from "../analytics_utils";
 import { GameGlobals } from "../game_globals";
 import { WinState } from "./win_state";
 
@@ -222,6 +223,8 @@ export class SirRoomState {
     }
 
     _onViewReset() {
+        AnalyticsUtils.sendEventOnce("view_reset", false);
+
         this._mySetButtonHeightDirty = true;
 
         if (this._myFSM.isInState("game")) {
