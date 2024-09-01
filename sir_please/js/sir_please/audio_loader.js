@@ -47,7 +47,7 @@ export class AudioLoader {
         {
             let audioSetup = new AudioSetup("assets/audio/sfx/blip.wav");
             audioSetup.myRate = 1;
-            audioSetup.myVolume = 0.2;
+            audioSetup.myVolume = 0.15;
             audioSetup.myReferenceDistance = 1000;
             audioSetup.myPool = 20;
             manager.addAudioSetup("blip", audioSetup);
