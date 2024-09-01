@@ -54,7 +54,7 @@ export class AudioLoader {
         }
 
         {
-            let audioSetup = new AudioSetup("assets/audio/sfx/pp/collision.mp3");
+            let audioSetup = new AudioSetup("assets/audio/sfx/accelerate.mp3");
             audioSetup.myRate = 0.75;
             audioSetup.myVolume = 1;
             audioSetup.myReferenceDistance = 5;

@@ -37,10 +37,10 @@ export class WinState {
         this._mySecondAccelerationTimer = new Timer(2);
         this._myMaxParticleTimer = new Timer(9);
 
-        this._myPulseWaitTimer = new Timer(0.2);
         this._myToMaxPulseTimer = new Timer(10);
         this._myKeepMaxPulseTimer = new Timer(1);
         this._myFadePulseTimer = new Timer(2);
+        this._myFirstParticleSpawned = false;
 
         this._myCurrentAcceleration = 0;
 
@@ -94,10 +94,10 @@ export class WinState {
         this._myCurrentSpeed = 0;
         this._myCurrentAcceleration = 0;
 
-        this._myPulseWaitTimer.start();
         this._myToMaxPulseTimer.reset();
         this._myKeepMaxPulseTimer.reset();
         this._myFadePulseTimer.reset();
+        this._myFirstParticleSpawned = false;
 
         this._myFarUpdated = false;
         this._myFlySeen = false;
@@ -176,11 +176,9 @@ export class WinState {
             }
 
             let maxIntensity = 0.8;
-            if (this._myPulseWaitTimer.isRunning()) {
-                this._myPulseWaitTimer.update(dt);
-                if (this._myPulseWaitTimer.isDone()) {
-                    this._myToMaxPulseTimer.start();
-                }
+            if (!this._myFirstParticleSpawned && particlesSpawned) {
+                this._myFirstParticleSpawned = true;
+                this._myToMaxPulseTimer.start();
             } else if (this._myToMaxPulseTimer.isRunning()) {
                 this._myToMaxPulseTimer.update(dt);
                 let pulseIntensity = MathUtils.interpolate(0.02, maxIntensity, this._myToMaxPulseTimer.getPercentage(), EasingFunction.easeIn);

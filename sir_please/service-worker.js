@@ -97,6 +97,7 @@ let _myResourceURLsToPrecache = [
     "assets/audio/music/pp/playground_ambient.mp3",
     "assets/audio/sfx/alert.mp3",
     "assets/audio/sfx/blip.wav",
+    "assets/audio/sfx/accelerate.mp3",
     "assets/audio/sfx/pp/collision.mp3",
     "assets/audio/sfx/pp/grab.mp3",
     "450.png",
