@@ -38,6 +38,10 @@ export class EarthExplodesState {
 
         this._myWondermelonTimer = new Timer(0.75, false);
         this._myWondermelonSeen = false;
+
+        this._myViewResetDirtyCounter = 0;
+
+        XRUtils.registerSessionStartEndEventListeners(this, this._onXRSessionStart.bind(this), this._onXRSessionEnd.bind(this), true, false);
     }
 
     start(fsm) {
@@ -51,6 +55,7 @@ export class EarthExplodesState {
         GameGlobals.myHideHands.hide();
         GameGlobals.myBlackFader.fadeIn(true);
         GameGlobals.myPlayerLocomotion.setIdle(true);
+        this._myViewResetDirtyCounter = 0;
 
         let playerStartPosition = this._myPlayerSpawn.pp_getPosition();
         let rotationQuat = this._myPlayerSpawn.pp_getRotationQuat();
@@ -120,6 +125,18 @@ export class EarthExplodesState {
         }
 
         this._myFSM.update(dt);
+
+        if (GameGlobals.myPlayerLocomotion._myPlayerHeadManager.isSynced()) {
+            if (this._myViewResetDirtyCounter > 0) {
+                this._myViewResetDirtyCounter--;
+                if (this._myViewResetDirtyCounter == 0) {
+                    let playerStartPosition = this._myPlayerSpawn.pp_getPosition();
+                    let rotationQuat = this._myPlayerSpawn.pp_getRotationQuat();
+                    GameGlobals.myPlayerTransformManager.teleportAndReset(playerStartPosition.vec3_sub(vec3_create(0, GameGlobals.myPlayerTransformManager.getHeight(), 0)), rotationQuat);
+                    Globals.getPlayerObjects().myCameraNonXR.pp_setUp(GameGlobals.myUp);
+                }
+            }
+        }
     }
 
     _fadeOutUpdate(dt, fsm) {
@@ -170,5 +187,18 @@ export class EarthExplodesState {
         } else {
             return false;
         }
+    }
+
+    _onXRSessionStart() {
+        let referenceSpace = XRUtils.getReferenceSpace();
+        referenceSpace.addEventListener("reset", this._onViewReset.bind(this));
+    }
+
+    _onXRSessionEnd() {
+        this._myViewResetDirtyCounter = 0;
+    }
+
+    _onViewReset() {
+        this._myViewResetDirtyCounter = 3;
     }
 }
