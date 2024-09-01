@@ -724,7 +724,7 @@ PlayerHeadManager.prototype._blurEndResync = function () {
                 rotationToPerform = currentHeadForward.vec3_rotationToPivotedQuat(recoverHeadForward, playerUp, rotationToPerform);
 
                 if (this._myParams.myBlurEndResyncRotation) {
-                    this.rotateFeetQuat(rotationToPerform);
+                    //this.rotateFeetQuat(rotationToPerform);
                 }
 
                 this._myBlurRecoverHeadTransform = null;
