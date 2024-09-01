@@ -54,7 +54,7 @@
     },
     "not_jeff": {
         "event": "bad",
-        "text": "I knew you we're lying!\nBut,_ how do you even know that name?_",
+        "text": "I knew you we're lying!__\nBut,_ how do you even know that name?_",
         "responses": [
             {
                 "text": "We are in\na time loop!",
@@ -247,7 +247,7 @@
         "event": "good",
         "autoAdvanceAfter": 1,
         "jump": "remember_3",
-        "text": "But my memory is not as it used to_._._."
+        "text": "But my memory is not as it used to be_._._."
     },
     "remember_3": {
         "text": "Where should I know you from?_",

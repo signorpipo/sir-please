@@ -35,7 +35,7 @@
         "event": "good",
         "autoAdvanceAfter": 1,
         "jump": "remember_3",
-        "text": "But my memory is not as it used to_._._."
+        "text": "But my memory is not as it used to be_._._."
     },
     "remember_3": {
         "text": "Where should I know you from?_",
