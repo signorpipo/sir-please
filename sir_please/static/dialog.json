@@ -802,7 +802,7 @@
             "event": "good",
             "autoAdvanceAfter": 1,
             "jump": "question_three",
-            "text": "Yeah,_ that is_._._._ my age_._._._\nYou are absolutely right."
+            "text": "Yeah,_ that is_._._._ my age_._._.__\nYou are absolutely right."
         },
         "question_three": {
             "event": "good",
