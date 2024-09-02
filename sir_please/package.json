@@ -2,7 +2,7 @@
     "name": "sir_please",
     "version": "1.0.0",
     "author": "robin x pipo",
-    "description": "Why do you want to press it anyway?",
+    "description": "Why do you want to press it anyway?!",
     "dependencies": {
         "@wonderlandengine/api": "^1.0.0",
         "@wonderlandengine/components": "^1.0.3",
