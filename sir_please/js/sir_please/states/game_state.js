@@ -23,7 +23,7 @@ export class GameState {
                 }
             }
         });
-        this._myFSM.addState("first_dark", new TimerState(1, "end"));
+        this._myFSM.addState("first_dark", new TimerState(1.25, "end"));
         this._myFSM.addState("dark", new TimerState(2, "end"));
         this._myFSM.addState("sir_room", new SirRoomState());
         this._myFSM.addState("earth_explode", new EarthExplodesState(false));
