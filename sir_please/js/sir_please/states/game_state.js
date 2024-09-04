@@ -6,6 +6,8 @@ import { SirRoomState } from "./sir_room_state";
 
 export class GameState {
     constructor() {
+        this._myFirstDark = true;
+
         this._myFSM = new FSM();
         //this._myFSM.setLogEnabled(true, "  Game");
 
@@ -13,9 +15,15 @@ export class GameState {
         this._myFSM.addState("idle");
         this._myFSM.addState("wait_dialog", () => {
             if (GameGlobals.myDialogManager != null && GameGlobals.myDialogManager.dialogs != null) {
-                this._myFSM.perform("end");
+                if (this._myFirstDark) {
+                    this._myFirstDark = false;
+                    this._myFSM.perform("first_end");
+                } else {
+                    this._myFSM.perform("end");
+                }
             }
         });
+        this._myFSM.addState("first_dark", new TimerState(1, "end"));
         this._myFSM.addState("dark", new TimerState(2, "end"));
         this._myFSM.addState("sir_room", new SirRoomState());
         this._myFSM.addState("earth_explode", new EarthExplodesState(false));
@@ -23,7 +31,9 @@ export class GameState {
 
         this._myFSM.addTransition("init", "idle", "start");
         this._myFSM.addTransition("idle", "wait_dialog", "start");
+        this._myFSM.addTransition("wait_dialog", "first_dark", "first_end");
         this._myFSM.addTransition("wait_dialog", "dark", "end");
+        this._myFSM.addTransition("first_dark", "sir_room", "end");
         this._myFSM.addTransition("dark", "sir_room", "end");
         this._myFSM.addTransition("sir_room", "earth_explode", "lose");
         this._myFSM.addTransition("sir_room", "earth_explode_anyway", "win");
