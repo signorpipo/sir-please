@@ -1,0 +1,1214 @@
+{
+    "sir_loop_one": {
+        "entry": {
+            "text": "Who are you?_\nAnd how did you get here?_\nYou are here to stop me,_ aren't you?_",
+            "responses": [
+                {
+                    "text": "Stop you\nfrom what?",
+                    "jump": "sir_hand"
+                },
+                {
+                    "text": "Nah",
+                    "jump": "sir_ded"
+                }
+            ]
+        },
+        "sir_hand": {
+            "autoAdvanceAfter": 1,
+            "jump": "sir_hand_two",
+            "text": "Do you see my hand slowly\nmoving down?__\nI am going to press this button!"
+        },
+        "sir_hand_two": {
+            "text": "You cannot stop me[e:bad]!_",
+            "responses": [
+                {
+                    "text": "What does\nit do?",
+                    "jump": "sir_what_button_do"
+                },
+                {
+                    "text": "Nah,\ngo ahead",
+                    "jump": "sir_ded"
+                }
+            ]
+        },
+        "sir_what_button_do": {
+            "text": "I don't know what it does.__\nBut I want to press it[e:bad]!_",
+            "responses": [
+                {
+                    "text": "Maybe you\nshouldn't",
+                    "jump": "sir_maybe_dont"
+                },
+                {
+                    "text": "Ok, do it!",
+                    "jump": "sir_ded"
+                }
+            ]
+        },
+        "sir_maybe_dont": {
+            "autoAdvanceAfter": 1,
+            "jump": "sir_maybe_dont_1",
+            "text": "H[e:good]mmmmm_._._."
+        },
+        "sir_maybe_dont_1": {
+            "autoAdvanceAfter": 1.5,
+            "jump": "sir_maybe_dont_2",
+            "text": "Maybe you are right.__\nI still want to press it though."
+        },
+        "sir_maybe_dont_2": {
+            "text": "But I'll move my hand slower each time\nyou make a good point.[e:good]__\nHow does that sound[e:loop_one_end]?_",
+            "responses": [
+                {
+                    "text": "Sounds good",
+                    "jump": "sir_agree"
+                },
+                {
+                    "text": "Nah, just\npress it",
+                    "jump": "sir_ded"
+                }
+            ]
+        },
+        "sir_agree": {
+            "text": "Glad we agree on something._",
+            "responses": [
+                {
+                    "text": "So, who\nare you?",
+                    "jump": "sir_name"
+                },
+                {
+                    "text": "Actually,\njust do it",
+                    "jump": "sir_ded"
+                }
+            ]
+        },
+        "sir_name": {
+            "event": "bad",
+            "autoAdvanceAfter": 1,
+            "jump": "sir_name_2",
+            "text": "I don't trust you enough to tell you\nmy name!"
+        },
+        "sir_name_2": {
+            "autoAdvanceAfter": 1,
+            "jump": "ded",
+            "text": "Screw this,_ you are stupid!__\nI am pressing the button!"
+        },
+        "sir_ded": {
+            "autoAdvanceAfter": 1,
+            "jump": "ded",
+            "text": "Ok!"
+        },
+        "ded": {
+            "event": "very_uber_bad",
+            "autoAdvanceAfter": 1,
+            "jump": "ded_end",
+            "text": "Bye."
+        },
+        "ded_end": {
+            "instaText": "Bye."
+        }
+    },
+    "sir_loop_2": {
+        "entry": {
+            "text": "Who are you?_",
+            "responses": [
+                {
+                    "text": "DON'T\nPRESS IT!",
+                    "jump": "dont_press"
+                },
+                {
+                    "text": "PRESS IT!",
+                    "jump": "sir_ded"
+                }
+            ]
+        },
+        "dont_press": {
+            "autoAdvanceAfter": 1,
+            "jump": "dont_press_1",
+            "text": "I knew it!_\nYou are here to stop me!"
+        },
+        "dont_press_1": {
+            "text": "But you cannot![e:bad]_\nI will press this button!_",
+            "responses": [
+                {
+                    "text": "It will blow\nup the planet!",
+                    "jump": "planet_talk"
+                },
+                {
+                    "text": "You have no clue\nwhat's at stake!",
+                    "jump": "no_idea"
+                }
+            ]
+        },
+        "planet_talk": {
+            "text": "What?__ You made that up!_\nI am not stupid![e:bad]_",
+            "responses": [
+                {
+                    "text": "Are you sure?",
+                    "jump": "you_sure"
+                },
+                {
+                    "text": "But, what if\nI'm right?",
+                    "jump": "right"
+                }
+            ]
+        },
+        "no_idea": {
+            "text": "Dude,_ it's just a button.__\nIt's not like the planet will explode._",
+            "responses": [
+                {
+                    "text": "BUT IT WILL",
+                    "jump": "planet_talk"
+                },
+                {
+                    "text": "Ok, you\ngot me",
+                    "jump": "dont_press"
+                }
+            ]
+        },
+        "you_sure": {
+            "event": "bad",
+            "autoAdvanceAfter": 1,
+            "jump": "you_sure_2",
+            "text": "Are you questioning me?"
+        },
+        "you_sure_2": {
+            "autoAdvanceAfter": 1,
+            "jump": "ded",
+            "text": "Screw this,_ I do not trust you!__\nI am pressing the button!"
+        },
+        "right": {
+            "autoAdvanceAfter": 1,
+            "jump": "right_2",
+            "text": "A[e:good]llright smartass_._._[e:good]."
+        },
+        "right_2": {
+            "text": "Let's say I give you the benefit\nof the doubt.__\nHow do you even know that?_",
+            "responses": [
+                {
+                    "text": "Because I\nwork here!",
+                    "jump": "work_here"
+                },
+                {
+                    "text": "It's already\nhappened!",
+                    "jump": "already_happened"
+                }
+            ]
+        },
+        "right_2_after": {
+            "text": "How do you know that?_",
+            "responses": [
+                {
+                    "text": "Because I\nwork here!",
+                    "jump": "work_here"
+                },
+                {
+                    "text": "It's already\nhappened!",
+                    "jump": "already_happened"
+                }
+            ]
+        },
+        "work_here": {
+            "autoAdvanceAfter": 1,
+            "jump": "try_again",
+            "text": "Aha!_ Nice try!__\nBut until you and I got here,_\nthis place was abandoned."
+        },
+        "try_again": {
+            "event": "bad",
+            "autoAdvanceAfter": 1,
+            "jump": "right_2_after",
+            "text": "Try again."
+        },
+        "already_happened": {
+            "text": "Already happened_._._.__\n[e:good]What do you mean by that?_",
+            "responses": [
+                {
+                    "text": "idk",
+                    "jump": "lying"
+                },
+                {
+                    "text": "I am from\nthe future!",
+                    "jump": "future"
+                }
+            ]
+        },
+        "lying": {
+            "autoAdvanceAfter": 1,
+            "jump": "try_again",
+            "text": "Aha!__ I knew you were lying!"
+        },
+        "future": {
+            "text": "Pfffffffff_._._.__\n[e:bad]You expect me to believe that?_",
+            "responses": [
+                {
+                    "text": "Yes",
+                    "jump": "future_yes"
+                },
+                {
+                    "text": "No",
+                    "jump": "lying"
+                }
+            ]
+        },
+        "future_yes": {
+            "text": "Well_._.[e:good]_.[e:good]__ then you better prove it!_",
+            "responses": [
+                {
+                    "text": "I can't",
+                    "jump": "sir_ded"
+                },
+                {
+                    "text": "I can't yet",
+                    "jump": "cant_prove"
+                }
+            ]
+        },
+        "cant_prove": {
+            "autoAdvanceAfter": 1,
+            "jump": "cant_prove_2",
+            "text": "W[e:bad]hat do you mean you can't yet?!"
+        },
+        "cant_prove_2": {
+            "autoAdvanceAfter": 1.5,
+            "jump": "cant_prove_explain",
+            "text": "E[e:good]ither way,_ if you really are from\nthe future_._._.[e:good]__ then you can go back\nin time again and gather proof."
+        },
+        "cant_prove_explain": {
+            "autoAdvanceAfter": 2,
+            "jump": "ded",
+            "text": "So,[e:good]_ if this button really does\nwhat you say_._._.__ then you can try\nconvincing me next time[e:loop_two_end]!"
+        },
+        "sir_ded": {
+            "autoAdvanceAfter": 1,
+            "jump": "ded",
+            "text": "Ok!"
+        },
+        "ded": {
+            "event": "very_uber_bad",
+            "autoAdvanceAfter": 1,
+            "jump": "ded_end",
+            "text": "Bye."
+        },
+        "ded_end": {
+            "instaText": "Bye."
+        }
+    },
+    "sir_loop_3": {
+        "entry": {
+            "text": "Who are you?_",
+            "responses": [
+                {
+                    "text": "DON'T\nPRESS IT!",
+                    "jump": "dont_press"
+                },
+                {
+                    "text": "Don't you\nremember me?!",
+                    "jump": "remember"
+                }
+            ]
+        },
+        "entry_2": {
+            "text": "Who are you?!_",
+            "responses": [
+                {
+                    "text": "DON'T\nPRESS IT!",
+                    "jump": "dont_press"
+                },
+                {
+                    "text": "Don't you\nremember me?!",
+                    "jump": "remember"
+                }
+            ]
+        },
+        "remember": {
+            "event": "bad",
+            "autoAdvanceAfter": 1,
+            "jump": "remember_2",
+            "text": "I've never seen you in my entire life."
+        },
+        "remember_2": {
+            "event": "good",
+            "autoAdvanceAfter": 1,
+            "jump": "remember_3",
+            "text": "But my memory is not as it used to be_._._."
+        },
+        "remember_3": {
+            "text": "Where should I know you from?_",
+            "responses": [
+                {
+                    "text": "We are in\na time loop!",
+                    "jump": "time_loop"
+                },
+                {
+                    "text": "We met\nat a party",
+                    "jump": "party"
+                }
+            ]
+        },
+        "time_loop": {
+            "autoAdvanceAfter": 1,
+            "jump": "remember_3",
+            "text": "Don't be ridiculous.__\n[e:very_bad]There is no such thing!"
+        },
+        "party": {
+            "autoAdvanceAfter": 1,
+            "jump": "party_2",
+            "text": "Oh![e:good]__ A party![e:good]__\nI love parties!"
+        },
+        "party_2": {
+            "text": "But,_ which party did we meet at?_",
+            "responses": [
+                {
+                    "text": "The one in\nthe mountains",
+                    "jump": "thing"
+                },
+                {
+                    "text": "Yesterday's\nparty",
+                    "jump": "yesterday"
+                }
+            ]
+        },
+        "yesterday": {
+            "autoAdvanceAfter": 1,
+            "jump": "entry_2",
+            "text": "There was no party yesterday_._._.__\n[e:uber_bad]Liar!"
+        },
+        "thing": {
+            "autoAdvanceAfter": 1,
+            "jump": "thing_0",
+            "text": "You will have to be a bit more specific[e:bad]."
+        },
+        "thing_0": {
+            "text": "I went to a lot of parties in\nthe mountains.__\nLike that one where I_._._._",
+            "responses": [
+                {
+                    "text": "Got married?",
+                    "jump": "married"
+                },
+                {
+                    "text": "Got bullied?",
+                    "jump": "bullied"
+                }
+            ]
+        },
+        "bullied": {
+            "autoAdvanceAfter": 1,
+            "jump": "ded",
+            "text": "Oh so you know about that huh_._._.__\nYou are one of those bullies then!"
+        },
+        "married": {
+            "text": "Well,_ no,_ you see,_ no one likes me_._._.[e:good]__\nEven the girls hate me._",
+            "responses": [
+                {
+                    "text": "That is sad",
+                    "jump": "sad"
+                },
+                {
+                    "text": "No friends?",
+                    "jump": "no_friends"
+                }
+            ]
+        },
+        "sad": {
+            "event": "bad",
+            "autoAdvanceAfter": 1,
+            "jump": "entry_2",
+            "text": "I don't need pitty from a liar.__\nAnd I still don't know who you are.__\nSo_._._."
+        },
+        "no_friends": {
+            "autoAdvanceAfter": 2,
+            "jump": "no_friends_2",
+            "text": "Well,[e:good]_ there was Jeff.__\nThe only person who ever cared\nabout me[e:loop_three_end]."
+        },
+        "no_friends_2": {
+            "autoAdvanceAfter": 2,
+            "jump": "no_friends_3",
+            "text": "But we parted ways."
+        },
+        "no_friends_3": {
+            "text": "Anyway,_ I don't want to talk about this._",
+            "responses": [
+                {
+                    "text": "It is ok\nto talk",
+                    "jump": "talk_about_bullies"
+                },
+                {
+                    "text": "Why not?",
+                    "jump": "why_not_talk"
+                }
+            ]
+        },
+        "why_not_talk": {
+            "autoAdvanceAfter": 1,
+            "jump": "ded",
+            "text": "Because I don't want to.__\nNow you are annoying me."
+        },
+        "talk_about_bullies": {
+            "text": "Perhaps_._.[e:good]_.[e:good]__\nbut why should I trust you?_",
+            "responses": [
+                {
+                    "text": "I was your\nbully",
+                    "jump": "I_am_bully"
+                },
+                {
+                    "text": "The world\nis at stake!",
+                    "jump": "world_at_stake"
+                }
+            ]
+        },
+        "I_am_bully": {
+            "autoAdvanceAfter": 1,
+            "jump": "ded",
+            "text": "Well,_ then I certainly don't trust you!"
+        },
+        "world_at_stake": {
+            "text": "How so?_",
+            "responses": [
+                {
+                    "text": "The planet\nwill explode!",
+                    "jump": "planet_talk"
+                },
+                {
+                    "text": "You have no clue\nwhat's at stake!",
+                    "jump": "no_idea"
+                }
+            ]
+        },
+        "dont_press": {
+            "autoAdvanceAfter": 1,
+            "jump": "dont_press_1",
+            "text": "I knew it!_\nYou are here to stop me!"
+        },
+        "dont_press_1": {
+            "text": "But you cannot![e:bad]_\nI will press this button!_",
+            "responses": [
+                {
+                    "text": "It will blow\nup the planet!",
+                    "jump": "planet_talk"
+                },
+                {
+                    "text": "You have no clue\nwhat's at stake!",
+                    "jump": "no_idea"
+                }
+            ]
+        },
+        "planet_talk": {
+            "text": "What?__ You made that up!_\nI am not stupid![e:bad]_",
+            "responses": [
+                {
+                    "text": "Are you sure?",
+                    "jump": "you_sure"
+                },
+                {
+                    "text": "But, what if\nI'm right?",
+                    "jump": "right"
+                }
+            ]
+        },
+        "no_idea": {
+            "text": "Dude,_ it's just a button.__\nIt's not like the planet will explode._",
+            "responses": [
+                {
+                    "text": "BUT IT WILL",
+                    "jump": "planet_talk"
+                },
+                {
+                    "text": "Ok, you\ngot me",
+                    "jump": "dont_press"
+                }
+            ]
+        },
+        "you_sure": {
+            "event": "bad",
+            "autoAdvanceAfter": 1,
+            "jump": "you_sure_2",
+            "text": "Are you questioning me?"
+        },
+        "you_sure_2": {
+            "autoAdvanceAfter": 1,
+            "jump": "ded",
+            "text": "Screw this,_ I do not trust you!__\nI am pressing the button!"
+        },
+        "right": {
+            "autoAdvanceAfter": 1,
+            "jump": "right_2",
+            "text": "A[e:good]llright smartass_._._[e:good]."
+        },
+        "right_2": {
+            "text": "Let's say I give you the benefit\nof the doubt.__\nHow do you even know that?_",
+            "responses": [
+                {
+                    "text": "Because I\nwork here!",
+                    "jump": "work_here"
+                },
+                {
+                    "text": "It's already\nhappened!",
+                    "jump": "already_happened"
+                }
+            ]
+        },
+        "right_2_after": {
+            "text": "How do you know that?_",
+            "responses": [
+                {
+                    "text": "Because I\nwork here!",
+                    "jump": "work_here"
+                },
+                {
+                    "text": "It's already\nhappened!",
+                    "jump": "already_happened"
+                }
+            ]
+        },
+        "work_here": {
+            "autoAdvanceAfter": 1,
+            "jump": "try_again",
+            "text": "Aha!_ Nice try!__\nBut until you and I got here,_\nthis place was abandoned."
+        },
+        "try_again": {
+            "event": "bad",
+            "autoAdvanceAfter": 1,
+            "jump": "right_2_after",
+            "text": "Try again."
+        },
+        "already_happened": {
+            "text": "Already happened_._._.__\n[e:good]What do you mean by that?_",
+            "responses": [
+                {
+                    "text": "idk",
+                    "jump": "lying"
+                },
+                {
+                    "text": "I am from\nthe future!",
+                    "jump": "future"
+                }
+            ]
+        },
+        "lying": {
+            "autoAdvanceAfter": 1,
+            "jump": "try_again",
+            "text": "Aha!__ I knew you were lying!"
+        },
+        "future": {
+            "text": "Pfffffffff_._._.__\n[e:bad]You expect me to believe that?_",
+            "responses": [
+                {
+                    "text": "Yes",
+                    "jump": "future_yes"
+                },
+                {
+                    "text": "No",
+                    "jump": "lying"
+                }
+            ]
+        },
+        "future_yes": {
+            "text": "Well_._.[e:good]_.[e:good]__ then you better prove it!_",
+            "responses": [
+                {
+                    "text": "I can't",
+                    "jump": "sir_ded"
+                },
+                {
+                    "text": "I can't yet",
+                    "jump": "cant_prove"
+                }
+            ]
+        },
+        "cant_prove": {
+            "autoAdvanceAfter": 1,
+            "jump": "cant_prove_2",
+            "text": "W[e:bad]hat do you mean you can't yet?!"
+        },
+        "cant_prove_2": {
+            "autoAdvanceAfter": 1.5,
+            "jump": "cant_prove_explain",
+            "text": "E[e:good]ither way,_ if you really are from\nthe future_._._.[e:good]__ then you can go back\nin time again and gather proof."
+        },
+        "cant_prove_explain": {
+            "autoAdvanceAfter": 2,
+            "jump": "ded",
+            "text": "So,[e:good]_ if this button really does\nwhat you say_._._.__ then you can try\nconvincing me next time!"
+        },
+        "sir_ded": {
+            "autoAdvanceAfter": 1,
+            "jump": "ded",
+            "text": "Ok!"
+        },
+        "ded": {
+            "event": "very_uber_bad",
+            "autoAdvanceAfter": 1,
+            "jump": "ded_end",
+            "text": "Bye."
+        },
+        "ded_end": {
+            "instaText": "Bye."
+        }
+    },
+    "sir_loop_4": {
+        "entry": {
+            "text": "Who are you?_",
+            "responses": [
+                {
+                    "text": "DON'T\nPRESS IT!",
+                    "jump": "dont_press"
+                },
+                {
+                    "text": "It's me,\nJeff!",
+                    "jump": "jeff"
+                }
+            ]
+        },
+        "entry_2": {
+            "text": "Who are you?!_",
+            "responses": [
+                {
+                    "text": "DON'T\nPRESS IT!",
+                    "jump": "dont_press"
+                },
+                {
+                    "text": "It's me,\nJeff!",
+                    "jump": "jeff"
+                }
+            ]
+        },
+        "jeff": {
+            "text": "What?__\n[e:bad]You can't be Jeff!_",
+            "responses": [
+                {
+                    "text": "Why not?",
+                    "jump": "why_not_jeff"
+                },
+                {
+                    "text": "Yeah,\nI'm not",
+                    "jump": "not_jeff"
+                }
+            ]
+        },
+        "why_not_jeff": {
+            "event": "bad",
+            "text": "Because I would remember you!_",
+            "responses": [
+                {
+                    "text": "Bad memory?",
+                    "jump": "bad_memory"
+                },
+                {
+                    "text": "You're right,\nI'm not",
+                    "jump": "not_jeff"
+                }
+            ]
+        },
+        "not_jeff": {
+            "event": "bad",
+            "text": "I knew you we're lying!__\nBut,_ how do you even know that name?_",
+            "responses": [
+                {
+                    "text": "We are in\na time loop!",
+                    "jump": "time_loop"
+                },
+                {
+                    "text": "Because\nI am Jeff!",
+                    "jump": "am_jeff"
+                }
+            ]
+        },
+        "am_jeff": {
+            "autoAdvanceAfter": 1,
+            "jump": "ded",
+            "text": "Stop lying to me![e:bad]__\nI've had enough!"
+        },
+        "bad_memory": {
+            "autoAdvanceAfter": 1,
+            "jump": "bad_memory_1",
+            "text": "Hmmmmm_._._.__\n[e:good]My memory is not what it used to be."
+        },
+        "bad_memory_1": {
+            "autoAdvanceAfter": 1,
+            "jump": "bad_memory_2",
+            "text": "Perhaps you are Jeff.__\nBut you will have to prove it!"
+        },
+        "bad_memory_2": {
+            "event": "good",
+            "text": "I will ask you a few questions that\nonly Jeff would know._",
+            "responses": [
+                {
+                    "text": "That's boring",
+                    "jump": "boring"
+                },
+                {
+                    "text": "Sounds good",
+                    "jump": "question_one"
+                }
+            ]
+        },
+        "boring": {
+            "autoAdvanceAfter": 1,
+            "jump": "ded",
+            "text": "You are boring![e:bad]__\nI've had enough!"
+        },
+        "question_one": {
+            "autoAdvanceAfter": 1,
+            "jump": "question_one_1",
+            "text": "Fine,_ but let's make it quick.__\nI've got stuff to do."
+        },
+        "question_one_1": {
+            "text": "First question:_\nWhat is my favorite color?_",
+            "responses": [
+                {
+                    "text": "Yellow",
+                    "jump": "color"
+                },
+                {
+                    "text": "Blue",
+                    "jump": "color_right"
+                }
+            ]
+        },
+        "color": {
+            "autoAdvanceAfter": 1,
+            "jump": "ded",
+            "text": "WRONG![e:bad]__\nWho does even like that?![e:bad]__\nI knew you were not Jeff."
+        },
+        "color_right": {
+            "event": "good",
+            "autoAdvanceAfter": 1,
+            "jump": "question_two",
+            "text": "I'm impressed_._._.__\nNo one aside from Jeff knows this."
+        },
+        "question_two": {
+            "event": "good",
+            "autoAdvanceAfter": 1,
+            "jump": "question_two_1",
+            "text": "However,_ this does not prove\nanything yet."
+        },
+        "question_two_1": {
+            "text": "Second question:_\nHow old am I?_",
+            "responses": [
+                {
+                    "text": "76",
+                    "jump": "wrong_age"
+                },
+                {
+                    "text": "23",
+                    "jump": "good_age"
+                }
+            ]
+        },
+        "wrong_age": {
+            "autoAdvanceAfter": 1,
+            "jump": "ded",
+            "text": "WRONG![e:bad]__\nMaybe it's you who is 76 years old?![e:bad]__\nI knew you were not Jeff."
+        },
+        "good_age": {
+            "event": "good",
+            "autoAdvanceAfter": 1,
+            "jump": "question_three",
+            "text": "Yeah,_ that is_._._._ my age_._._.__\nYou are absolutely right."
+        },
+        "question_three": {
+            "event": "good",
+            "autoAdvanceAfter": 1,
+            "jump": "question_three_1",
+            "text": "But I'm sure you will not be able\nto answer my last question,_\nthe most important one."
+        },
+        "question_three_1": {
+            "text": "Who is my best friend?_",
+            "responses": [
+                {
+                    "text": "Jeff",
+                    "jump": "wrong_three"
+                },
+                {
+                    "text": "Ronald",
+                    "jump": "good_three"
+                }
+            ]
+        },
+        "wrong_three": {
+            "autoAdvanceAfter": 1,
+            "jump": "ded",
+            "text": "WRONG![e:bad]__\nWhy would you even think that?![e:bad]__\nI knew you were not Jeff."
+        },
+        "good_three": {
+            "event": "good",
+            "autoAdvanceAfter": 1,
+            "jump": "good_three_1",
+            "text": "_._._."
+        },
+        "good_three_1": {
+            "event": "good",
+            "autoAdvanceAfter": 2,
+            "jump": "end",
+            "text": "So,_ you really are Jeff_._._.__\n[e:good]I'm sorry for doubting you."
+        },
+        "end": {
+            "event": "insta_good",
+            "autoAdvanceAfter": 2,
+            "jump": "end_1",
+            "text": "I guess that I will not press the\nbutton then.__\nI trust you,_ you know."
+        },
+        "end_1": {
+            "autoAdvanceAfter": 2,
+            "jump": "end_2",
+            "text": "I also feel the need to tell you\nthat this is the end of the game."
+        },
+        "end_2": {
+            "autoAdvanceAfter": 2,
+            "jump": "end_3",
+            "text": "And that Robin and Pipo\nwant to thank you for playing."
+        },
+        "end_3": {
+            "text": "What a weird thing to say,_\ndon't you think?_",
+            "responses": [
+                {
+                    "text": "Yeah...",
+                    "jump": "end_4"
+                },
+                {
+                    "text": "Not at all",
+                    "jump": "end_4"
+                }
+            ]
+        },
+        "end_4": {
+            "text": "Anyway,_ I have to go now.__\nSee you soon,_ Jeff.__\nLet's do it again tomorrow._",
+            "responses": [
+                {
+                    "text": "See you",
+                    "jump": "win"
+                },
+                {
+                    "text": "For sure!",
+                    "jump": "win"
+                }
+            ]
+        },
+        "remember": {
+            "event": "bad",
+            "autoAdvanceAfter": 1,
+            "jump": "remember_2",
+            "text": "I've never seen you in my entire life."
+        },
+        "remember_2": {
+            "event": "good",
+            "autoAdvanceAfter": 1,
+            "jump": "remember_3",
+            "text": "But my memory is not as it used to be_._._."
+        },
+        "remember_3": {
+            "text": "Where should I know you from?_",
+            "responses": [
+                {
+                    "text": "We are in\na time loop!",
+                    "jump": "time_loop"
+                },
+                {
+                    "text": "We met\nat a party",
+                    "jump": "party"
+                }
+            ]
+        },
+        "time_loop": {
+            "autoAdvanceAfter": 1,
+            "jump": "remember_3",
+            "text": "Don't be ridiculous.__\n[e:very_bad]There is no such thing!"
+        },
+        "party": {
+            "autoAdvanceAfter": 1,
+            "jump": "party_2",
+            "text": "Oh![e:good]__ A party![e:good]__\nI love parties!"
+        },
+        "party_2": {
+            "text": "But,_ which party did we meet at?_",
+            "responses": [
+                {
+                    "text": "The one in\nthe mountains",
+                    "jump": "thing"
+                },
+                {
+                    "text": "Yesterday's\nparty",
+                    "jump": "yesterday"
+                }
+            ]
+        },
+        "yesterday": {
+            "autoAdvanceAfter": 1,
+            "jump": "entry_2",
+            "text": "There was no party yesterday_._._.__\n[e:uber_bad]Liar!"
+        },
+        "thing": {
+            "autoAdvanceAfter": 1,
+            "jump": "thing_0",
+            "text": "You will have to be a bit more specific[e:bad]."
+        },
+        "thing_0": {
+            "text": "I went to a lot of parties in\nthe mountains.__\nLike that one where I_._._._",
+            "responses": [
+                {
+                    "text": "Got married?",
+                    "jump": "married"
+                },
+                {
+                    "text": "Got bullied?",
+                    "jump": "bullied"
+                }
+            ]
+        },
+        "bullied": {
+            "autoAdvanceAfter": 1,
+            "jump": "ded",
+            "text": "Oh so you know about that huh_._._.__\nYou are one of those bullies then!"
+        },
+        "married": {
+            "text": "Well,_ no,_ you see,_ no one likes me_._._.[e:good]__\nEven the girls hate me._",
+            "responses": [
+                {
+                    "text": "That is sad",
+                    "jump": "sad"
+                },
+                {
+                    "text": "No friends?",
+                    "jump": "no_friends"
+                }
+            ]
+        },
+        "sad": {
+            "event": "bad",
+            "autoAdvanceAfter": 1,
+            "jump": "entry_2",
+            "text": "I don't need pitty from a liar.__\nAnd I still don't know who you are.__\nSo_._._."
+        },
+        "no_friends": {
+            "autoAdvanceAfter": 2,
+            "jump": "no_friends_2",
+            "text": "Well,[e:good]_ there was Jeff.__\nThe only person who ever cared\nabout me."
+        },
+        "no_friends_2": {
+            "autoAdvanceAfter": 2,
+            "jump": "no_friends_3",
+            "text": "But we parted ways."
+        },
+        "no_friends_3": {
+            "text": "Anyway,_ I don't want to talk about this._",
+            "responses": [
+                {
+                    "text": "It is ok\nto talk",
+                    "jump": "talk_about_bullies"
+                },
+                {
+                    "text": "Why not?",
+                    "jump": "why_not_talk"
+                }
+            ]
+        },
+        "why_not_talk": {
+            "autoAdvanceAfter": 1,
+            "jump": "ded",
+            "text": "Because I don't want to.__\nNow you are annoying me."
+        },
+        "talk_about_bullies": {
+            "text": "Perhaps_._.[e:good]_.[e:good]__\nbut why should I trust you?_",
+            "responses": [
+                {
+                    "text": "I was your\nbully",
+                    "jump": "I_am_bully"
+                },
+                {
+                    "text": "The world\nis at stake!",
+                    "jump": "world_at_stake"
+                }
+            ]
+        },
+        "I_am_bully": {
+            "autoAdvanceAfter": 1,
+            "jump": "ded",
+            "text": "Well,_ then I certainly don't trust you!"
+        },
+        "world_at_stake": {
+            "text": "How so?_",
+            "responses": [
+                {
+                    "text": "The planet\nwill explode!",
+                    "jump": "planet_talk"
+                },
+                {
+                    "text": "You have no clue\nwhat's at stake!",
+                    "jump": "no_idea"
+                }
+            ]
+        },
+        "dont_press": {
+            "autoAdvanceAfter": 1,
+            "jump": "dont_press_1",
+            "text": "I knew it!_\nYou are here to stop me!"
+        },
+        "dont_press_1": {
+            "text": "But you cannot![e:bad]_\nI will press this button!_",
+            "responses": [
+                {
+                    "text": "It will blow\nup the planet!",
+                    "jump": "planet_talk"
+                },
+                {
+                    "text": "You have no clue\nwhat's at stake!",
+                    "jump": "no_idea"
+                }
+            ]
+        },
+        "planet_talk": {
+            "text": "What?__ You made that up!_\nI am not stupid![e:bad]_",
+            "responses": [
+                {
+                    "text": "Are you sure?",
+                    "jump": "you_sure"
+                },
+                {
+                    "text": "But, what if\nI'm right?",
+                    "jump": "right"
+                }
+            ]
+        },
+        "no_idea": {
+            "text": "Dude,_ it's just a button.__\nIt's not like the planet will explode._",
+            "responses": [
+                {
+                    "text": "BUT IT WILL",
+                    "jump": "planet_talk"
+                },
+                {
+                    "text": "Ok, you\ngot me",
+                    "jump": "dont_press"
+                }
+            ]
+        },
+        "you_sure": {
+            "event": "bad",
+            "autoAdvanceAfter": 1,
+            "jump": "you_sure_2",
+            "text": "Are you questioning me?"
+        },
+        "you_sure_2": {
+            "autoAdvanceAfter": 1,
+            "jump": "ded",
+            "text": "Screw this,_ I do not trust you!__\nI am pressing the button!"
+        },
+        "right": {
+            "autoAdvanceAfter": 1,
+            "jump": "right_2",
+            "text": "A[e:good]llright smartass_._._[e:good]."
+        },
+        "right_2": {
+            "text": "Let's say I give you the benefit\nof the doubt.__\nHow do you even know that?_",
+            "responses": [
+                {
+                    "text": "Because I\nwork here!",
+                    "jump": "work_here"
+                },
+                {
+                    "text": "It's already\nhappened!",
+                    "jump": "already_happened"
+                }
+            ]
+        },
+        "right_2_after": {
+            "text": "How do you know that?_",
+            "responses": [
+                {
+                    "text": "Because I\nwork here!",
+                    "jump": "work_here"
+                },
+                {
+                    "text": "It's already\nhappened!",
+                    "jump": "already_happened"
+                }
+            ]
+        },
+        "work_here": {
+            "autoAdvanceAfter": 1,
+            "jump": "try_again",
+            "text": "Aha!_ Nice try!__\nBut until you and I got here,_\nthis place was abandoned."
+        },
+        "try_again": {
+            "event": "bad",
+            "autoAdvanceAfter": 1,
+            "jump": "right_2_after",
+            "text": "Try again."
+        },
+        "already_happened": {
+            "text": "Already happened_._._.__\n[e:good]What do you mean by that?_",
+            "responses": [
+                {
+                    "text": "idk",
+                    "jump": "lying"
+                },
+                {
+                    "text": "I am from\nthe future!",
+                    "jump": "future"
+                }
+            ]
+        },
+        "lying": {
+            "autoAdvanceAfter": 1,
+            "jump": "try_again",
+            "text": "Aha!__ I knew you were lying!"
+        },
+        "future": {
+            "text": "Pfffffffff_._._.__\n[e:bad]You expect me to believe that?_",
+            "responses": [
+                {
+                    "text": "Yes",
+                    "jump": "future_yes"
+                },
+                {
+                    "text": "No",
+                    "jump": "lying"
+                }
+            ]
+        },
+        "future_yes": {
+            "text": "Well_._.[e:good]_.[e:good]__ then you better prove it!_",
+            "responses": [
+                {
+                    "text": "I can't",
+                    "jump": "sir_ded"
+                },
+                {
+                    "text": "I can't yet",
+                    "jump": "cant_prove"
+                }
+            ]
+        },
+        "cant_prove": {
+            "autoAdvanceAfter": 1,
+            "jump": "cant_prove_2",
+            "text": "W[e:bad]hat do you mean you can't yet?!"
+        },
+        "cant_prove_2": {
+            "autoAdvanceAfter": 1.5,
+            "jump": "cant_prove_explain",
+            "text": "E[e:good]ither way,_ if you really are from\nthe future_._._.[e:good]__ then you can go back\nin time again and gather proof."
+        },
+        "cant_prove_explain": {
+            "autoAdvanceAfter": 2,
+            "jump": "ded",
+            "text": "So,[e:good]_ if this button really does\nwhat you say_._._.__ then you can try\nconvincing me next time!"
+        },
+        "sir_ded": {
+            "autoAdvanceAfter": 1,
+            "jump": "ded",
+            "text": "Ok!"
+        },
+        "ded": {
+            "event": "very_uber_bad",
+            "autoAdvanceAfter": 1,
+            "jump": "ded_end",
+            "text": "Bye."
+        },
+        "ded_end": {
+            "instaText": "Bye."
+        },
+        "win": {
+            "event": "loop_four_end",
+            "instaText": "Anyway, I have to go now.\nSee you soon, Jeff.\nLet's do it again tomorrow."
+        }
+    }
+}
