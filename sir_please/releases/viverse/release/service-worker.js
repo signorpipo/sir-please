@@ -41,7 +41,7 @@ let _myAppName = "sir_please";
 // with other service workers, especially during the installation and activation phases
 //
 // It must be an incremental integer greater than 0
-let _myServiceWorkerVersion = 3;
+let _myServiceWorkerVersion = 4;
 
 
 
@@ -52,7 +52,7 @@ let _myServiceWorkerVersion = 3;
 // since u could get a mix of old (from the cache) and new (from the network) resources
 //
 // It must be an incremental integer greater than 0
-let _myCacheVersion = 3;
+let _myCacheVersion = 4;
 
 
 
