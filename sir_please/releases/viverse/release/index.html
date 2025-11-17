@@ -24,53 +24,16 @@
     <script type="module" src="sir_please-bundle.js"></script>
 
     
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-G96NTKRDEZ"></script>
     <script>
-        // Create and inject Google Analytics script
-        (function () {
-            if (!window.gtag) {
-                // Create the first script element for the gtag.js library
-                var gtagScript = document.createElement("script");
-                gtagScript.async = true;
-                gtagScript.src = "https://www.googletagmanager.com/gtag/js?id=G-G96NTKRDEZ";
-                document.head.appendChild(gtagScript);
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
 
-                function sendGtagEventToParent(eventData) {
-                    // Ensure eventData has at least an 'event' property
-                    if (!eventData || !eventData.event) {
-                        return;
-                    }
-
-                    // Try to send to the topmost window first
-                    try {
-                        if (window.top && window.top !== window) {
-                            window.top.postMessage(
-                                {
-                                    type: "ga4_event_proxy",
-                                    data: eventData,
-                                },
-                                "*"
-                            );
-                        }
-                    } catch (e) {
-                        // Do nothing
-                    }
-                }
-
-                // Initialize dataLayer and gtag function
-                window.dataLayer = window.dataLayer || [];
-
-                // Define gtag as a global function
-                window.gtag = function () {
-                    dataLayer.push(arguments);
-                    if (arguments[0] == "event")
-                        sendGtagEventToParent({ event: arguments[1] });
-                };
-
-                gtag("js", new Date());
-                gtag("config", "G-G96NTKRDEZ");
-            }
-        })();
+        gtag("js", new Date());
+        gtag("config", "G-G96NTKRDEZ");
     </script>
+
+    
     
 
     <style>
